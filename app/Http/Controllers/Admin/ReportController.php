@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Exports\ContactExport;
 use App\Exports\CustomerExport;
 use App\Exports\ExpenseExport;
+use App\Exports\OrderExport;
 use App\Exports\ProductExport;
 use App\Http\Controllers\Controller;
-use App\Models\Contact;
 use App\Models\Customer;
 use App\Models\Expense;
 use Illuminate\Http\Request;
@@ -60,7 +59,7 @@ class ReportController extends Controller
             // return Excel::download(new CustomerExport(), $formatted . '-Customer-List.xlsx');
         
         } catch (\Throwable $th) {
-            Log::error('ReportController@contactReport Error: ' . $th->getMessage());
+            Log::error('ReportController@customerReport Error: ' . $th->getMessage());
         }
     }
 
@@ -71,6 +70,20 @@ class ReportController extends Controller
             // $formatted = Carbon::parse($monthYear . '-01')->format('F-Y');
 
             return Excel::download(new ProductExport(), 'Product-List.xlsx');
+            // return Excel::download(new CustomerExport(), $formatted . '-Customer-List.xlsx');
+        
+        } catch (\Throwable $th) {
+            Log::error('ReportController@productReport Error: ' . $th->getMessage());
+        }
+    }
+
+    public function orderReport(Request $request)
+    {
+        try {
+            // $monthYear = $request->input('month_year');
+            // $formatted = Carbon::parse($monthYear . '-01')->format('F-Y');
+
+            return Excel::download(new OrderExport(), 'Order-List.xlsx');
             // return Excel::download(new CustomerExport(), $formatted . '-Customer-List.xlsx');
         
         } catch (\Throwable $th) {

@@ -27,6 +27,7 @@ Route::delete('contents', [App\Http\Controllers\Admin\ContentController::class, 
 Route::delete('expense', [App\Http\Controllers\Admin\ExpenseController::class, 'destroy'])->name('admin.expense.destroy');
 Route::delete('customer', [App\Http\Controllers\Admin\CustomerController::class, 'destroy'])->name('admin.customer.destroy');
 Route::delete('product', [App\Http\Controllers\Admin\ProductController::class, 'destroy'])->name('admin.product.destroy');
+Route::delete('order', [App\Http\Controllers\Admin\OrderController::class, 'destroy'])->name('admin.order.destroy');
 
 
 // Admin Routes
@@ -59,11 +60,15 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->name('admin.')->group(fun
     // Product Routes
     Route::resource('product', App\Http\Controllers\Admin\ProductController::class)->except('destroy');
 
+    // Order Routes
+    Route::resource('order', App\Http\Controllers\Admin\OrderController::class)->except('destroy');
+
     // Reports
     Route::get('monthly-report', [App\Http\Controllers\Admin\ReportController::class, 'index'])->name('monthly-report.index');
     Route::get('monthly-report/expense', [App\Http\Controllers\Admin\ReportController::class, 'expenseReport'])->name('monthly-report.expense');
     Route::get('monthly-report/customer', [App\Http\Controllers\Admin\ReportController::class, 'customerReport'])->name('monthly-report.customer');
     Route::get('monthly-report/product', [App\Http\Controllers\Admin\ReportController::class, 'productReport'])->name('monthly-report.product');
+    Route::get('monthly-report/order', [App\Http\Controllers\Admin\ReportController::class, 'orderReport'])->name('monthly-report.order');
 
     // change password
     Route::get('changePassword', [App\Http\Controllers\Admin\AdminController::class, 'changePassword'])->name('changePassword');
