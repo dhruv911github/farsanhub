@@ -6,7 +6,7 @@ return [
     'content' => 'પોસ્ટર',
     'services' => 'સેવાઓ',
     'expenses' => 'ખર્ચ',
-    'employees' => 'સહાયકો',
+    'customers' => 'સહાયકો',
     'change_password' => 'પાસવર્ડ બદલો',
 
     // buttons
@@ -48,15 +48,15 @@ return [
     'lightbill' => 'લાઇટબીલ',
     'rent' => 'મકાન ભાડુ',
 
-    // Employee
-    'employee' => 'સહાયક',
-    'select_employee' => 'સહાયક પસંદ કરો',
+    // Customer
+    'customer' => 'સહાયક',
+    'select_customer' => 'સહાયક પસંદ કરો',
     'salary' => 'પગાર',
     'active' => 'સક્રિય',
     'inactive' => 'અસક્રિય',
-    'employee_image' => 'ફોટો',
+    'customer_image' => 'ફોટો',
 
-    // Employee withdrawal
+    // customer withdrawal
     'withdrawal' => 'ઉપાડ',
     'select_month_year' => 'મહિનો-વર્ષ પસંદ કરો',
     'add_withdrawal' => 'ઉપાડ ઉમેરો',
@@ -114,10 +114,10 @@ return [
     'expense_created' => 'ખર્ચ બનાવાયેલ છે!',
     'expense_updated' => 'ખર્ચ સુધારેલ છે!',
     'expense_deleted' => 'ખર્ચ કાઢી નાખવાયેલ છે!',
-    'employee_created' => 'સહાયક બનાવાયેલ છે!',
-    'employee_updated' => 'સહાયક સુધારેલ છે!',
-    'employee_deleted' => 'સહાયક કાઢી નાખવાયેલ છે!',
-    'employee_withdrawal_created' => 'સહાયક ઉપાડ બનાવાયેલ છે!',
+    'customer_created' => 'સહાયક બનાવાયેલ છે!',
+    'customer_updated' => 'સહાયક સુધારેલ છે!',
+    'customer_deleted' => 'સહાયક કાઢી નાખવાયેલ છે!',
+    'customer_withdrawal_created' => 'સહાયક ઉપાડ બનાવાયેલ છે!',
 
     'accepted_formats' => 'પોસ્ટરનુ ફોર્મેટ: JPEG, PNG, JPG, GIF. મહત્તમ પોસ્ટરનુ માપ: 2MB',
 

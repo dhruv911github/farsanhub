@@ -13,13 +13,16 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('employee_withdrawals', function (Blueprint $table) {
+        Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->integer('employee_id')->unsigned();
-            $table->string('withdrawal_amount')->nullable();
-            $table->date('withdrawal_date')->nullable();
+            $table->string('product_name')->nullable();
+            $table->integer('product_base_price')->nullable();
+            $table->string('status')->nullable();
+            $table->string('product_image');
+            $table->softDeletes();
             $table->timestamps();
         });
+
     }
 
     /**
@@ -29,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('employee_withdrawals');
+        Schema::dropIfExists('products');
     }
 };

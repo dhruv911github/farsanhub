@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 <style>
-    .employee-card {
+    .customer-card {
         position: relative;
         border-radius: 16px;
         padding: 1rem;
@@ -17,18 +17,18 @@
         background-clip: padding-box, border-box;
     }
 
-    .employee-card:hover {
+    .customer-card:hover {
         transform: translateY(-5px);
         box-shadow: 0 8px 20px rgba(253, 13, 13, 0.4);
     }
 
-    .employee-card .card-body img {
+    .customer-card .card-body img {
         object-fit: cover;
         border: 3px solid #dee2e6;
         border-radius: 8px;
     }
 
-    .employee-card ul li {
+    .customer-card ul li {
         margin-bottom: 6px;
     }
 
@@ -41,16 +41,16 @@
 @section('content')
 <div class="page-header d-flex flex-wrap justify-content-between align-items-center my-0">
     <div>
-        <h1 class="page-title">{{ @trans('portal.employees') }}</h1>
+        <h1 class="page-title">{{ @trans('portal.customers') }}</h1>
     </div>
     <div class="ms-auto pageheader-btn d-none d-xl-flex d-lg-flex mt-3">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{ route('admin.employee.index') }}">Home</a></li>
-            <li class="breadcrumb-item active" aria-current="page">{{ @trans('portal.employees') }}</li>
+            <li class="breadcrumb-item"><a href="{{ route('login') }}">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ @trans('portal.customers') }}</li>
         </ol>
     </div>
     <div class="ms-auto pageheader-btn d-flex d-md-none mt-0">
-        <a href="{{ route('admin.employee.create') }}" class="btn btn-secondary me-2">
+        <a href="{{ route('admin.customer.create') }}" class="btn btn-secondary me-2">
             <span class="d-none d-sm-inline">{{ @trans('portal.add') }}</span> <i class="fa fa-plus"></i>
         </a>
     </div>
@@ -84,7 +84,7 @@
 
                             <!-- Add Button (visible on md and up only) -->
                             <div class="d-none d-md-flex justify-content-end">
-                                <a href="{{ route('admin.employee.create') }}" class="btn btn-secondary">
+                                <a href="{{ route('admin.customer.create') }}" class="btn btn-secondary">
                                     <span class="d-none d-sm-inline">{{ @trans('portal.add') }}</span>
                                     <i class="fa fa-plus"></i>
                                 </a>
@@ -93,9 +93,9 @@
                     </div>
                 </div>
 
-                <!-- Employee Cards -->
-                <div id="employee-cards" class="mt-4">
-                   @include('admin.employee.view')
+                <!-- Customer Cards -->
+                <div id="customer-cards" class="mt-4">
+                   @include('admin.customer.view')
                 </div>
             </div>
         </div>
@@ -107,13 +107,13 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Delete employee</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Delete customer</h5>
             </div>
-            <form action="{{ route('admin.employee.destroy') }}" method="POST">
+            <form action="{{ route('admin.customer.destroy') }}" method="POST">
                 @csrf
                 @method('DELETE')
                 <div class="modal-body">
-                    <input type="hidden" name="employee_id" id="employee_id" value="">
+                    <input type="hidden" name="customer_id" id="customer_id" value="">
                     <span>Do you want to Delete this record?</span>
                 </div>
 
@@ -184,8 +184,8 @@
         });
 
         $('.user-delete-btn').click(function() {
-            var DataId = $(this).data('employee-id');
-            $('#employee_id').val(DataId);
+            var DataId = $(this).data('customer-id');
+            $('#customer_id').val(DataId);
 
         });
     });
@@ -212,13 +212,13 @@
 
         $.ajax({
             type: "GET",
-            url: "{{ route('admin.employee.index') }}",
+            url: "{{ route('admin.customer.index') }}",
             data: {
                 search: search_string,
                 limit: limit,
             },
             success: function(response) {
-                $('#employee-cards').html(response);
+                $('#customer-cards').html(response);
             },
             error: function(xhr, status, error) {
                 // console.error('AJAX error:', error);

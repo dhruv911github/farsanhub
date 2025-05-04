@@ -69,9 +69,9 @@ return [
     'date_transaction_date' => 'Transaction date must be a valid date.',
     'required_transaction_date' => 'Transaction date is required.',
 
-    // Employee Validation
+    // Customer Validation
     'required_salary' => 'Salary is required.',
-    'required_employee_image' => 'Image is required.',
+    'required_customer_image' => 'Image is required.',
 
 
     // contact us validation

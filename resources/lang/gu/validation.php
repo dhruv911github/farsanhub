@@ -70,9 +70,9 @@ return [
     'date_transaction_date' => 'પેમેન્ટ તારીખ માન્ય તારીખ હોવી જોઈએ.',
     'required_transaction_date' => 'પેમેન્ટ તારીખ જરૂરી છે.',
 
-    // Employee Validation
+    // Customer Validation
     'required_salary' => 'પગાર જરૂરી છે.',
-    'required_employee_image' => 'ફોટો જરૂરી છે.',
+    'required_customer_image' => 'ફોટો જરૂરી છે.',
 
 
     // contact us validation

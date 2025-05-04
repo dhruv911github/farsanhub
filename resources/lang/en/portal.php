@@ -6,7 +6,7 @@ return [
     'content' => 'Content',
     'services' => 'Services',
     'expenses' => 'Expenses',
-    'employees' => 'Employees',
+    'customers' => 'Customers',
     'change_password' => 'Change Password',
 
     // buttons
@@ -37,8 +37,10 @@ return [
     'description' => 'Description',
     'status' => 'Status',
     'title' => 'Title',
+    'active' => 'Active',
+    'inactive' => 'Inactive',
 
-     // Expense
+    // Expense
     'purpose' => 'Purpose',
     'expense' => 'Expense',
     'select_purpose' => 'Select Purpose',
@@ -48,25 +50,29 @@ return [
     'lightbill' => 'Lightbill',
     'rent' => 'Rent',
 
-    // Employee
-    'employee' => 'Employee',
-    'select_employee' => 'Select Employee',
-    'salary' => 'Salary',
-    'active' => 'Active',
-    'inactive' => 'Inactive',
-    'employee_image' => 'Image',
+    // Customer
+    'customers' => 'Customers',
+    'customer_name' => 'Customer Name',
+    'customer_number' => 'Customer Number',
+    'shop_name' => 'Shop Name',
+    'shop_address' => 'Shop Address',
+    'city' => 'City',
+    'customer_email' => 'Customer Email',
+    'customer_image' => 'Customer Image',
+    'shop_image' => 'Shop Image',
+    'reg_product_price' => 'Reg Product Price',
+    'latitude' => 'Latitude',
+    'longitude' => 'Longitude',
 
-    // Employee Withdrawal
-    'withdrawal' => 'Withdrawal',
-    'select_month_year' => 'Select Month-Year',
-    'add_withdrawal' => 'Add Withdrawal',
-    'month_year' => 'Month-Year',
-    'month' => 'Month',
-    'final_salary' => 'Final Salary',
-
+    // Product
+    'products' => 'Products',
+    'product_name' => 'Product Name',
+    'product_base_price' => 'Product Base Price',
+    'product_image' => 'Product Image',
 
     // monthly report
     'monthly-reports' => 'Monthly Reports',
+    'reports' => 'Reports',
 
     'map' => 'Map',
     'get_location' => 'Get Location',
@@ -86,10 +92,10 @@ return [
     'expense_created' => 'Expense created successfully!',
     'expense_updated' => 'Expense updated successfully!',
     'expense_deleted' => 'Expense deleted successfully!',
-    'employee_created' => 'Employee created successfully!',
-    'employee_updated' => 'Employee updated successfully!',
-    'employee_deleted' => 'Employee deleted successfully!',
-    'employee_withdrawal_created' => 'Employee withdrawal created successfully!',
+    'customer_created' => 'Customer created successfully!',
+    'customer_updated' => 'Customer updated successfully!',
+    'customer_deleted' => 'Customer deleted successfully!',
+    'customer_withdrawal_created' => 'Customer withdrawal created successfully!',
 
     'accepted_formats' => 'Accepted formats: JPEG, PNG, JPG, GIF. Max size: 2MB',
 

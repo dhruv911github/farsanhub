@@ -13,20 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('employees', function (Blueprint $table) {
+        Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->nullable();
-            $table->string('address')->nullable();
-            $table->string('mobile_number')->nullable();
-            $table->string('email')->nullable();
-            $table->string('password')->nullable();
+            $table->integer('customer_id')->nullable();
+            $table->integer('product_id')->nullable();
+            $table->integer('order_quantity')->nullable();
+            $table->integer('order_price')->nullable();
             $table->string('status')->nullable();
-            $table->string('salary')->nullable();
-            $table->string('image')->nullable();
-            $table->softDeletes();
             $table->timestamps();
         });
-
     }
 
     /**
@@ -36,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('employees');
+        Schema::dropIfExists('orders');
     }
 };

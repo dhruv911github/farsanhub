@@ -112,7 +112,7 @@ return [
     'message' => 'સંદેશ',
     'send_message' => 'સંદેશ મોકલો',
 
-    'employee_withdrawal' => 'સહાયક ઉપાડ',
+    'customer_withdrawal' => 'સહાયક ઉપાડ',
     'monthly-report' => 'મહીનાનો રીપોર્ટ',
 
     'total_customer' => 'કુલ ગ્રાહકો',

@@ -114,7 +114,7 @@ return [
     'message' => 'Message',
     'send_message' => 'Send Message',
 
-    'employee_withdrawal' => 'Employee Withdrawal',
+    'customer_withdrawal' => 'Customer Withdrawal',
     'monthly-report' => 'Monthly Report',
 
     'total_customer' => 'Total Customer',
