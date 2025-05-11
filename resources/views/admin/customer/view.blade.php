@@ -1,7 +1,7 @@
 <div class="row">
     @if ($customers->isEmpty())
         <div class="col-12 text-center text-danger">
-            {{ @trans('messages.no_customer') }}
+            {{ @trans('portal.no_customer') }}
         </div>
     @else
         @foreach ($customers as $customer)

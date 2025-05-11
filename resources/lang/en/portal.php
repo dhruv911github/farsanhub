@@ -49,6 +49,7 @@ return [
     'sabji' => 'Sabji',
     'lightbill' => 'Lightbill',
     'rent' => 'Rent',
+    'no_expense' => 'No expense',
 
     // Customer
     'customers' => 'Customers',
@@ -63,6 +64,7 @@ return [
     'reg_product_price' => 'Reg Product Price',
     'latitude' => 'Latitude',
     'longitude' => 'Longitude',
+    'no_customer' => 'No customer',
 
     // Product
     'products' => 'Products',
@@ -96,8 +98,26 @@ return [
     'customer_updated' => 'Customer updated successfully!',
     'customer_deleted' => 'Customer deleted successfully!',
     'customer_withdrawal_created' => 'Customer withdrawal created successfully!',
-
     'accepted_formats' => 'Accepted formats: JPEG, PNG, JPG, GIF. Max size: 2MB',
+
+    // Additional missing translations
+    'mobile' => 'Mobile Number',
+    'shop_name' => 'Shop Name',
+    'shop_address' => 'Shop Address',
+    'customer_email' => 'Customer Email',
+    'shop_image' => 'Shop Image',
+    'reg_product_price' => 'Reg Product Price',
+    'created_at' => 'Created At',
+    'amount' => 'Amount',
+    'comment' => 'Comment',
+    'location' => 'Your Current Location',
+    'contact_form_submitted' => 'Your message has been sent successfully!',
+    
+    // Orders
+    'orders' => 'Orders',
+    'order_quantity' => 'Order Quantity',
+    'customer' => 'Customer',
+    'product' => 'Product',
 
     'contact_form_submitted' => 'Your message has been sent successfully!',
 

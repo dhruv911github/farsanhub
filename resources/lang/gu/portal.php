@@ -6,7 +6,7 @@ return [
     'content' => 'પોસ્ટર',
     'services' => 'સેવાઓ',
     'expenses' => 'ખર્ચ',
-    'customers' => 'સહાયકો',
+    'customers' => 'દુકાનદારો',
     'change_password' => 'પાસવર્ડ બદલો',
 
     // buttons
@@ -47,14 +47,16 @@ return [
     'sabji' => 'શાકભાજી',
     'lightbill' => 'લાઇટબીલ',
     'rent' => 'મકાન ભાડુ',
+    'no_expense' => 'કોઈ ખર્ચ નથી',
 
     // Customer
-    'customer' => 'સહાયક',
-    'select_customer' => 'સહાયક પસંદ કરો',
+    'customer' => 'દુકાનદાર',
+    'select_customer' => 'દુકાનદાર પસંદ કરો',
     'salary' => 'પગાર',
     'active' => 'સક્રિય',
     'inactive' => 'અસક્રિય',
     'customer_image' => 'ફોટો',
+    'no_customer' => 'કોઈ દુકાનદાર નથી',
 
     // customer withdrawal
     'withdrawal' => 'ઉપાડ',
@@ -98,6 +100,12 @@ return [
     'map' => 'નકશો',
     'get_location' => 'વર્તમાન સ્થાન મેળવો',
     'show_location' => 'સ્થાન બતાવો',
+    
+    // Orders
+    'orders' => 'ઓર્ડર',
+    'order_quantity' => 'ઓર્ડર જથ્થો',
+    'customer' => 'ગ્રાહક',
+    'product' => 'પ્રોડક્ટ',
     'location' => 'તમારું વર્તમાન સ્થાન',
 
    
@@ -114,12 +122,24 @@ return [
     'expense_created' => 'ખર્ચ બનાવાયેલ છે!',
     'expense_updated' => 'ખર્ચ સુધારેલ છે!',
     'expense_deleted' => 'ખર્ચ કાઢી નાખવાયેલ છે!',
-    'customer_created' => 'સહાયક બનાવાયેલ છે!',
-    'customer_updated' => 'સહાયક સુધારેલ છે!',
-    'customer_deleted' => 'સહાયક કાઢી નાખવાયેલ છે!',
-    'customer_withdrawal_created' => 'સહાયક ઉપાડ બનાવાયેલ છે!',
+    'customer_created' => 'દુકાનદાર બનાવાયેલ છે!',
+    'customer_updated' => 'દુકાનદાર સુધારેલ છે!',
+    'customer_deleted' => 'દુકાનદાર કાઢી નાખવાયેલ છે!',
+    'customer_withdrawal_created' => 'દુકાનદાર ઉપાડ બનાવાયેલ છે!',
 
-    'accepted_formats' => 'પોસ્ટરનુ ફોર્મેટ: JPEG, PNG, JPG, GIF. મહત્તમ પોસ્ટરનુ માપ: 2MB',
+    'accepted_formats' => 'પોસ્ટરનુ ફોર્હાટ: JPEG, PNG, JPG, GIF. મહત્તમ પોસ્ટરનુ માપ: 2MB',
 
     'contact_form_submitted' => 'તમારું સંદેશ મોકલી નાખ્યો છે.',
+    // Additional missing translations
+    'shop_name' => 'દુકાનનું નામ',
+    'shop_address' => 'દુકાનનું સરનામું',
+    'customer_email' => 'ગ્રાહક ઈમેઈલ',
+    'shop_image' => 'દુકાનનો ફોટો',
+    'reg_product_price' => 'નિયમિત પ્રોડક્ટ કિંમત',
+    'created_at' => 'બનાવ્યાની તારીખ',
+    'products' => 'પ્રોડક્ટ્સ',
+    'product_name' => 'પ્રોડક્ટનું નામ',
+    'product_base_price' => 'પ્રોડક્ટની મૂળ કિંમત',
+    'product_image' => 'પ્રોડક્ટનો ફોટો',
+    'reports' => 'રિપોર્ટ્સ'
 ];
