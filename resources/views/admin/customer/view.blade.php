@@ -56,7 +56,11 @@
                             <a class="btn btn-secondary" href="{{ route('admin.customer.edit', $customer->id) }}">
                                 <i class="fa fa-edit"></i>
                             </a>
-                            <a class="btn btn-primary user-delete-btn" data-bs-toggle="modal"
+                            <a class="btn btn-primary"
+                                href="{{ route('admin.order.index', ['customer_id' => $customer->id]) }}">
+                                <i class="fa fa-shopping-cart"></i>
+                            </a>
+                            <a class="btn btn-secondary user-delete-btn" data-bs-toggle="modal"
                                 data-bs-target="#user-delete" data-customer-id="{{ $customer->id }}">
                                 <i class="fa fa-trash-o"></i>
                             </a>

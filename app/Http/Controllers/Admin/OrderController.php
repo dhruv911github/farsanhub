@@ -20,27 +20,40 @@ class OrderController extends Controller
         try {
             $search = $request->has('search') && !empty($request->search) ? $request->search : null;
             $limit = $request->has('limit') ? (int)$request->limit : 10;
-            
+
             // Query builder with joins
             $query = Order::join('products', 'orders.product_id', '=', 'products.id')
-                         ->join('customers', 'orders.customer_id', '=', 'customers.id')
-                         ->select('orders.*', 
-                                 'products.product_name',
-                                 'customers.customer_name',
-                                 'customers.shop_name');
+                ->join('customers', 'orders.customer_id', '=', 'customers.id')
+                ->select(
+                    'orders.*',
+                    'products.product_name',
+                    'customers.customer_name',
+                    'customers.shop_name'
+                );
 
+            // Add date filters
+            if ($request->has('start_date') && $request->has('end_date')) {
+                $query->whereDate('orders.created_at', '>=', $request->start_date)
+                    ->whereDate('orders.created_at', '<=', $request->end_date);
+            }
+
+            // Add customer_id filter
+            if ($request->has('customer_id')) {
+                $query->where('orders.customer_id', $request->customer_id);
+            }
+            
             // Global search
             if (!empty($request->search)) {
                 $query->where(function ($q) use ($search) {
                     $q->where('products.product_name', 'like', "%{$search}%")
-                      ->orWhere('customers.customer_name', 'like', "%{$search}%")
-                      ->orWhere('orders.order_quantity', 'like', "%{$search}%");
+                        ->orWhere('customers.customer_name', 'like', "%{$search}%")
+                        ->orWhere('orders.order_quantity', 'like', "%{$search}%");
                 });
             }
 
             $orders = $query->orderBy('orders.created_at', 'desc')
-                           ->paginate($limit);
-            
+                ->paginate($limit);
+
             // // Debug logs
             // Log::info('OrderController@index - SQL:', ['query' => $query->toSql()]);
             // Log::info('OrderController@index - Bindings:', $query->getBindings());
@@ -132,7 +145,7 @@ class OrderController extends Controller
             }
 
             $Product = Product::where('id', $request->product)->first();
-            
+
             $order->update([
                 'product_id' => $request->product,
                 'order_quantity' => $request->order_quantity,
