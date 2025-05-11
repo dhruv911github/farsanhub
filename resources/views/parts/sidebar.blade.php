@@ -60,6 +60,7 @@
     <div class="mobile-menu">
         <div class="mobile-sidemenu mb-md-4">
             <a href="{{ route('index') }}">
+                {{-- <b>FarsanHub</b> --}}
                 <img src="{{ asset('images/logo.png') }}" alt="logo" class="img-fluid rounded-circle shadow-5g">
             </a>
             <a aria-controls="offcanvas-1" aria-label="Hide Sidebar" class="app-sidebar__toggle" data-bs-toggle="offcanvas" href="#offcanvas-1" role="button"></a>

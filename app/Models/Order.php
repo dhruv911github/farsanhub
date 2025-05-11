@@ -16,4 +16,9 @@ class Order extends Model
         'order_price',
         'status',
     ];
+
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class);
+    }
 }

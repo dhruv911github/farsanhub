@@ -103,7 +103,7 @@
 </div>
 
 <!-- Delete Modal -->
-<div class="modal fade" id="user-delete" tabindex="-1" role="dialog" aria-labelledby="AddmodelLabel" aria-hidden="true">
+<div class="modal fade" id="order-delete" tabindex="-1" role="dialog" aria-labelledby="AddmodelLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -122,18 +122,6 @@
                     <input type="submit" class="btn btn-primary" value="Confirm">
                 </div>
             </form>
-        </div>
-    </div>
-</div>
-
-<!-- Image Modal -->
-<div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-body d-flex justify-content-center">
-                <img src="https://via.placeholder.com/600" alt="Large View" id="popupImage" class="img-fluid">
-                <button type="button" class="btn-close border" data-bs-dismiss="modal" aria-label="Close"><span><i class="fa fa-close" style="color:red"></i></span></button>
-            </div>
         </div>
     </div>
 </div>
@@ -180,22 +168,16 @@
         })
         $("#editTechnician").click(function() {
             // e.preventDefault();
-            $('#user-delete').modal('show');
+            $('#order-delete').modal('show');
         });
 
-        $('.user-delete-btn').click(function() {
+        $('.order-delete-btn').click(function() {
             var DataId = $(this).data('order-id');
             $('#order_id').val(DataId);
 
         });
     });
 
-      // image preview
-      $('.clickable-image').click(function() {
-        var imageUrl = $(this).data('image');
-        $('#popupImage').attr('src', imageUrl);
-        $('#imageModal').modal('show');
-    });
 
     //search and filter
     function reloadTable() {

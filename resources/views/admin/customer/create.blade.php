@@ -93,28 +93,6 @@
                                     @enderror
                                 </div>
 
-                                <div class="col-md-6 mb-3">
-                                    <label for="city" class="form-label">{{ @trans('portal.city') }}<span
-                                            class="text-danger">*</span></label>
-                                    <input type="text"
-                                        class="form-control @error('city') is-invalid @enderror" id="city"
-                                        name="city" value="{{ old('city') }}" min="0">
-                                    @error('city')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-
-                                <div class="col-md-6 mb-3">
-                                    <label for="city" class="form-label">{{ @trans('portal.city') }}<span
-                                            class="text-danger">*</span></label>
-                                    <input type="text"
-                                        class="form-control @error('city') is-invalid @enderror" id="city"
-                                        name="city" value="{{ old('city') }}" min="0">
-                                    @error('city')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-         
                                 <div class="mb-3 col-md-6">
                                     <label for="customer_image" class="form-label">{{ @trans('portal.customer_image') }}</label>
                                     <input type="file" class="form-control @error('image') is-invalid @enderror"

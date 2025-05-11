@@ -27,6 +27,22 @@
                             <div class="row">
 
                                 <div class="col-md-6 mb-3">
+                                    <label for="customer" class="form-label">{{ @trans('portal.customer') }} <span
+                                            class="text-danger">*</span></label>
+                                    <select name="customer" class="form-control form-select me-md-2">
+                                        @foreach ($customers as $customer)
+                                            <option value="{{ $customer->id }}"
+                                                {{ $customer->id == old('customer') ? 'selected' : '' }}>
+                                                {{ $customer->customer_name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    @error('customer')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="col-md-6 mb-3">
                                     <label for="product" class="form-label">{{ @trans('portal.product') }} <span
                                             class="text-danger">*</span></label>
                                     <select name="product" class="form-control form-select me-md-2">
@@ -43,7 +59,7 @@
                                 </div>
 
                                 <div class="col-md-6 mb-3">
-                                    <label for="order_quantity" class="form-label">{{ @trans('portal.order_quantity') }}
+                                    <label for="order_quantity" class="form-label">{{ @trans('portal.order_quantity') }} (kg)
                                         <span class="text-danger">*</span></label>
                                     <input type="text"
                                         class="form-control @error('order_quantity') is-invalid @enderror"
@@ -52,6 +68,12 @@
                                     @error('order_quantity')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label for="order_date" class="form-label">{{ @trans('portal.date') }}</label>
+                                    <input type="date" class="form-control" id="order_date" name="order_date" 
+                                           value="{{ old('order_date', date('Y-m-d')) }}" readonly>
                                 </div>
 
                                 <div class="mb-3">

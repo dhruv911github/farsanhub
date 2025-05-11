@@ -6,6 +6,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ config('app.name', 'Krishna Niswarth Seva Trust') }}</title>
+    {{-- <title>{{ config('app.name', 'FarsanHub') }}</title> --}}
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
