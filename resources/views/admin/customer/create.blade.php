@@ -37,6 +37,16 @@
                                 </div>
 
                                 <div class="col-md-6 mb-3">
+                                    <label for="shop_name" class="form-label">{{ @trans('portal.shop_name') }} <span
+                                            class="text-danger">*</span></label>
+                                    <input type="text" class="form-control @error('shop_name') is-invalid @enderror"
+                                        id="shop_name" name="shop_name" value="{{ old('shop_name') }}">
+                                    @error('shop_name')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="col-md-6 mb-3">
                                     <label for="shop_address" class="form-label">{{ @trans('portal.shop_address') }} <span
                                             class="text-danger">*</span></label>
                                     <input type="text" class="form-control @error('shop_address') is-invalid @enderror"

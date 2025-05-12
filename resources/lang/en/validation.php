@@ -72,6 +72,9 @@ return [
     // Customer Validation
     'required_salary' => 'Salary is required.',
     'required_customer_image' => 'Image is required.',
+    'required_customer_name' => 'The customer name field is required.',
+    'required_shop_name' => 'The shop name field is required.',
+    'required_shop_address' => 'The shop address field is required.',
 
 
     // contact us validation

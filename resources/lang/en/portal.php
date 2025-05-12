@@ -54,7 +54,6 @@ return [
     // Customer
     'customers' => 'Customers',
     'customer_name' => 'Customer Name',
-    'customer_number' => 'Customer Number',
     'shop_name' => 'Shop Name',
     'shop_address' => 'Shop Address',
     'city' => 'City',
@@ -105,6 +104,7 @@ return [
     'shop_name' => 'Shop Name',
     'shop_address' => 'Shop Address',
     'customer_email' => 'Customer Email',
+    'select_customer' => 'Select Customer',
     'shop_image' => 'Shop Image',
     'reg_product_price' => 'Reg Product Price',
     'created_at' => 'Created At',
@@ -112,10 +112,12 @@ return [
     'comment' => 'Comment',
     'location' => 'Your Current Location',
     'contact_form_submitted' => 'Your message has been sent successfully!',
+    'select_month_year' => 'Select Month and Year',
     
     // Orders
     'orders' => 'Orders',
     'order_quantity' => 'Order Quantity',
+    'order_price' => 'Order Price',
     'customer' => 'Customer',
     'product' => 'Product',
 

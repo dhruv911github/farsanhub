@@ -66,6 +66,7 @@ class CustomerController extends Controller
             // Manually create the validator
             $validator = Validator::make($request->all(), [
                 'customer_name' => 'required',
+                'shop_name' => 'required', // Added shop_name validation
                 'shop_address' => 'required',
                 'customer_number' => 'required|string|size:10|regex:/^[0-9]+$/',
                 'customer_email' => 'nullable|email',  // Add email validation if email is provided
@@ -77,6 +78,7 @@ class CustomerController extends Controller
                 'longitude' => 'nullable',
             ], [
                 'customer_name.required' => __('validation.required_customer_name'),
+                'shop_name.required' => __('validation.required_shop_name'), // Added shop_name validation message
                 'shop_address.required' => __('validation.required_shop_address'),
                 'customer_number.required' => __('validation.required_customer_number'),
                 'customer_number.string' => __('validation.string_customer_number'),
@@ -115,6 +117,7 @@ class CustomerController extends Controller
             // Save the customer data
             Customer::create([
                 'customer_name' => $request->customer_name ?? '',
+                'shop_name' => $request->shop_name ?? '', // Added shop_name to create
                 'shop_address' => $request->shop_address ?? '',
                 'customer_number' => $request->customer_number ?? '',
                 'customer_email' => $request->customer_email ?? '',
@@ -146,6 +149,7 @@ class CustomerController extends Controller
         try {
             $validator = Validator::make($request->all(), [
                 'customer_name' => 'required',
+                'shop_name' => 'required', // Added shop_name validation
                 'shop_address' => 'required',
                 'customer_number' => 'required|string|size:10|regex:/^[0-9]+$/',
                 'customer_email' => 'nullable',
@@ -157,6 +161,7 @@ class CustomerController extends Controller
                 'longitude' => 'nullable',
             ], [
                 'customer_name.required' => __('validation.required_customer_name'),
+                'shop_name.required' => __('validation.required_shop_name'), // Added shop_name validation message
                 'shop_address.required' => __('validation.required_shop_address'),
                 'customer_number.required' => __('validation.required_customer_number'),
                 'customer_number.string' => __('validation.string_customer_number'),
@@ -183,6 +188,7 @@ class CustomerController extends Controller
             
             $data = [
                 'customer_name' => $request->customer_name ?? '',
+                'shop_name' => $request->shop_name ?? '', // Added shop_name to update data
                 'shop_address' => $request->shop_address ?? '',
                 'customer_number' => $request->customer_number ?? '',
                 'customer_email' => $request->customer_email ?? '',

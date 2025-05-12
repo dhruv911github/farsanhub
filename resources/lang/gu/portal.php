@@ -57,6 +57,7 @@ return [
     'inactive' => 'અસક્રિય',
     'customer_image' => 'ફોટો',
     'no_customer' => 'કોઈ દુકાનદાર નથી',
+    'select_customer' => 'દુકાનદાર પસંદ કરો',
 
     // customer withdrawal
     'withdrawal' => 'ઉપાડ',
@@ -104,6 +105,7 @@ return [
     // Orders
     'orders' => 'ઓર્ડર',
     'order_quantity' => 'ઓર્ડર જથ્થો',
+    'order_price' => 'ઓર્ડર કિંમત',
     'customer' => 'ગ્રાહક',
     'product' => 'પ્રોડક્ટ',
     'location' => 'તમારું વર્તમાન સ્થાન',
@@ -130,7 +132,9 @@ return [
     'accepted_formats' => 'પોસ્ટરનુ ફોર્હાટ: JPEG, PNG, JPG, GIF. મહત્તમ પોસ્ટરનુ માપ: 2MB',
 
     'contact_form_submitted' => 'તમારું સંદેશ મોકલી નાખ્યો છે.',
+    'select_month_year' => 'મહિનો પસંદ કરો',
     // Additional missing translations
+    'customer_name' => 'ગ્રાહકનું નામ',
     'shop_name' => 'દુકાનનું નામ',
     'shop_address' => 'દુકાનનું સરનામું',
     'customer_email' => 'ગ્રાહક ઈમેઈલ',

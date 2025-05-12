@@ -7,6 +7,7 @@ use App\Exports\ExpenseExport;
 use App\Exports\OrderExport;
 use App\Exports\ProductExport;
 use App\Http\Controllers\Controller;
+use App\Models\Order;
 use App\Models\Customer;
 use App\Models\Expense;
 use Illuminate\Http\Request;
@@ -28,12 +29,24 @@ class ReportController extends Controller
         // $selectedMonthYear = Carbon::now()->format('F-Y'); // e.g., April-2025
         $selectedMonthYear = Carbon::now()->format('Y-m');
         
-    // Customer
-    $customerMonths = Customer::orderBy('created_at','DESC')
+        // Customer list for dropdown
+        $customers = Customer::select('id', 'customer_name', 'shop_name')
+            ->where('status', 'active')
+            ->orderBy('customer_name')
+            ->get();
+    
+        // Order months for dropdown
+        $orderMonths = Order::selectRaw('
+            DATE_FORMAT(created_at, "%Y-%m") as value,
+            DATE_FORMAT(created_at, "%M-%Y") as label,
+            MAX(created_at) as sort_date
+        ')
+        ->groupByRaw('value, label')
+        ->orderByDesc('sort_date')
         ->get();
-
-    // Expense 
-    $expenseMonths = Expense::selectRaw('
+    
+        // Expense months
+        $expenseMonths = Expense::selectRaw('
             DATE_FORMAT(created_at, "%Y-%m") as value,
             DATE_FORMAT(created_at, "%M-%Y") as label,
             MAX(created_at) as sort_date
@@ -41,12 +54,13 @@ class ReportController extends Controller
         ->groupByRaw('value, label')
         ->orderByDesc('sort_date')
         ->get();  
-
-    return view('admin.monthly-report.index', compact(
-        'selectedMonthYear',
-        'customerMonths',
-        'expenseMonths'
-    ));
+    
+        return view('admin.monthly-report.index', compact(
+            'selectedMonthYear',
+            'customers',
+            'orderMonths',
+            'expenseMonths'
+        ));
     }
 
     public function customerReport(Request $request)
@@ -80,14 +94,30 @@ class ReportController extends Controller
     public function orderReport(Request $request)
     {
         try {
-            // $monthYear = $request->input('month_year');
-            // $formatted = Carbon::parse($monthYear . '-01')->format('F-Y');
-
-            return Excel::download(new OrderExport(), 'Order-List.xlsx');
-            // return Excel::download(new CustomerExport(), $formatted . '-Customer-List.xlsx');
-        
+            $customerId = $request->input('customer_id');
+            $monthYear = $request->input('month_year');
+            
+            // Get customer name for filename if customer is selected
+            $customerName = '';
+            if ($customerId) {
+                $customer = Customer::find($customerId);
+                if ($customer) {
+                    $customerName = str_replace(' ', '-', $customer->customer_name) . '-';
+                }
+            }
+            
+            // Format month-year for filename if selected
+            $formattedDate = '';
+            if ($monthYear) {
+                $formattedDate = Carbon::parse($monthYear . '-01')->format('M-Y') . '-';
+            }
+            
+            $filename = $customerName . $formattedDate . 'Order-List.xlsx';
+            
+            return Excel::download(new OrderExport($customerId, $monthYear), $filename);
         } catch (\Throwable $th) {
-            Log::error('ReportController@contactReport Error: ' . $th->getMessage());
+            Log::error('ReportController@orderReport Error: ' . $th->getMessage());
+            return redirect()->back()->with('error', $th->getMessage());
         }
     }
 
