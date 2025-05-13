@@ -38,7 +38,7 @@
                     <div class="col-sm-4 col-md-4 col-lg-4 col-xl-4 col-xxl-4">
                         <div class="bg-white p-4" style="border-radius:29px;">
                             <div class="text-center">
-                                <img src="{{ asset('images/logo.png') }}" width="124" height="80" />
+                                <img src="{{ asset('images/logo.png') }}" width="200" height="200" />
                                 <h2 class="guest-heading mt-4">Register</h2>
                                 <!-- <p class="guest-subline text-center ">Login</p> -->
                             </div>

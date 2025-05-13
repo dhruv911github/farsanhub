@@ -14,30 +14,8 @@
     </div>
 
     <div class="row">
-        {{-- <div class="col-sm-12 col-md-6 col-lg-3 mb-2">
-            <div class="card ">
-                <div class="card-body">
-                    <form action="{{ route('admin.monthly-report.expense') }}" method="GET"
-                        enctype="multipart/form-data">
-                        <div class="mb-3">
-                            <label>{{ trans('messages.expense') }}</label>
-                            <select name="month_year" class="form-control form-select me-md-2">
-                                @foreach ($expenseMonths as $month)
-                                    <option value="{{ $month->value }}"
-                                        {{ $month->value == $selectedMonthYear ? 'selected' : '' }}>
-                                        {{ $month->label }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="col-sm-12 col-md-4 col-lg-3">
-                            <input type="submit" class="btn btn-primary" value="{{ trans('portal.export') }}">
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div> --}}
-       
+
+
         <div class="col-sm-12 col-md-6 col-lg-3 mb-2">
             <div class="card ">
                 <div class="card-body">
@@ -45,14 +23,6 @@
                         enctype="multipart/form-data">
                         <div class="mb-3">
                             <label>{{ trans('portal.customers') }}</label>
-                            {{-- <select name="month_year" class="form-control form-select me-md-2">
-                                @foreach ($contactMonths as $month)
-                                    <option value="{{ $month->value }}"
-                                        {{ $month->value == $selectedMonthYear ? 'selected' : '' }}>
-                                        {{ $month->label }}
-                                    </option>
-                                @endforeach
-                            </select> --}}
                         </div>
                         <div class="col-sm-12 col-md-4 col-lg-3">
                             <input type="submit" class="btn btn-primary" value="{{ trans('portal.export') }}">
@@ -65,18 +35,9 @@
         <div class="col-sm-12 col-md-6 col-lg-3 mb-2">
             <div class="card ">
                 <div class="card-body">
-                    <form action="{{ route('admin.monthly-report.product') }}" method="GET"
-                        enctype="multipart/form-data">
+                    <form action="{{ route('admin.monthly-report.product') }}" method="GET" enctype="multipart/form-data">
                         <div class="mb-3">
                             <label>{{ trans('portal.products') }}</label>
-                            {{-- <select name="month_year" class="form-control form-select me-md-2">
-                                @foreach ($contactMonths as $month)
-                                    <option value="{{ $month->value }}"
-                                        {{ $month->value == $selectedMonthYear ? 'selected' : '' }}>
-                                        {{ $month->label }}
-                                    </option>
-                                @endforeach
-                            </select> --}}
                         </div>
                         <div class="col-sm-12 col-md-4 col-lg-3">
                             <input type="submit" class="btn btn-primary" value="{{ trans('portal.export') }}">
@@ -89,24 +50,25 @@
         <div class="col-sm-12 col-md-6 col-lg-3 mb-2">
             <div class="card ">
                 <div class="card-body">
-                    <form action="{{ route('admin.monthly-report.order') }}" method="GET"
-                        enctype="multipart/form-data">
+                    <form action="{{ route('admin.monthly-report.order') }}" method="GET" enctype="multipart/form-data">
                         <div class="mb-3">
                             <label>{{ trans('portal.orders') }}</label>
                             <select name="customer_id" class="form-control form-select me-md-2 mb-3">
                                 <option value="">{{ trans('portal.select_customer') }}</option>
                                 @foreach ($customers as $customer)
-                                    <option value="{{ $customer->id }}">
+                                    <option value="{{ $customer->id }}"
+                                        {{ old('customer_id') == $customer->id ? 'selected' : '' }}>
                                         {{ $customer->customer_name }} - {{ $customer->shop_name }}
                                     </option>
                                 @endforeach
                             </select>
-                            
+
                             <select name="month_year" class="form-control form-select me-md-2">
                                 <option value="">{{ trans('portal.select_month_year') }}</option>
                                 @foreach ($orderMonths as $month)
-                                    <option value="{{ $month->value }}">
-                                        {{ $month->label }}
+                                    <option value="{{ $month['value'] }}"
+                                        {{ old('month_year') == $month['value'] ? 'selected' : '' }}>
+                                        {{ $month['label'] }}
                                     </option>
                                 @endforeach
                             </select>
@@ -118,7 +80,7 @@
                 </div>
             </div>
         </div>
-       
+
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         @if (session()->has('success'))
             <script>

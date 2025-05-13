@@ -38,7 +38,7 @@ class AdminController extends Controller
             $user->password = Hash::make($validated['password']);
             $user->save();
 
-            return redirect()->back()->with('success', __('portal.password_changed'));
+            return redirect()->back()->with('success', trans('portal.password_changed'));
         }
 
         return redirect()->back()->withErrors([

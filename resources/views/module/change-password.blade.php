@@ -9,7 +9,7 @@
     </div>
     <div class="ms-auto pageheader-btn d-none d-xl-flex d-lg-flex">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
+            <li class="breadcrumb-item"><a href="{{ url('/') }}">Home</a></li>
             <li class="breadcrumb-item active" aria-current="page">{{ @trans('portal.change_password') }}</li>
         </ol>
     </div>

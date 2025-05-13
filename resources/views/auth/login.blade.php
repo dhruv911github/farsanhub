@@ -37,11 +37,11 @@
                     <div class="col-sm-6 col-md-6 col-lg-4 col-xl-4 col-xxl-4">
                         <div class="bg-white p-4" style="border-radius:29px;">
                             <div class="text-center">
-                                <img src="{{ asset('images/logo.png') }}" width="124" height="80" />
+                                <img src="{{ asset('images/logo.png') }}" width="200" height="200" />
                                 <h2 class="guest-heading mt-4">Login</h2>
                                 <!-- <p class="guest-subline text-center ">Login</p> -->
                             </div>
-                            <div class="mt-4 mx-4 mb-4">
+                            <div class=" mx-4 mb-4">
                                 <!-- <form method="POST" action="dashboard.php">
                                     <div class="form-group">
                                         <label for="email" class="form-label">User Name</label>
