@@ -95,7 +95,7 @@
                                 </div>
 
                                 <div class="mb-3 col-md-6">
-                                    <label for="city" class="form-label">{{ @trans('portal.city') }} (₹)<span
+                                    <label for="city" class="form-label">{{ @trans('portal.city') }}<span
                                             class="text-danger">*</span></label>
                                     <input type="text"
                                         class="form-control @error('city') is-invalid @enderror" id="city"

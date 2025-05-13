@@ -31,14 +31,14 @@ class OrderExport implements FromCollection, WithHeadings, WithStyles, WithColum
     public function collection()
     {
         $query = Order::join('products', 'orders.product_id', '=', 'products.id')
-                ->join('customers', 'orders.customer_id', '=', 'customers.id')
-                ->select(
-                    'orders.*',
-                    'products.product_name',
-                    'products.product_base_price',
-                    'customers.customer_name',
-                    'customers.shop_name'
-                );
+            ->join('customers', 'orders.customer_id', '=', 'customers.id')
+            ->select(
+                'orders.*',
+                'products.product_name',
+                'products.product_base_price',
+                'customers.customer_name',
+                'customers.shop_name'
+            );
 
         // Filter by customer if provided
         if ($this->customerId) {
@@ -49,10 +49,10 @@ class OrderExport implements FromCollection, WithHeadings, WithStyles, WithColum
         if ($this->monthYear) {
             $start = Carbon::parse($this->monthYear . '-01')->startOfMonth();
             $end = Carbon::parse($this->monthYear . '-01')->endOfMonth();
-            
+
             $query->whereDate('orders.created_at', '>=', $start)
-                  ->whereDate('orders.created_at', '<=', $end);
-                  
+                ->whereDate('orders.created_at', '<=', $end);
+
             Log::info('Export Date Range: ' . $start . ' to ' . $end);
         }
 
@@ -64,14 +64,14 @@ class OrderExport implements FromCollection, WithHeadings, WithStyles, WithColum
             $totalAmount = $item->order_quantity * $item->order_price;
             $this->totalOrderAmount += $totalAmount;
             $this->totalOrderQuantity += $item->order_quantity; // Accumulate order quantity
-            
+
             return [
                 'customer_name' => $item->customer_name ?? '-',
                 'shop_name' => $item->shop_name ?? '-',
                 'product_name' => $item->product_name ?? '-',
                 'order_quantity' => ($item->order_quantity ?? '0') . ' KG',
-                'order_price' => $item->order_price ?? '0',
-                'total_amount' => $totalAmount,
+                'order_price' => '₹ ' . $item->order_price ?? '',
+                'total_amount' => '₹ ' . $totalAmount,
                 'date' => $item->created_at ? date('d-m-Y', strtotime($item->created_at)) : '-',
             ];
         });
@@ -93,7 +93,7 @@ class OrderExport implements FromCollection, WithHeadings, WithStyles, WithColum
     public function styles(Worksheet $sheet)
     {
         $sheet->getStyle('A1:G1')->getFont()->setBold(true);
-        
+
         // Style for the grand total row
         $totalRow = $this->rowCount + 2; // +2 because of header row and 1-based indexing
         $sheet->getStyle('A' . $totalRow . ':G' . $totalRow)->getFont()->setBold(true);
@@ -106,21 +106,21 @@ class OrderExport implements FromCollection, WithHeadings, WithStyles, WithColum
             'F' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
         ];
     }
-    
+
     public function registerEvents(): array
     {
         return [
-            AfterSheet::class => function(AfterSheet $event) {
+            AfterSheet::class => function (AfterSheet $event) {
                 $totalRow = $this->rowCount + 2; // +2 because of header row and 1-based indexing
-                
+
                 // Add Grand Total row
                 $event->sheet->setCellValue('A' . $totalRow, 'Grand Total');
                 $event->sheet->setCellValue('D' . $totalRow, $this->totalOrderQuantity . ' KG'); // Display total quantity in column D
-                $event->sheet->setCellValue('F' . $totalRow, $this->totalOrderAmount);
-                
+                $event->sheet->setCellValue('F' . $totalRow, '₹ ' . $this->totalOrderAmount);
+
                 // Merge cells for Grand Total label (A to C)
                 $event->sheet->mergeCells('A' . $totalRow . ':C' . $totalRow);
-                
+
                 // Apply formatting
                 $event->sheet->getStyle('A' . $totalRow)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT);
                 $event->sheet->getStyle('D' . $totalRow)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT); // Align quantity to left or center as preferred

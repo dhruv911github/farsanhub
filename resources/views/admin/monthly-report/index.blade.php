@@ -15,38 +15,6 @@
 
     <div class="row">
 
-
-        <div class="col-sm-12 col-md-6 col-lg-3 mb-2">
-            <div class="card ">
-                <div class="card-body">
-                    <form action="{{ route('admin.monthly-report.customer') }}" method="GET"
-                        enctype="multipart/form-data">
-                        <div class="mb-3">
-                            <label>{{ trans('portal.customers') }}</label>
-                        </div>
-                        <div class="col-sm-12 col-md-4 col-lg-3">
-                            <input type="submit" class="btn btn-primary" value="{{ trans('portal.export') }}">
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-sm-12 col-md-6 col-lg-3 mb-2">
-            <div class="card ">
-                <div class="card-body">
-                    <form action="{{ route('admin.monthly-report.product') }}" method="GET" enctype="multipart/form-data">
-                        <div class="mb-3">
-                            <label>{{ trans('portal.products') }}</label>
-                        </div>
-                        <div class="col-sm-12 col-md-4 col-lg-3">
-                            <input type="submit" class="btn btn-primary" value="{{ trans('portal.export') }}">
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-
         <div class="col-sm-12 col-md-6 col-lg-3 mb-2">
             <div class="card ">
                 <div class="card-body">
@@ -73,7 +41,38 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="col-sm-12 col-md-4 col-lg-3">
+                        <div class="col-sm-12 col-md-4 col-lg-3 ps-0">
+                            <input type="submit" class="btn btn-primary" value="{{ trans('portal.export') }}">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-12 col-md-6 col-lg-3 mb-2">
+            <div class="card ">
+                <div class="card-body">
+                    <form action="{{ route('admin.monthly-report.customer') }}" method="GET"
+                        enctype="multipart/form-data">
+                        <div >
+                            <label>{{ trans('portal.customers') }}</label>
+                        </div>
+                        <div class="col-sm-12 col-md-4 col-lg-3 ps-0">
+                            <input type="submit" class="btn btn-primary" value="{{ trans('portal.export') }}">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-12 col-md-6 col-lg-3 mb-2">
+            <div class="card ">
+                <div class="card-body">
+                    <form action="{{ route('admin.monthly-report.product') }}" method="GET" enctype="multipart/form-data">
+                        <div >
+                            <label>{{ trans('portal.products') }}</label>
+                        </div>
+                        <div class="col-sm-12 col-md-4 col-lg-3 ps-0">
                             <input type="submit" class="btn btn-primary" value="{{ trans('portal.export') }}">
                         </div>
                     </form>

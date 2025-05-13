@@ -37,7 +37,7 @@ class ProductExport implements FromCollection, WithHeadings, WithStyles, WithCol
         return $product->map(function ($item) {
             return [
                 'product_name'   => $item->product_name ?? '-',
-                'product_base_price'   => $item->product_base_price ?? '-',
+                'product_base_price'   => '₹ '.$item->product_base_price ?? '-',
                 // 'status'   => $item->status ?? '-',
                 'date'   => $item->created_at ? date('d-m-Y', strtotime($item->created_at)) : '-',
             ];
