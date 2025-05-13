@@ -15,27 +15,15 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 class CustomerExport implements FromCollection, WithHeadings, WithStyles, WithColumnFormatting
 {
-    // public $monthYear;
-
-    // public function __construct($monthYear)
-    // {
-    //     $this->monthYear = $monthYear;
-    // }
-
     public function collection()
     {
-        // $start = Carbon::parse($this->monthYear . '-01')->startOfMonth();
-        // $end = Carbon::parse($this->monthYear . '-01')->endOfMonth();
-
-        // Log::info('Export Start Date: ' . $start);
-        // Log::info('Export End Date: ' . $end);
-
         $customer = Customer::get();
-
         Log::info('customer record count: ' . $customer->count());
 
-        return $customer->map(function ($item) {
+        $srNo = 1; // Initialize Sr. No.
+        return $customer->map(function ($item) use (&$srNo) { // Pass $srNo by reference
             return [
+                'sr_no' => $srNo++, // Add Sr. No. and increment
                 'customer_name'   => $item->customer_name ?? '-',
                 'shop_name'   => $item->shop_name ?? '-',
                 'customer_mobile'   => $item->customer_number ?? '-',
@@ -53,6 +41,7 @@ class CustomerExport implements FromCollection, WithHeadings, WithStyles, WithCo
     public function headings(): array
     {
         return [
+            'Sr. No.', // Heading for Sr. No.
             trans('portal.customer_name'),
             trans('portal.shop_name'),
             trans('portal.customer_mobile'),
@@ -66,7 +55,7 @@ class CustomerExport implements FromCollection, WithHeadings, WithStyles, WithCo
 
     public function styles(Worksheet $sheet)
     {
-        $sheet->getStyle('A1:D1')->getFont()->setBold(true);
+        $sheet->getStyle('A1:E1')->getFont()->setBold(true); // Adjusted range if needed, assuming D was last, now E
     }
 
     public function columnFormats(): array

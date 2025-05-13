@@ -15,27 +15,15 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 class ProductExport implements FromCollection, WithHeadings, WithStyles, WithColumnFormatting
 {
-    // public $monthYear;
-
-    // public function __construct($monthYear)
-    // {
-    //     $this->monthYear = $monthYear;
-    // }
-
     public function collection()
     {
-        // $start = Carbon::parse($this->monthYear . '-01')->startOfMonth();
-        // $end = Carbon::parse($this->monthYear . '-01')->endOfMonth();
-
-        // Log::info('Export Start Date: ' . $start);
-        // Log::info('Export End Date: ' . $end);
-
         $product = Product::get();
-
         Log::info('product record count: ' . $product->count());
 
-        return $product->map(function ($item) {
+        $srNo = 1;
+        return $product->map(function ($item) use (&$srNo) { 
             return [
+                'sr_no' => $srNo++, 
                 'product_name'   => $item->product_name ?? '-',
                 'product_base_price'   => '₹ '.$item->product_base_price ?? '-',
                 // 'status'   => $item->status ?? '-',
@@ -47,6 +35,7 @@ class ProductExport implements FromCollection, WithHeadings, WithStyles, WithCol
     public function headings(): array
     {
         return [
+            'Sr. No.', 
             trans('portal.product_name'),
             trans('portal.product_base_price'),
             // trans('portal.status'),
