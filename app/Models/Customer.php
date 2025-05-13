@@ -19,7 +19,6 @@ class Customer extends Model
         'customer_email',
         'customer_image',
         'shop_image',
-        'reg_product_price',
         'status',
         'latitude',
         'longitude',

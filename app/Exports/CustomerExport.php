@@ -37,13 +37,12 @@ class CustomerExport implements FromCollection, WithHeadings, WithStyles, WithCo
         return $customer->map(function ($item) {
             return [
                 'customer_name'   => $item->customer_name ?? '-',
-                'customer_mobile'   => $item->customer_mobile ?? '-',
                 'shop_name'   => $item->shop_name ?? '-',
+                'customer_mobile'   => $item->customer_number ?? '-',
                 'shop_address'   => $item->shop_address ?? '-',
                 'city'   => $item->city ?? '-',
                 'customer_email'   => $item->customer_email ?? '-',
-                'reg_product_price'   => $item->reg_product_price ?? '-',
-                'status'   => $item->status ?? '-',
+                // 'status'   => $item->status ?? '-',
                 // 'latitude'   => $item->latitude ?? '-',
                 // 'longitude'   => $item->longitude ?? '-',
                 'date'   => $item->created_at ? date('d-m-Y', strtotime($item->created_at)) : '-',
@@ -55,13 +54,12 @@ class CustomerExport implements FromCollection, WithHeadings, WithStyles, WithCo
     {
         return [
             trans('portal.customer_name'),
-            trans('portal.customer_mobile'),
             trans('portal.shop_name'),
+            trans('portal.customer_mobile'),
             trans('portal.shop_address'),
             trans('portal.city'),
             trans('portal.customer_email'),
-            trans('portal.reg_product_price'),
-            trans('portal.status'),
+            // trans('portal.status'),
             trans('portal.date')
         ];
     }

@@ -52,6 +52,7 @@ return [
     // Customer
     'customer' => 'દુકાનદાર',
     'select_customer' => 'દુકાનદાર પસંદ કરો',
+    'customer_mobile' => 'દુકાનદાર મોબાઇલ',
     'salary' => 'પગાર',
     'active' => 'સક્રિય',
     'inactive' => 'અસક્રિય',
@@ -139,7 +140,6 @@ return [
     'shop_address' => 'દુકાનનું સરનામું',
     'customer_email' => 'ગ્રાહક ઈમેઈલ',
     'shop_image' => 'દુકાનનો ફોટો',
-    'reg_product_price' => 'નિયમિત પ્રોડક્ટ કિંમત',
     'created_at' => 'બનાવ્યાની તારીખ',
     'products' => 'પ્રોડક્ટ્સ',
     'product_name' => 'પ્રોડક્ટનું નામ',

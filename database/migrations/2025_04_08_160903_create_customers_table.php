@@ -23,7 +23,6 @@ return new class extends Migration
             $table->string('customer_email')->nullable();
             $table->string('customer_image')->nullable();
             $table->string('shop_image')->nullable();
-            $table->integer('reg_product_price')->nullable();
             $table->string('status')->nullable();
             $table->string('latitude')->nullable();
             $table->string('longitude')->nullable();

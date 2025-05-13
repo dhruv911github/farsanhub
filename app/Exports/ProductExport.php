@@ -38,7 +38,7 @@ class ProductExport implements FromCollection, WithHeadings, WithStyles, WithCol
             return [
                 'product_name'   => $item->product_name ?? '-',
                 'product_base_price'   => $item->product_base_price ?? '-',
-                'status'   => $item->status ?? '-',
+                // 'status'   => $item->status ?? '-',
                 'date'   => $item->created_at ? date('d-m-Y', strtotime($item->created_at)) : '-',
             ];
         });
@@ -47,9 +47,9 @@ class ProductExport implements FromCollection, WithHeadings, WithStyles, WithCol
     public function headings(): array
     {
         return [
-            trans('portal.customer_name'),
+            trans('portal.product_name'),
             trans('portal.product_base_price'),
-            trans('portal.status'),
+            // trans('portal.status'),
             trans('portal.date'),
         ];
     }
