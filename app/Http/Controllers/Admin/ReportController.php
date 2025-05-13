@@ -31,7 +31,7 @@ class ReportController extends Controller
 
         // Customer list for dropdown
         $customers = Customer::select('id', 'customer_name', 'shop_name')
-            ->where('status', 'active')
+            // ->where('status', '1')
             ->orderBy('customer_name')
             ->get();
 
