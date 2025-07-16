@@ -109,4 +109,12 @@ return [
 
     // testimonial validation
     'required_post' => 'Post is required.',
+
+    // product
+    'required_product_name' => 'Product name is required.',
+    'required_product_base_price' => 'Product base price is required.',
+    'required_product_image' => 'Product image is required.',
+    'image_product_image' => 'Product image must be a valid image.',
+    'mimes_product_image' => 'Product image must be a JPG, JPEG, PNG, or GIF.',
+    'max_product_image' => 'Product image must be at most :max kilobytes.',
 ];

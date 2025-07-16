@@ -14,7 +14,7 @@
                                 data-bs-toggle="modal" data-bs-target="#imageModal"
                                 data-image="{{ asset('storage/' . $customer->customer_image) }}">
                         @else
-                            <img src="{{ asset('images/not_found.jpg') }}" alt="Profile" class="rounded-circle shadow"
+                            <img src="{{ asset('images/logo.png') }}" alt="Profile" class="rounded-circle"
                                 width="100" height="100">
                         @endif
 

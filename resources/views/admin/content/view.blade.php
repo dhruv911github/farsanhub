@@ -41,7 +41,7 @@
                     alt="Profile" width="40px" style="border-radius: 4px; padding-right: 2px; padding-bottom: 4px;">
                 <span class="eye-icon" id="eyeIcon" data-bs-toggle="modal" data-bs-target="#imageModal">👁️</span>
                 @else
-                <img src="{{ asset('images/not_found.jpg') }}" alt="Profile" width="40px" style="border-radius: 4px; padding-right: 2px; padding-bottom: 4px;">
+                <img src="{{ asset('images/logo.jpg') }}" alt="Profile" width="40px" style="border-radius: 4px; padding-right: 2px; padding-bottom: 4px;">
                 @endif
             </td>
             <td style="white-space: nowrap;">{{ date('d-m-Y', strtotime($content->upload_date)) }}</td>

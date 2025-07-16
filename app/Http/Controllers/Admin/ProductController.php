@@ -77,7 +77,7 @@ class ProductController extends Controller
             // Check if the validation fails
             if ($validator->fails()) {
                 // Debugging: dd($validator->fails()); will return true if validation fails
-                dd($validator->errors()); // This will output the error messages
+                // dd($validator->errors()); // This will output the error messages
                 
                 // Redirect back with validation errors and old input
                 return redirect()->back()
@@ -86,7 +86,8 @@ class ProductController extends Controller
             }        
             // dd($request->all());
             
-            $productimagePath = null;
+            // logo image
+            $productimagePath = asset('images/logo.png');
             if ($request->hasFile('product_image')) {
                 $productimagePath = $request->file('product_image')->store('product_images', 'public');
             }            
