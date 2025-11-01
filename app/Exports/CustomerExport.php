@@ -17,7 +17,7 @@ class CustomerExport implements FromCollection, WithHeadings, WithStyles, WithCo
 {
     public function collection()
     {
-        $customer = Customer::get();
+        $customer = Customer::where('user_id', auth()->id())->get();
         Log::info('customer record count: ' . $customer->count());
 
         $srNo = 1; // Initialize Sr. No.
@@ -55,7 +55,7 @@ class CustomerExport implements FromCollection, WithHeadings, WithStyles, WithCo
 
     public function styles(Worksheet $sheet)
     {
-        $sheet->getStyle('A1:E1')->getFont()->setBold(true); // Adjusted range if needed, assuming D was last, now E
+        $sheet->getStyle('A1:H1')->getFont()->setBold(true); // Adjusted range if needed, assuming D was last, now E
     }
 
     public function columnFormats(): array

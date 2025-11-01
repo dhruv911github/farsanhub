@@ -32,11 +32,13 @@ class ReportController extends Controller
         // Customer list for dropdown
         $customers = Customer::select('id', 'customer_name', 'shop_name')
             // ->where('status', '1')
+            ->where('user_id', auth()->id())
             ->orderBy('customer_name')
             ->get();
 
         // Order months for dropdown (formatted in PHP instead of SQL)
         $orderMonths = Order::select('created_at')
+            ->where('user_id', auth()->id())
             ->orderByDesc('created_at')
             ->get()
             ->map(function ($order) {
@@ -53,6 +55,7 @@ class ReportController extends Controller
 
         // Expense months for dropdown (formatted in PHP instead of SQL)
         $expenseMonths = Expense::select('created_at')
+            ->where('user_id', auth()->id())
             ->orderByDesc('created_at')
             ->get()
             ->map(function ($expense) {

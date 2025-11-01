@@ -24,6 +24,7 @@ class OrderController extends Controller
             // Query builder with joins
             $query = Order::join('products', 'orders.product_id', '=', 'products.id')
                 ->join('customers', 'orders.customer_id', '=', 'customers.id')
+                ->where('orders.user_id', auth()->id())
                 ->select(
                     'orders.*',
                     'products.product_name',
@@ -103,6 +104,7 @@ class OrderController extends Controller
 
             // Save the order data
             Order::create([
+                'user_id' => auth()->id(),
                 'customer_id' => $request->customer ?? '',
                 'product_id' => $request->product ?? '',
                 'order_quantity' => $request->order_quantity ?? '',

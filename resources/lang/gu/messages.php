@@ -112,8 +112,14 @@ return [
     'message' => 'સંદેશ',
     'send_message' => 'સંદેશ મોકલો',
 
-    'customer_withdrawal' => 'સહાયક ઉપાડ',
+    'customer_withdrawal' => 'દુકાનદાર ઉપાડ',
     'monthly-report' => 'મહીનાનો રીપોર્ટ',
 
     'total_customer' => 'કુલ ગ્રાહકો',
+
+    // table messages
+    'no_product' => 'કોઈ ઉત્પાદન મળ્યું નથી',
+    'no_customer' => 'કોઈ દુકાનદાર મળ્યું નથી',
+    'no_expense' => 'કોઈ ખર્ચ નથી',
+    'no_content' => 'કોઈ પોસ્ટર મળ્યું નથી',
 ];

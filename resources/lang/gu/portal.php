@@ -47,7 +47,6 @@ return [
     'sabji' => 'શાકભાજી',
     'lightbill' => 'લાઇટબીલ',
     'rent' => 'મકાન ભાડુ',
-    'no_expense' => 'કોઈ ખર્ચ નથી',
 
     // Customer
     'customer' => 'દુકાનદાર',
@@ -57,7 +56,6 @@ return [
     'active' => 'સક્રિય',
     'inactive' => 'અસક્રિય',
     'customer_image' => 'ફોટો',
-    'no_customer' => 'કોઈ દુકાનદાર નથી',
     'select_customer' => 'દુકાનદાર પસંદ કરો',
 
     // customer withdrawal

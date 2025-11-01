@@ -21,6 +21,7 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
+        try {
         $credentials = $request->validate([
             'email' => 'required|email',
             'password' => 'required'
@@ -30,9 +31,10 @@ class AuthController extends Controller
             'password.required' => __('validation.required_password'),
         ]);
 
+        
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-
+            
             if (Auth::user()->isAdmin()) {
                 return redirect()->route('admin.dashboard');
             }
@@ -43,6 +45,12 @@ class AuthController extends Controller
         return back()->withErrors([
             'email' => 'The provided credentials do not match our records.',
         ])->withInput($request->only('email'));
+    } catch (\Exception $e) {
+            return back()->withErrors([
+            'error' => 'An error occurred during login. Please try again later.',
+        ])->withInput($request->only('email')); 
+        }
+   
     }
 
     public function register(Request $request)
@@ -75,6 +83,7 @@ class AuthController extends Controller
 
         return redirect()->route('admin.dashboard');
     }
+    
 
     public function logout(Request $request)
     {

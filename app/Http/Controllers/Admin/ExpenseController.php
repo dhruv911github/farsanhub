@@ -17,7 +17,7 @@ class ExpenseController extends Controller
         try {
             Log::info($request->all());
             $limit = $request->limit ?? 10;
-            $query = Expense::query();
+            $query = Expense::where('user_id', auth()->id());
 
             // Search functionality
             if ($request->search) {
@@ -75,6 +75,7 @@ class ExpenseController extends Controller
 
             // Save the expense data
             Expense::create([
+                'user_id' => auth()->id(),
                 'amount' => $request->amount ?? 0,
                 'purpose' => $request->purpose ?? '',
                 'comment' => $request->comment ?? '',

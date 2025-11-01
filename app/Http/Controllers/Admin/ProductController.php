@@ -21,7 +21,7 @@ class ProductController extends Controller
             $search = $request->search;
             $sort = 'desc';
 
-            $query = Product::query();
+            $query = Product::where('user_id', auth()->id());
             // $query = Product::where('status', 'active');
             if ($search) {
                 $query->where(function ($q) use ($search) {
@@ -73,27 +73,28 @@ class ProductController extends Controller
                 'product_image.mimes' => __('validation.mimes_product_image'),
                 'product_image.max' => __('validation.max_product_image'),
             ]);
-            
+
             // Check if the validation fails
             if ($validator->fails()) {
                 // Debugging: dd($validator->fails()); will return true if validation fails
                 // dd($validator->errors()); // This will output the error messages
-                
+
                 // Redirect back with validation errors and old input
                 return redirect()->back()
-                ->withErrors($validator)
-                ->withInput();
-            }        
+                    ->withErrors($validator)
+                    ->withInput();
+            }
             // dd($request->all());
-            
+
             // logo image
             $productimagePath = asset('images/logo.png');
             if ($request->hasFile('product_image')) {
                 $productimagePath = $request->file('product_image')->store('product_images', 'public');
-            }            
+            }
 
             // Save the product data
             Product::create([
+                'user_id' => auth()->id(),
                 'product_name' => $request->product_name ?? '',
                 'product_base_price' => $request->product_base_price ?? '',
                 'status' => $request->status ?? '',
@@ -143,7 +144,7 @@ class ProductController extends Controller
             }
 
             $data = [
-              'product_name' => $request->product_name ?? '',
+                'product_name' => $request->product_name ?? '',
                 'product_base_price' => $request->product_base_price ?? '',
                 'status' => $request->status ?? '',
             ];

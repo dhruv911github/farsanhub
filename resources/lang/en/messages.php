@@ -118,4 +118,10 @@ return [
     'monthly-report' => 'Monthly Report',
 
     'total_customer' => 'Total Customer',
+
+    // table messages
+    'no_product' => 'No product found',
+    'no_customer' => 'No customer found',
+    'no_expense' => 'No expense found',
+    'no_content' => 'No content found',
 ];

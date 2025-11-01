@@ -49,7 +49,6 @@ return [
     'sabji' => 'Sabji',
     'lightbill' => 'Lightbill',
     'rent' => 'Rent',
-    'no_expense' => 'No expense',
 
     // Customer
     'customers' => 'Customers',
@@ -63,7 +62,6 @@ return [
     'shop_image' => 'Shop Image',
     'latitude' => 'Latitude',
     'longitude' => 'Longitude',
-    'no_customer' => 'No customer',
 
     // Product
     'products' => 'Products',

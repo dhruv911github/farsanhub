@@ -17,7 +17,7 @@ class ProductExport implements FromCollection, WithHeadings, WithStyles, WithCol
 {
     public function collection()
     {
-        $product = Product::get();
+        $product = Product::where('user_id', auth()->id())->get();
         Log::info('product record count: ' . $product->count());
 
         $srNo = 1;

@@ -30,7 +30,7 @@
     <tbody>
         @if ($expenses->isEmpty())
         <tr>
-            <td colspan="6" class="text-center text-danger">{{ @trans('portal.no_expense') }}</td>
+            <td colspan="6" class="text-center text-danger">{{ @trans('messages.no_expense') }}</td>
         </tr>
         @else
         @forelse($expenses as $index => $expense)

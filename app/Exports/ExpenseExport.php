@@ -30,7 +30,9 @@ class ExpenseExport implements FromCollection, WithHeadings, WithStyles, WithCol
         Log::info('Export Start Date: ' . $start);
         Log::info('Export End Date: ' . $end);
 
-        $Expense = Expense::whereBetween('created_at', [$start, $end])->get();
+        $Expense = Expense::where('user_id', auth()->id())
+            ->whereBetween('created_at', [$start, $end])
+            ->get();
 
         Log::info('Expense record count: ' . $Expense->count());
 

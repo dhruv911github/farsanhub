@@ -32,6 +32,7 @@ class OrderExport implements FromCollection, WithHeadings, WithStyles, WithColum
     {
         $query = Order::join('products', 'orders.product_id', '=', 'products.id')
             ->join('customers', 'orders.customer_id', '=', 'customers.id')
+            ->where('orders.user_id', auth()->id())
             ->select(
                 'orders.*',
                 'products.product_name',

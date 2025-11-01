@@ -21,7 +21,7 @@ class CustomerController extends Controller
             $search = $request->search;
             $sort = 'desc';
 
-            $query = Customer::query();
+            $query = Customer::where('user_id', auth()->id());
             // $query = Customer::where('status', 'active');
             if ($search) {
                 $query->where(function ($q) use ($search) {
@@ -116,6 +116,7 @@ class CustomerController extends Controller
             
             // Save the customer data
             Customer::create([
+                'user_id' => auth()->id(),
                 'customer_name' => $request->customer_name ?? '',
                 'shop_name' => $request->shop_name ?? '', // Added shop_name to create
                 'shop_address' => $request->shop_address ?? '',
