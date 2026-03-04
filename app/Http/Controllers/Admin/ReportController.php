@@ -36,39 +36,19 @@ class ReportController extends Controller
             ->orderBy('customer_name')
             ->get();
 
-        // Order months for dropdown (formatted in PHP instead of SQL)
-        $orderMonths = Order::select('created_at')
+        // Order months for dropdown — grouped at DB level for performance
+        $orderMonths = Order::selectRaw("DATE_FORMAT(created_at, '%Y-%m') as value, DATE_FORMAT(created_at, '%M-%Y') as label")
             ->where('user_id', auth()->id())
-            ->orderByDesc('created_at')
-            ->get()
-            ->map(function ($order) {
-                $date = Carbon::parse($order->created_at);
-                return [
-                    'value' => $date->format('Y-m'),
-                    'label' => $date->format('F-Y'),
-                    'sort_date' => $date,
-                ];
-            })
-            ->unique('value')
-            ->sortByDesc('sort_date')
-            ->values();
+            ->groupByRaw("DATE_FORMAT(created_at, '%Y-%m')")
+            ->orderByRaw("DATE_FORMAT(created_at, '%Y-%m') DESC")
+            ->get();
 
-        // Expense months for dropdown (formatted in PHP instead of SQL)
-        $expenseMonths = Expense::select('created_at')
+        // Expense months for dropdown — grouped at DB level for performance
+        $expenseMonths = Expense::selectRaw("DATE_FORMAT(created_at, '%Y-%m') as value, DATE_FORMAT(created_at, '%M-%Y') as label")
             ->where('user_id', auth()->id())
-            ->orderByDesc('created_at')
-            ->get()
-            ->map(function ($expense) {
-                $date = Carbon::parse($expense->created_at);
-                return [
-                    'value' => $date->format('Y-m'),
-                    'label' => $date->format('F-Y'),
-                    'sort_date' => $date,
-                ];
-            })
-            ->unique('value')
-            ->sortByDesc('sort_date')
-            ->values();
+            ->groupByRaw("DATE_FORMAT(created_at, '%Y-%m')")
+            ->orderByRaw("DATE_FORMAT(created_at, '%Y-%m') DESC")
+            ->get();
 
         return view('admin.monthly-report.index', compact(
             'selectedMonthYear',
@@ -209,7 +189,6 @@ class ReportController extends Controller
             $monthYear = $request->input('month_year');
             $formatted = Carbon::parse($monthYear . '-01')->format('F-Y');
 
-            return Excel::download(new ExpenseExport($monthYear), $formatted . '-Expense-List.xlsx');
             return Excel::download(new ExpenseExport($monthYear), $formatted . '-Expense-List.xlsx');
         } catch (\Throwable $th) {
             Log::error('ReportController@expenseReport Error: ' . $th->getMessage());

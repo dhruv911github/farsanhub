@@ -73,8 +73,8 @@ class OrderController extends Controller
 
     public function create()
     {
-        $products = Product::select('product_name', 'id')->get();
-        $customers = Customer::select('shop_name', 'customer_name', 'id')->get();
+        $products = Product::select('product_name', 'id')->where('user_id', auth()->id())->get();
+        $customers = Customer::select('shop_name', 'customer_name', 'id')->where('user_id', auth()->id())->get();
         return view('admin.order.create', compact('products', 'customers'));
     }
 
@@ -123,13 +123,15 @@ class OrderController extends Controller
 
     public function edit(Order $order)
     {
-        $products = Product::all();
-        $customers = Customer::all();
+        abort_if($order->user_id !== auth()->id(), 403);
+        $products = Product::select('product_name', 'id')->where('user_id', auth()->id())->get();
+        $customers = Customer::select('shop_name', 'customer_name', 'id')->where('user_id', auth()->id())->get();
         return view('admin.order.edit', compact('order', 'products', 'customers'));
     }
 
     public function update(Request $request, Order $order)
     {
+        abort_if($order->user_id !== auth()->id(), 403);
         try {
             $validator = Validator::make($request->all(), [
                 'product' => 'required',
@@ -168,7 +170,7 @@ class OrderController extends Controller
         try {
             $orderId = $request->input('order_id');
 
-            $order = Order::findOrFail($orderId);
+            $order = Order::where('id', $orderId)->where('user_id', auth()->id())->firstOrFail();
 
             $order->delete();
 

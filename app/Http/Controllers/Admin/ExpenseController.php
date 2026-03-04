@@ -96,11 +96,13 @@ class ExpenseController extends Controller
 
     public function edit(Expense $expense)
     {
+        abort_if($expense->user_id !== auth()->id(), 403);
         return view('admin.expense.edit', compact('expense'));
     }
 
     public function update(Request $request, Expense $expense)
     {
+        abort_if($expense->user_id !== auth()->id(), 403);
         try {
             $request->validate([
                 'amount' => 'required',
@@ -136,7 +138,7 @@ class ExpenseController extends Controller
         try {
             $expenseId = $request->input('expense_id');
 
-            $expense = Expense::findOrFail($expenseId);
+            $expense = Expense::where('id', $expenseId)->where('user_id', auth()->id())->firstOrFail();
 
             $expense->delete();
 

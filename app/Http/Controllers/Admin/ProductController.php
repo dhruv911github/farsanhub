@@ -105,22 +105,20 @@ class ProductController extends Controller
             return redirect()->route('admin.product.index')
                 ->with('success', __('portal.product_created'));
         } catch (\Exception $e) {
-            dd($e->getMessage());
-            // Log the error message for debugging
             Log::error('product creation error: ' . $e->getMessage());
-
-            // Optionally, redirect back with an error message
             return redirect()->back()->withInput()->withErrors(['error' => 'Something went wrong']);
         }
     }
 
     public function edit(Product $product)
     {
+        abort_if($product->user_id !== auth()->id(), 403);
         return view('admin.product.edit', compact('product'));
     }
 
     public function update(Request $request, Product $product)
     {
+        abort_if($product->user_id !== auth()->id(), 403);
         try {
             $validator = Validator::make($request->all(), [
                 'product_name' => 'required',
@@ -174,7 +172,12 @@ class ProductController extends Controller
         try {
             $productId = $request->input('product_id');
 
-            $product = Product::findOrFail($productId);
+            $product = Product::where('id', $productId)->where('user_id', auth()->id())->firstOrFail();
+
+            // Only delete if it's a stored file path (not the default logo URL)
+            if ($product->product_image && !str_starts_with($product->product_image, 'http')) {
+                Storage::disk('public')->delete($product->product_image);
+            }
 
             $product->delete();
 
@@ -189,7 +192,7 @@ class ProductController extends Controller
 
     public function leafletMap()
     {
-        $labharthis = Product::orderBy('id', 'desc')->get();
+        $labharthis = Product::where('user_id', auth()->id())->orderBy('id', 'desc')->get();
 
         $locations = [];
         foreach ($labharthis as $labharthi) {

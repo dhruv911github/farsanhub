@@ -20,14 +20,8 @@ use Illuminate\Support\Facades\Route;
 // Route::get('/register', [App\Http\Controllers\AuthController::class, 'showRegister'])->name('register');
 // Route::post('/register', [App\Http\Controllers\AuthController::class, 'register'])->name('register.post');
 Route::get('/', [App\Http\Controllers\AuthController::class, 'showLogin'])->name('login');
-Route::post('/login', [App\Http\Controllers\AuthController::class, 'login'])->name('login.post');
+Route::post('/login', [App\Http\Controllers\AuthController::class, 'login'])->middleware('throttle:5,1')->name('login.post');
 Route::post('/logout', [App\Http\Controllers\AuthController::class, 'logout'])->name('logout');
-
-Route::delete('contents', [App\Http\Controllers\Admin\ContentController::class, 'destroy'])->name('admin.contents.destroy');
-Route::delete('expense', [App\Http\Controllers\Admin\ExpenseController::class, 'destroy'])->name('admin.expense.destroy');
-Route::delete('customer', [App\Http\Controllers\Admin\CustomerController::class, 'destroy'])->name('admin.customer.destroy');
-Route::delete('product', [App\Http\Controllers\Admin\ProductController::class, 'destroy'])->name('admin.product.destroy');
-Route::delete('order', [App\Http\Controllers\Admin\OrderController::class, 'destroy'])->name('admin.order.destroy');
 
 
 // Admin Routes
@@ -42,6 +36,13 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->name('admin.')->group(fun
         }
         return redirect()->back();
     });
+
+    // Delete Routes (protected)
+    Route::delete('contents', [App\Http\Controllers\Admin\ContentController::class, 'destroy'])->name('contents.destroy');
+    Route::delete('expense', [App\Http\Controllers\Admin\ExpenseController::class, 'destroy'])->name('expense.destroy');
+    Route::delete('customer', [App\Http\Controllers\Admin\CustomerController::class, 'destroy'])->name('customer.destroy');
+    Route::delete('product', [App\Http\Controllers\Admin\ProductController::class, 'destroy'])->name('product.destroy');
+    Route::delete('order', [App\Http\Controllers\Admin\OrderController::class, 'destroy'])->name('order.destroy');
 
     Route::get('leaflet-map', [App\Http\Controllers\Admin\CustomerController::class, 'leafletMap'])->name('leaflet-map');
 

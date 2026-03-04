@@ -142,11 +142,13 @@ class CustomerController extends Controller
 
     public function edit(Customer $customer)
     {
+        abort_if($customer->user_id !== auth()->id(), 403);
         return view('admin.customer.edit', compact('customer'));
     }
 
     public function update(Request $request, Customer $customer)
     {
+        abort_if($customer->user_id !== auth()->id(), 403);
         try {
             $validator = Validator::make($request->all(), [
                 'customer_name' => 'required',
@@ -230,7 +232,15 @@ class CustomerController extends Controller
         try {
             $customerId = $request->input('customer_id');
 
-            $customer = Customer::findOrFail($customerId);
+            $customer = Customer::where('id', $customerId)->where('user_id', auth()->id())->firstOrFail();
+
+            if ($customer->customer_image) {
+                Storage::disk('public')->delete($customer->customer_image);
+            }
+
+            if ($customer->shop_image) {
+                Storage::disk('public')->delete($customer->shop_image);
+            }
 
             $customer->delete();
 
@@ -245,7 +255,7 @@ class CustomerController extends Controller
 
     public function leafletMap()
     {
-        $labharthis = Customer::orderBy('id', 'desc')->get();
+        $labharthis = Customer::where('user_id', auth()->id())->orderBy('id', 'desc')->get();
 
         $locations = [];
         foreach ($labharthis as $labharthi) {
