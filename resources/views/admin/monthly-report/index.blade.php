@@ -41,8 +41,19 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="col-sm-12 col-md-4 col-lg-3 ps-0">
-                            <input type="submit" class="btn btn-primary" value="{{ trans('portal.export') }}">
+                        <div class="col-sm-12 col-md-6 col-lg-6 ps-0 d-flex gap-2">
+
+                            <!-- Excel Button -->
+                            <button type="submit" name="export_type" value="excel" class="btn btn-primary"
+                                title="Export Excel">
+                                <i class="fa fa-file-excel-o"></i>
+                            </button>
+
+                            <!-- PDF Button -->
+                            <button type="button" id="pdfExportBtn" class="btn btn-secondary" title="Export PDF">
+                                <i class="fa fa-file-pdf-o"></i>
+                            </button>
+
                         </div>
                     </form>
                 </div>
@@ -54,11 +65,23 @@
                 <div class="card-body">
                     <form action="{{ route('admin.monthly-report.customer') }}" method="GET"
                         enctype="multipart/form-data">
-                        <div >
+                        <div>
                             <label>{{ trans('portal.customers') }}</label>
                         </div>
-                        <div class="col-sm-12 col-md-4 col-lg-3 ps-0">
-                            <input type="submit" class="btn btn-primary" value="{{ trans('portal.export') }}">
+                        <div class="col-sm-12 col-md-6 col-lg-6 ps-0 d-flex gap-2">
+
+                            <!-- Excel Button -->
+                            <button type="submit" name="export_type" value="excel" class="btn btn-primary"
+                                title="Export Excel">
+                                <i class="fa fa-file-excel-o"></i>
+                            </button>
+
+                            <!-- PDF Button -->
+                            {{-- <button type="submit" name="export_type" value="pdf" class="btn btn-secondary"
+                                title="Export PDF">
+                                <i class="fa fa-file-pdf-o"></i>
+                            </button> --}}
+
                         </div>
                     </form>
                 </div>
@@ -68,12 +91,25 @@
         <div class="col-sm-12 col-md-6 col-lg-3 mb-2">
             <div class="card ">
                 <div class="card-body">
-                    <form action="{{ route('admin.monthly-report.product') }}" method="GET" enctype="multipart/form-data">
-                        <div >
+                    <form action="{{ route('admin.monthly-report.product') }}" method="GET"
+                        enctype="multipart/form-data">
+                        <div>
                             <label>{{ trans('portal.products') }}</label>
                         </div>
-                        <div class="col-sm-12 col-md-4 col-lg-3 ps-0">
-                            <input type="submit" class="btn btn-primary" value="{{ trans('portal.export') }}">
+                        <div class="col-sm-12 col-md-6 col-lg-6 ps-0 d-flex gap-2">
+
+                            <!-- Excel Button -->
+                            <button type="submit" name="export_type" value="excel" class="btn btn-primary"
+                                title="Export Excel">
+                                <i class="fa fa-file-excel-o"></i>
+                            </button>
+
+                            <!-- PDF Button -->
+                            {{-- <button type="submit" name="export_type" value="pdf" class="btn btn-secondary"
+                                title="Export PDF">
+                                <i class="fa fa-file-pdf-o"></i>
+                            </button> --}}
+
                         </div>
                     </form>
                 </div>
@@ -81,6 +117,36 @@
         </div>
 
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+        <script>
+            document.getElementById('pdfExportBtn').addEventListener('click', function () {
+                const form = this.closest('form');
+                const monthYear = form.querySelector('select[name="month_year"]').value;
+
+                if (!monthYear) {
+                    Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3500,
+                        // timerProgressBar: true,
+                    }).fire({
+                        icon: 'warning',
+                        text: 'Select Customer and any month and year before exporting PDF.',
+                    });
+                    return;
+                }
+
+                // Inject hidden input and submit
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'export_type';
+                input.value = 'pdf';
+                form.appendChild(input);
+                form.submit();
+                form.removeChild(input);
+            });
+        </script>
         @if (session()->has('success'))
             <script>
                 const Toast = Swal.mixin({

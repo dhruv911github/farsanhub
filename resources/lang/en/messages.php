@@ -1,6 +1,5 @@
 <?php
 return [
-    'trust_name' => 'Krishna Niswarth Seva Trust',
     'home' => 'Home',
     'only_for_trust' => 'Only for Trust',
 
@@ -36,7 +35,7 @@ return [
     'impact_desc' => 'Together, we help those in need, and with your support, we can assist even more people.',
     'our_impact' => 'Our Impact',
     'about_us' => 'About Us',
-    'about_us_sub_desc' => 'Learn about krishna niswarth seva trust  journey and trust.',
+    'about_us_sub_desc' => 'Learn about FarsanHub  journey and trust.',
     'about_us_desc' => 'Learn about FoodHope Charity\'s journey and the impact we\'ve made in our community.',
     'about_us_desc_2' => 'Through the generous support of our donors and the hard work of our volunteers, we serve thousands of meals each month to those in need, including homeless individuals, low-income families, and elderly citizens.',
     'contact_us' => 'Contact Us',
@@ -73,9 +72,9 @@ return [
     'address' => 'Address',
     'phone' => 'Phone',
     'email' => 'Email',
-    'addrress_desc' => 'Krishna Niswarth Seva Trust, Opp. Old Shivam Gas Agency, Chandlodiya, Ahmedabad, India, 382481.',
+    'addrress_desc' => 'FarsanHub, Opp. Old Shivam Gas Agency, Chandlodiya, Ahmedabad, India, 382481.',
     'phone_desc' => '+91 98984 45831',
-    'email_desc' => 'krishnasevatrust@gmail.com',
+    // 'email_desc' => 'krishnasevatrust@gmail.com',
     'contact_info' => 'Contact Info',
     'join' => 'Join',
     'all_rights_reserved' => 'All rights reserved.',

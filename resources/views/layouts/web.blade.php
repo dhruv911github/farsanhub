@@ -1,124 +1,87 @@
-<!-- resources/views/layouts/master.blade.php -->
 <!DOCTYPE html>
-<html lang={{ app()->getLocale() }}>
+<html lang="{{ app()->getLocale() }}">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'Krishna Niswarth Seva Trust')</title> <!-- Default title can be overridden -->
+    <title>@yield('title', 'FarsanHub | Farsan Shop')</title>
 
-    <!-- Google Tag Manager -->
-    <script>
-        (function(w, d, s, l, i) {
-            w[l] = w[l] || [];
-            w[l].push({
-                'gtm.start': new Date().getTime(),
-                event: 'gtm.js'
-            });
-            var f = d.getElementsByTagName(s)[0],
-                j = d.createElement(s),
-                dl = l != 'dataLayer' ? '&l=' + l : '';
-            j.async = true;
-            j.src =
-                'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
-            f.parentNode.insertBefore(j, f);
-        })(window, document, 'script', 'dataLayer', 'GTM-WJRKNRWH');
-    </script>
-    <!-- End Google Tag Manager -->
+    <!-- SEO Meta (English + Gujarati) -->
+    <meta name="description"
+        content="FarsanHub - Farsan shop, Gujarat. Fresh Gujarati farsan, namkeen, sweets and snacks available. ફરસાણહબ - વડોદરામાં તાજું અને સ્વાદિષ્ટ ગુજરાતી ફરસાણ, નમકીન અને મીઠાઈ.">
 
-    <meta name="description" content="ક્રિષ્ના નિ:સ્વાર્થ સેવા ટ્રસ્ટ એકલા રહેતાં અશક્ત વડીલોને ઘરે બેઠાં વિનામૂલ્યે ભોજન પહોંચાડતી સંસ્થા.">
+    <meta name="keywords"
+        content="FarsanHub Vadodara, Farsan Shop Vadodara, Farsan, Gujarati Farsan, Namkeen Shop Vadodara, Sweets Shop Vadodara, વડોદરા ફરસાણ દુકાન, વડોદરા નમકીન, વડોદરા મીઠાઈ, ફરસાણહબ વડોદરા">
 
-    <!-- Keywords Tag (Gujarati and English) -->
-    <meta name="keywords" content="ક્રિષ્ના નિસ્વાર્થ સેવા ટ્રસ્ટ, ક્રિષ્ના નિસ્વાર્થ સેવા ટ્રસ્ટ ચાંદલોડિયા, ક્રિષ્ના નિસ્વાર્થ સેવા ટ્રસ્ટ અમદાવાદ, ક્રિષ્ના સેવા ટ્રસ્ટ,ક્રિષ્ના સેવા ટ્રસ્ટ ચાંદલોડિયા, ક્રિષ્ના સેવા ટ્રસ્ટ અમદાવાદ, ક્રિષ્ના ટ્રસ્ટ, ક્રિષ્ના ટ્રસ્ટ ચાંદલોડિયા,ક્રિષ્ના ટ્રસ્ટ ગોતા, ક્રિષ્ના ટ્રસ્ટ અમદાવાદ,ચાંદલોડિયા, વિના મુલ્યે ટિફીન સેવા,Krishna Niswarth Seva Trust,Krishna Niswarth Seva Trust Chandlodiya, Krishna Niswarth Seva Trust Ahmedabad,Krishna Seva Trust,Krishna Seva Trust Chandlodiya,Krishna Seva Trust Ahmedabad,Krishna Trust,Krishna Trust Chandlodiya,Krishna Trust Ahmedabad,Chandlodiya, free food">
+    <meta name="language" content="English, Gujarati">
 
-    <!-- Language Tag (English and Gujarati) -->
-    <meta name="language" content="Gujarati, English">
-
-    <!-- Open Graph Tags (Social Media Optimization) -->
-    <meta property="og:title" content="Krishna Niswarth Seva Trust">
-    <meta property="og:description" content="ક્રિષ્ના નિ:સ્વાર્થ સેવા ટ્રસ્ટ એકલા રહેતાં અશક્ત વડીલોને ઘરે બેઠાં વિનામૂલ્યે ભોજન પહોંચાડતી સંસ્થા.">
+    <!-- Open Graph -->
+    <meta property="og:title" content="FarsanHub | Fresh Gujarati Farsan">
+    <meta property="og:description"
+        content="Buy fresh farsan & namkeen. વડોદરામાં તાજું અને સ્વાદિષ્ટ ફરસાણ ઉપલબ્ધ.">
     <meta property="og:image" content="{{ asset('images/logo.png') }}">
-    <meta property="og:url" content="https://www.krishnaniswarthsevatrust.com/">
+    <meta property="og:url" content="https://www.farsanhub.com/">
     <meta property="og:type" content="website">
 
-    <!-- To avoid potential duplicate content issues.  -->
-    <link rel="canonical" href="https://www.krishnaniswarthsevatrust.com/">
+    <!-- Canonical -->
+    <link rel="canonical" href="https://www.farsanhub.com/">
 
-    <!-- Structured Data for Local Business in Gujarati and English -->
+    <!-- Structured Data - Local Business -->
     <script type="application/ld+json">
-        {
-            "@context": "https://schema.org",
+    {
+        "@context": "https://schema.org",
+        "@type": "FoodEstablishment",
+        "name": "FarsanHub",
+        "image": "{{ asset('images/logo.png') }}",
+        "telephone": "+919898445831",
+        "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "Your Shop Address Here",
+            "addressLocality": "Vadodara",
+            "addressRegion": "Gujarat",
+            "postalCode": "390001",
+            "addressCountry": "IN"
+        },
+        "areaServed": "Vadodara",
+        "servesCuisine": "Gujarati Farsan, Namkeen, Sweets",
+        "priceRange": "₹",
+        "url": "https://www.farsanhub.com/"
+    }
+    </script>
+
+    <!-- Gujarati + English Review Schema -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Review",
+        "itemReviewed": {
             "@type": "LocalBusiness",
-            "name": "Krishna Niswarth Seva Trust",
-            "logo": "{{ asset('images/logo.png') }}",
-            "telephone": "+919898445831",
-            "address": {
-                "@type": "PostalAddress",
-                "streetAddress": "જૂની શિવમ ગેસ એજન્સીની સામે | Opp Old Shivam Gas Agency",
-                "addressLocality": "ચાંદલોડિયા, અમદાવાદ, | Chandlodiya, Ahmedabad",
-                "addressRegion": "ગુજરાત | Gujarat",
-                "postalCode": "382481",
-                "addressCountry": "IN"
-            },
-            "sameAs": [
-                "https://chat.whatsapp.com/IKoFgfff0o64XjKEtutY4P",
-                "https://www.facebook.com/people/Krishna-Niswarth-Seva-Trust/pfbid02JJW4F82dQP3szekEKW7R3cfHeGLG8jAK8USN19vivRu8dVQJUVwBmzfUZz6Y7FMyl/",
-                "https://www.youtube.com/@krishnaniswarthsevatrust",
-                "https://www.instagram.com/krishnaniswarth/?utm_source=qr&igsh=OGpwNnp5YWFqaHg0",
-            ],
-            "url": "https://www.krishnaniswarthsevatrust.com/"
+            "name": "FarsanHub"
+        },
+        "reviewRating": {
+            "@type": "Rating",
+            "ratingValue": "4.9",
+            "bestRating": "5"
+        },
+        "author": {
+            "@type": "Person",
+            "name": "Happy Customer | સંતોષિત ગ્રાહક"
         }
+    }
     </script>
 
-    <!-- Structured Data for Reviews (In Gujarati and English) -->
-    <script type="application/ld+json">
-        {
-            "@context": "https://schema.org",
-            "@type": "Review",
-            "itemReviewed": {
-                "@type": "Product",
-                "name": "Krishna Niswarth Seva Trust"
-            },
-            "reviewRating": {
-                "@type": "Rating",
-                "bestRating": "5",
-                "ratingValue": "4.8",
-                "worstRating": "1"
-            },
-            "author": {
-                "@type": "Person",
-                "name": "ચંદ્રકાંતભાઈ પટેલ | Chandrakantbhai Patel"
-            }
-        }
-    </script>
-
+    <!-- CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link rel="icon" type="image/x-icon" href="{{ asset('images/favicon.ico') }}">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-
-    {{-- animate css --}}
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
-
-    <!-- Hreflang Tags for Multilingual Content -->
-    <link rel="alternate" href="https://www.krishnaniswarthsevatrust.com/" hreflang="en" />
-    <link rel="alternate" href="https://www.krishnaniswarthsevatrust.com/gu" hreflang="gu" />
+    <link rel="icon" type="image/x-icon" href="{{ asset('images/favicon.ico') }}">
 </head>
 
 <body>
-    <!-- Google Tag Manager (noscript) -->
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WJRKNRWH"
-            height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-    <!-- End Google Tag Manager (noscript) -->
 
-    <!-- Include the header -->
     @include('web.parts.header')
 
-    <!-- Main content -->
-    @yield('content') <!-- This is where page-specific content will be injected -->
+    @yield('content')
 
-    <!-- Include the footer -->
     @include('web.parts.footer')
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
@@ -126,31 +89,23 @@
 </body>
 
 <script>
-    document.getElementById('subscribeForm').addEventListener('submit', function(event) {
-        event.preventDefault(); // Prevent form from submitting normally
-        console.log("Submitted");
+    document.getElementById('subscribeForm')?.addEventListener('submit', function(event) {
+        event.preventDefault();
 
-        // Get the value from the phone number input
         const phone = document.getElementById('phone').value;
 
-        // Validate the phone number (basic validation for length and numeric format)
         if (phone && phone.length >= 10 && !isNaN(phone)) {
-            // Show success message
-            document.getElementById('successMessage').style.display = 'block';
 
-            // Optionally, you can hide the form after submission
+            document.getElementById('successMessage').style.display = 'block';
             document.getElementById('subscribeForm').style.display = 'none';
 
-            // Replace with your WhatsApp group link
-            const whatsappGroupLink = "https://chat.whatsapp.com/IKoFgfff0o64XjKEtutY4P";
+            const whatsappNumber = "919898445831";
+            const message = encodeURIComponent("Hello FarsanHub Vadodara, I want to order farsan.");
+            const whatsappLink = `https://wa.me/${whatsappNumber}?text=${message}`;
 
-            // Create WhatsApp link with the phone number prefilled (if necessary)
-            const whatsappLink = whatsappGroupLink.replace('phone_number', phone);
-
-            // Open WhatsApp with the generated link after 2 seconds delay
             setTimeout(function() {
                 window.open(whatsappLink, '_blank');
-            }, 2000); // Delay for 2 seconds
+            }, 1500);
         } else {
             alert("Please enter a valid phone number.");
         }

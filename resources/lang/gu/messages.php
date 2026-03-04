@@ -1,6 +1,5 @@
 <?php
 return [
-    'trust_name' => 'ક્રિષ્ના નિસ્વાર્થ સેવા ટ્રસ્ટ',
     'home' => 'મુખ્ય પૃષ્ઠ',
     'only_for_trust' => 'માત્ર ટ્રસ્ટ માટે',
 
@@ -72,7 +71,7 @@ return [
     'email' => 'ઈમેઈલ',
     'addrress_desc' => 'ક્રિષ્ના નિસ્વાર્થ સેવા ટ્રસ્ટ, જૂની શિવમ ગેસ એજન્સીની સામે, ચાંદલોડિયા, અમદાવાદ, ભારત, 382481.',
     'phone_desc' => '+91 98984 45831',
-    'email_desc' => 'krishnasevatrust@gmail.com',
+    // 'email_desc' => 'krishnasevatrust@gmail.com',
     'contact_info' => 'સંપર્ક માહિતી',
     'join' => 'જોડાવો',
     'all_rights_reserved' => 'સંપત્તિઓ અને અધિકારો સારાંશ થયેલ છે.',

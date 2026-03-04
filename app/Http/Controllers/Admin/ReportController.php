@@ -111,25 +111,92 @@ class ReportController extends Controller
         try {
             $customerId = $request->input('customer_id');
             $monthYear = $request->input('month_year');
+            // dd($monthYear); 
+            $exportType = $request->input('export_type');
 
-            // Get customer name for filename if customer is selected
-            $customerName = '';
-            if ($customerId) {
-                $customer = Customer::find($customerId);
-                if ($customer) {
-                    $customerName = str_replace(' ', '-', $customer->customer_name) . '-';
+            // Get filtered orders (same as before but improved with joins)
+            $orders = Order::join('products', 'orders.product_id', '=', 'products.id')
+                ->join('customers', 'orders.customer_id', '=', 'customers.id')
+                ->where('orders.user_id', auth()->id())
+                ->when($customerId, function ($query) use ($customerId) {
+                    $query->where('orders.customer_id', $customerId);
+                })
+                ->when($monthYear, function ($query) use ($monthYear) {
+                    $start = Carbon::parse($monthYear . '-01')->startOfMonth();
+                    $end   = Carbon::parse($monthYear . '-01')->endOfMonth();
+                    $query->whereBetween('orders.created_at', [$start, $end]);
+                })
+                ->select(
+                    'orders.*',
+                    'products.product_name',
+                    'customers.customer_name',
+                    'customers.shop_name',
+                    'customers.customer_number',
+                    'customers.shop_address',
+                    'customers.city',
+                    'customers.customer_email'
+                )
+                ->orderBy('orders.created_at', 'asc')
+                ->get();
+
+            // Excel Export (UNCHANGED)
+            if ($exportType == 'excel') {
+                return Excel::download(
+                    new OrderExport($customerId, $monthYear),
+                    'Order-List.xlsx'
+                );
+            }
+
+            // ✅ PDF Export (UPDATED LOGIC ONLY HERE)
+            if ($exportType == 'pdf') {
+
+                $totalOrderAmount = 0;
+                $totalOrderQuantity = 0;
+                $monthName = null;
+                $customerInfo = null;
+
+                if ($monthYear) {
+                    $monthName = Carbon::parse($monthYear . '-01')->format('F Y');
                 }
+
+                foreach ($orders as $order) {
+                    $order->calculated_total = $order->order_quantity * $order->order_price;
+                    $totalOrderAmount += $order->calculated_total;
+                    $totalOrderQuantity += $order->order_quantity;
+                }
+
+                // Fetch customer details if a specific customer is selected
+                if ($customerId) {
+                    $customerInfo = Customer::find($customerId);
+                }
+
+                // Dynamic Date
+                $reportDate = now()->format('d M Y, h:i A');
+
+                // Receipt number: e.g. ORD-2025-03-0042
+                $receiptNo = 'RCP-' . now()->format('Y') . '-' . str_pad($orders->count(), 4, '0', STR_PAD_LEFT);
+
+                // Dynamic Logo Path (absolute path required for DomPDF)
+                $logoPath = public_path('images/logo.png');
+
+                $pdf = \PDF::loadView('admin.monthly-report.order-pdf', [
+                    'orders' => $orders,
+                    'monthName' => $monthName,
+                    'monthYear' => $monthYear,
+                    'totalOrderAmount' => $totalOrderAmount,
+                    'totalOrderQuantity' => $totalOrderQuantity,
+                    'reportDate' => $reportDate,
+                    'logoPath' => $logoPath,
+                    'customerInfo' => $customerInfo,
+                    'receiptNo' => $receiptNo,
+                ]);
+
+                $fileName = $monthName
+                    ? str_replace(' ', '-', $monthName) . '-Order-Report.pdf'
+                    : 'Order-Report.pdf';
+
+                return $pdf->download($fileName);
             }
-
-            // Format month-year for filename if selected
-            $formattedDate = '';
-            if ($monthYear) {
-                $formattedDate = Carbon::parse($monthYear . '-01')->format('M-Y') . '-';
-            }
-
-            $filename = $customerName . $formattedDate . 'Order-List.xlsx';
-
-            return Excel::download(new OrderExport($customerId, $monthYear), $filename);
         } catch (\Throwable $th) {
             Log::error('ReportController@orderReport Error: ' . $th->getMessage());
             return redirect()->back()->with('error', $th->getMessage());
