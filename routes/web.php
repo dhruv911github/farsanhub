@@ -19,7 +19,10 @@ use Illuminate\Support\Facades\Route;
 // Authentication Routes
 // Route::get('/register', [App\Http\Controllers\AuthController::class, 'showRegister'])->name('register');
 // Route::post('/register', [App\Http\Controllers\AuthController::class, 'register'])->name('register.post');
-Route::get('/', [App\Http\Controllers\AuthController::class, 'showLogin'])->name('login');
+Route::get('/admin', [App\Http\Controllers\AuthController::class, 'showLogin'])->name('login');
+Route::get('/', function () {
+    return view('webpage');
+})->name('home');
 Route::post('/login', [App\Http\Controllers\AuthController::class, 'login'])->middleware('throttle:5,1')->name('login.post');
 Route::post('/logout', [App\Http\Controllers\AuthController::class, 'logout'])->name('logout');
 
