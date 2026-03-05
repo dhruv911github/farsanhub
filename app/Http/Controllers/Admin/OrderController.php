@@ -83,32 +83,38 @@ class OrderController extends Controller
         try {
             // Manually create the validator
             $validator = Validator::make($request->all(), [
-                'customer' => 'required',
-                'product' => 'required',
-                'order_quantity' => 'required|numeric',
+                'customer' => 'required|integer',
+                'product'  => 'required|integer',
+                'order_quantity' => 'required|numeric|min:1',
             ], [
                 'customer.required' => __('validation.required_customer'),
-                'product.required' => __('validation.required_product'),
+                'product.required'  => __('validation.required_product'),
                 'order_quantity.required' => __('validation.order_quantity'),
+                'order_quantity.min'      => __('validation.min_order_quantity'),
             ]);
 
-            // Check if the validation fails
             if ($validator->fails()) {
-                // Redirect back with validation errors and old input
                 return redirect()->back()
                     ->withErrors($validator)
                     ->withInput();
             }
-            // dd($request->all());
-            $Product = Product::where('id', $request->product)->first();
 
-            // Save the order data
+            // Verify the customer belongs to the authenticated user
+            $customer = Customer::where('id', $request->customer)
+                ->where('user_id', auth()->id())
+                ->firstOrFail();
+
+            // Verify the product belongs to the authenticated user
+            $Product = Product::where('id', $request->product)
+                ->where('user_id', auth()->id())
+                ->firstOrFail();
+
             Order::create([
-                'user_id' => auth()->id(),
-                'customer_id' => $request->customer ?? '',
-                'product_id' => $request->product ?? '',
-                'order_quantity' => $request->order_quantity ?? '',
-                'order_price' => $Product['product_base_price'] ?? '',
+                'user_id'        => auth()->id(),
+                'customer_id'    => $customer->id,
+                'product_id'     => $Product->id,
+                'order_quantity' => $request->order_quantity,
+                'order_price'    => $Product->product_base_price,
             ]);
 
             // Redirect to the order index page with a success message
@@ -134,12 +140,13 @@ class OrderController extends Controller
         abort_if($order->user_id !== auth()->id(), 403);
         try {
             $validator = Validator::make($request->all(), [
-                'product' => 'required',
-                'order_quantity' => 'required|numeric',
+                'product'        => 'required|integer',
+                'order_quantity' => 'required|numeric|min:1',
             ], [
-                'product.required' => __('validation.required_product'),
+                'product.required'        => __('validation.required_product'),
                 'order_quantity.required' => __('validation.required_order_quantity'),
-                'order_quantity.numeric' => __('validation.numeric_order_quantity'),
+                'order_quantity.numeric'  => __('validation.numeric_order_quantity'),
+                'order_quantity.min'      => __('validation.min_order_quantity'),
             ]);
 
             if ($validator->fails()) {
@@ -148,12 +155,15 @@ class OrderController extends Controller
                     ->withInput();
             }
 
-            $Product = Product::where('id', $request->product)->first();
+            // Verify product belongs to authenticated user
+            $Product = Product::where('id', $request->product)
+                ->where('user_id', auth()->id())
+                ->firstOrFail();
 
             $order->update([
-                'product_id' => $request->product,
+                'product_id'     => $Product->id,
                 'order_quantity' => $request->order_quantity,
-                'order_price' => $Product ? $Product->product_base_price : 0,
+                'order_price'    => $Product->product_base_price,
             ]);
 
             return redirect()->route('admin.order.index')

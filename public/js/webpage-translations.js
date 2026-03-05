@@ -18,15 +18,31 @@
       const val = isGu ? el.dataset.gu : el.dataset.en;
       if (val === undefined) return;
 
-      // For inputs / selects update placeholder / title; otherwise innerHTML-safe text
+      // For inputs / selects update placeholder; for options use textContent
       if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
         el.placeholder = val;
       } else if (el.tagName === 'OPTION') {
         el.textContent = val;
       } else {
-        // Use innerHTML so we can keep icons inside buttons intact
-        // Only update if the attribute exists (no stray overwrites)
-        el.innerHTML = val;
+        // Check if element has child ELEMENT nodes (e.g. <i> icons, <span>s)
+        // If so, only update direct TEXT nodes to preserve the child elements
+        var hasChildElements = false;
+        for (var ci = 0; ci < el.childNodes.length; ci++) {
+          if (el.childNodes[ci].nodeType === 1) { hasChildElements = true; break; }
+        }
+        if (hasChildElements) {
+          // Update the first non-whitespace text node only
+          for (var ti = 0; ti < el.childNodes.length; ti++) {
+            var node = el.childNodes[ti];
+            if (node.nodeType === 3 && node.textContent.trim() !== '') {
+              node.textContent = val;
+              break;
+            }
+          }
+        } else {
+          // No child elements — safe to replace innerHTML (handles &amp; entities)
+          el.innerHTML = val;
+        }
       }
     });
 

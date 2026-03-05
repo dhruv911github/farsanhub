@@ -39,14 +39,14 @@ class ReportController extends Controller
         // Order months for dropdown — grouped at DB level for performance
         $orderMonths = Order::selectRaw("DATE_FORMAT(created_at, '%Y-%m') as value, DATE_FORMAT(created_at, '%M-%Y') as label")
             ->where('user_id', auth()->id())
-            ->groupByRaw("DATE_FORMAT(created_at, '%Y-%m')")
+            ->groupByRaw("DATE_FORMAT(created_at, '%Y-%m'), DATE_FORMAT(created_at, '%M-%Y')")
             ->orderByRaw("DATE_FORMAT(created_at, '%Y-%m') DESC")
             ->get();
 
         // Expense months for dropdown — grouped at DB level for performance
         $expenseMonths = Expense::selectRaw("DATE_FORMAT(created_at, '%Y-%m') as value, DATE_FORMAT(created_at, '%M-%Y') as label")
             ->where('user_id', auth()->id())
-            ->groupByRaw("DATE_FORMAT(created_at, '%Y-%m')")
+            ->groupByRaw("DATE_FORMAT(created_at, '%Y-%m'), DATE_FORMAT(created_at, '%M-%Y')")
             ->orderByRaw("DATE_FORMAT(created_at, '%Y-%m') DESC")
             ->get();
 
@@ -69,20 +69,17 @@ class ReportController extends Controller
 
         } catch (\Throwable $th) {
             Log::error('ReportController@customerReport Error: ' . $th->getMessage());
+            return redirect()->back()->with('error', 'Could not export customers. Please try again.');
         }
     }
 
     public function productReport(Request $request)
     {
         try {
-            // $monthYear = $request->input('month_year');
-            // $formatted = Carbon::parse($monthYear . '-01')->format('F-Y');
-
             return Excel::download(new ProductExport(), 'Product-List.xlsx');
-            // return Excel::download(new CustomerExport(), $formatted . '-Customer-List.xlsx');
-
         } catch (\Throwable $th) {
             Log::error('ReportController@productReport Error: ' . $th->getMessage());
+            return redirect()->back()->with('error', 'Could not export products. Please try again.');
         }
     }
 
@@ -192,6 +189,7 @@ class ReportController extends Controller
             return Excel::download(new ExpenseExport($monthYear), $formatted . '-Expense-List.xlsx');
         } catch (\Throwable $th) {
             Log::error('ReportController@expenseReport Error: ' . $th->getMessage());
+            return redirect()->back()->with('error', 'Could not export expenses. Please try again.');
         }
     }
 }

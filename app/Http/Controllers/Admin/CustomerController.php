@@ -25,16 +25,12 @@ class CustomerController extends Controller
             // $query = Customer::where('status', 'active');
             if ($search) {
                 $query->where(function ($q) use ($search) {
-                    $q->where('customer_customer_name', 'like', "%{$search}%")
+                    $q->where('customer_name', 'like', "%{$search}%")
                         ->orWhere('customer_number', 'like', "%{$search}%")
                         ->orWhere('shop_name', 'like', "%{$search}%")
                         ->orWhere('city', 'like', "%{$search}%")
-                        ->orWhere('shop_shop_address', 'like', "%{$search}%");
+                        ->orWhere('shop_address', 'like', "%{$search}%");
                 });
-            }
-
-            if (in_array($sort, ['asc', 'desc'])) {
-                $query->orderBy('created_at', $sort);
             }
 
             $query->orderBy('created_at', 'desc');
@@ -86,7 +82,7 @@ class CustomerController extends Controller
                 'customer_number.regex' => __('validation.regex_customer_number'),
                 'customer_email.email' => __('validation.email_customer_email'), // Add email validation error message
                 'status.required' => __('validation.required_status'),
-                '.required' => __('validation.required_city'),
+                'city.required' => __('validation.required_city'),
                 'customer_image.image' => __('validation.image_customer_image'),
                 'customer_image.mimes' => __('validation.mimes_customer_image'),
                 'customer_image.max' => __('validation.max_customer_image'),

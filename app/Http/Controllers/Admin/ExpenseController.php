@@ -57,9 +57,9 @@ class ExpenseController extends Controller
         try {
             // Manually create the validator
             $validator = Validator::make($request->all(), [
-                'amount' => 'required',
-                'purpose' => 'required',
-                'comment' => 'nullable',
+                'amount'  => 'required|numeric|min:0',
+                'purpose' => 'required|string|max:255',
+                'comment' => 'nullable|string|max:500',
             ], [
                 'amount.required' => __('validation.required_amount'),
                 'purpose.required' => __('validation.required_purpose'),
@@ -105,9 +105,9 @@ class ExpenseController extends Controller
         abort_if($expense->user_id !== auth()->id(), 403);
         try {
             $request->validate([
-                'amount' => 'required',
-                'purpose' => 'required',
-                'comment' => 'nullable',
+                'amount'  => 'required|numeric|min:0',
+                'purpose' => 'required|string|max:255',
+                'comment' => 'nullable|string|max:500',
             ], [
                 'amount.required' => __('validation.required_amount'),
                 'purpose.required' => __('validation.required_purpose'),

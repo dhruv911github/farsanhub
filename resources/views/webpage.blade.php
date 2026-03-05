@@ -127,13 +127,13 @@
         <li class="nav-item"><a class="nav-link" href="#testimonials" data-en="Reviews"  data-gu="સમીક્ષાઓ">Reviews</a></li>
         <li class="nav-item"><a class="nav-link" href="#contact"    data-en="Contact"    data-gu="સંપર્ક">Contact</a></li>
         <li class="nav-item ms-lg-2">
-          <button class="btn btn-lang" id="langToggle" aria-label="Switch language">
+          <button class="btn btn-lang d-flex align-items-center" id="langToggle" aria-label="Switch language">
             <i class="bi bi-translate me-1"></i>
             <span id="langLabel">ગુ</span>
           </button>
         </li>
         <li class="nav-item ms-lg-1">
-          <a href="{{ route('login') }}" class="btn btn-admin" aria-label="Admin Login">
+          <a href="{{ route('login') }}" class="btn btn-admin d-flex align-items-center" aria-label="Admin Login">
             <i class="bi bi-shield-lock me-1"></i>Admin
           </a>
         </li>
@@ -150,9 +150,9 @@
     <div class="row align-items-center min-vh-hero">
       <div class="col-lg-6 col-md-8" data-aos="fade-right" data-aos-duration="900">
         <span class="hero-badge" data-en="🌟 Vadodara's Favourite" data-gu="🌟 વડોદરાની પ્રિય">🌟 Vadodara's Favourite</span>
-        <h1 class="hero-title" data-en="Authentic Gujarati Taste Since Years" data-gu="વર્ષોથી અસ્સલ ગુજરાતી સ્વાદ">
-          Authentic Gujarati<br>
-          <span class="text-highlight">Taste Since Years</span>
+        <h1 class="hero-title">
+          <span data-en="Authentic Gujarati" data-gu="અસ્સલ ગુજરાતી">Authentic Gujarati</span><br>
+          <span class="text-highlight" data-en="Taste Since Years" data-gu="સ્વાદ સૈ વર્ષ">Taste Since Years</span>
         </h1>
         <p class="hero-subtitle" data-en="From our kitchen to your heart — freshly made Khandavi, Samosa, Khaman, Dhokla &amp; more. Pure taste, pure love." data-gu="અમારી રસોઈથી તમારા હૃદય સુધી — તાજી ખાંડવી, સામોસા, ખમણ, ઢોકળા અને વધુ. શુદ્ધ સ્વાદ, શુદ્ધ પ્રેમ.">
           From our kitchen to your heart — freshly made Khandavi, Samosa, Khaman, Dhokla &amp; more. Pure taste, pure love.
@@ -195,7 +195,7 @@
             <span class="dish-label" data-en="Samosa" data-gu="સામોસા">Samosa</span>
           </div>
           <div class="hero-dish hero-dish-3">
-            <img src="{{ asset('images/farsan/khaman.webp') }}" alt="Soft Khaman" loading="lazy" width="140" height="140"
+            <img src="{{ asset('images/farsan/khaman.webp') }}" alt="Soft Khaman" loading="eager" width="140" height="140"
               onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22140%22 height=%22140%22><rect fill=%22%23FF993322%22 width=%22140%22 height=%22140%22 rx=%2270%22/><text x=%2250%25%22 y=%2255%25%22 text-anchor=%22middle%22 font-size=%2236%22>🍰</text></svg>'" />
             <span class="dish-label" data-en="Khaman" data-gu="ખમણ">Khaman</span>
           </div>

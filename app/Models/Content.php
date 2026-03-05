@@ -10,9 +10,10 @@ class Content extends Model
     use HasFactory;
 
     protected $fillable = [
+        'user_id',
         'name',
         'image',
-        'upload_date'
+        'upload_date',
     ];
 
     protected $casts = [

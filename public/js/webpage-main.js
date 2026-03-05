@@ -18,8 +18,7 @@
   }
 
   /* ── AOS (Animate on Scroll) ──────────────────────────────── */
-  function initAOS() {
-    if (typeof AOS === 'undefined') return;
+  function runAOS() {
     AOS.init({
       duration: 700,
       easing: 'ease-out-cubic',
@@ -29,6 +28,17 @@
         return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       }
     });
+  }
+
+  function initAOS() {
+    if (typeof AOS !== 'undefined') {
+      runAOS();
+    } else {
+      // CDN may still be loading — retry once on window load
+      window.addEventListener('load', function () {
+        if (typeof AOS !== 'undefined') runAOS();
+      }, { once: true });
+    }
   }
 
   /* ── Navbar: scroll shadow + active link ─────────────────── */
@@ -188,13 +198,21 @@
         return;
       }
 
-      // Collect & sanitize data
+      // Collect & sanitize data (null-safe field access)
+      var nameEl    = qs('#contactName');
+      var phoneEl   = qs('#contactPhone');
+      var subjectEl = qs('#contactSubject');
+      var messageEl = qs('#contactMessage');
+      if (!nameEl || !phoneEl || !messageEl) {
+        showMsg('Form error. Please refresh the page and try again.', 'error');
+        return;
+      }
       var data = {
-        name:    sanitize(qs('#contactName').value.trim()),
-        phone:   sanitize(qs('#contactPhone').value.trim()),
+        name:    sanitize(nameEl.value.trim()),
+        phone:   sanitize(phoneEl.value.trim()),
         email:   sanitize(emailField ? emailField.value.trim() : ''),
-        subject: sanitize(qs('#contactSubject').value),
-        message: sanitize(qs('#contactMessage').value.trim())
+        subject: sanitize(subjectEl ? subjectEl.value : ''),
+        message: sanitize(messageEl.value.trim())
       };
 
       // Show loading state
@@ -250,7 +268,6 @@
         var suffix = el.textContent.replace(/[0-9]/g, '');
         var start = 0;
         var duration = 1500;
-        var step = Math.ceil(duration / target);
         var timer = setInterval(function () {
           start += Math.ceil(target / (duration / 16));
           if (start >= target) {

@@ -30,10 +30,6 @@ class ProductController extends Controller
                 });
             }
 
-            if (in_array($sort, ['asc', 'desc'])) {
-                $query->orderBy('created_at', $sort);
-            }
-
             $query->orderBy('created_at', 'desc');
 
             // Get paginated results

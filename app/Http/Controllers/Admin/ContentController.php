@@ -13,7 +13,9 @@ class ContentController extends Controller
 {
     public function index()
     {
-        $contents = Content::latest()->orderBy('created_at', 'desc')->paginate(10);
+        $contents = Content::where('user_id', auth()->id())
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
         return view('admin.content.index', compact('contents'));
     }
 
@@ -26,24 +28,21 @@ class ContentController extends Controller
     {
         try {
             $rules = [
-                'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-                'upload_date' => 'required|date'
+                'image'       => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+                'upload_date' => 'required|date',
             ];
 
             $messages = [
-                'image.required' => __('validation.required_image'),
-                'image.image' => __('validation.image'),
-                'image.max' => __('validation.max'),
+                'image.required'       => __('validation.required_image'),
+                'image.image'          => __('validation.image'),
+                'image.max'            => __('validation.max'),
                 'upload_date.required' => __('validation.required_upload_date'),
-                'upload_date.date' => __('validation.date_upload_date'),
+                'upload_date.date'     => __('validation.date_upload_date'),
             ];
 
-            // Create a validator instance
             $validator = Validator::make($request->all(), $rules, $messages);
 
-            // Check if validation fails
             if ($validator->fails()) {
-                // Return back with errors and old input
                 return redirect()->back()->withErrors($validator)->withInput();
             }
 
@@ -53,13 +52,15 @@ class ContentController extends Controller
             }
 
             Content::create([
-                'image' => $imagePath,
-                'upload_date' => $request->upload_date
+                'user_id'     => auth()->id(),
+                'image'       => $imagePath,
+                'upload_date' => $request->upload_date,
             ]);
 
             return redirect()->route('admin.contents.index')
                 ->with('success', 'Content added successfully');
         } catch (\Exception $e) {
+            Log::error('ContentController@store Error: ' . $e->getMessage());
             return redirect()->route('admin.contents.index')
                 ->with('error', 'Content not added');
         }
@@ -67,37 +68,36 @@ class ContentController extends Controller
 
     public function edit(Content $content)
     {
+        abort_if($content->user_id !== auth()->id(), 403);
         return view('admin.content.edit', compact('content'));
     }
 
     public function update(Request $request, Content $content)
     {
+        abort_if($content->user_id !== auth()->id(), 403);
         try {
             $rules = [
-                'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-                'upload_date' => 'nullable|date'
+                'image'       => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+                'upload_date' => 'nullable|date',
             ];
 
             $messages = [
-                'image.image' => __('validation.image'),
-                'image.max' => __('validation.max'),
+                'image.image'      => __('validation.image'),
+                'image.max'        => __('validation.max'),
                 'upload_date.date' => __('validation.date_upload_date'),
             ];
 
-              $validator = Validator::make($request->all(), $rules, $messages);
+            $validator = Validator::make($request->all(), $rules, $messages);
 
-              // Check if validation fails
-              if ($validator->fails()) {
-                  // Return back with errors and old input
-                  return redirect()->back()->withErrors($validator)->withInput();
-              }
+            if ($validator->fails()) {
+                return redirect()->back()->withErrors($validator)->withInput();
+            }
 
             $data = [
-                'upload_date' => $request->upload_date
+                'upload_date' => $request->upload_date,
             ];
 
             if ($request->hasFile('image')) {
-                // Delete old image
                 if ($content->image) {
                     Storage::disk('public')->delete($content->image);
                 }
@@ -120,7 +120,10 @@ class ContentController extends Controller
         try {
             $contentId = $request->input('content_id');
 
-            $content = Content::findOrFail($contentId);
+            // Scope destroy to authenticated user's content
+            $content = Content::where('id', $contentId)
+                ->where('user_id', auth()->id())
+                ->firstOrFail();
 
             if ($content->image) {
                 Storage::disk('public')->delete($content->image);
