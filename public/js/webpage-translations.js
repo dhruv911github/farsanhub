@@ -54,7 +54,7 @@
 
     // Update toggle button label
     const label = document.getElementById('langLabel');
-    if (label) label.textContent = isGu ? 'EN' : 'ગુ';
+    if (label) label.textContent = isGu ? 'English' : 'ગુજરાતી';
 
     // Persist choice
     try { localStorage.setItem(STORAGE_KEY, lang); } catch (_) {}

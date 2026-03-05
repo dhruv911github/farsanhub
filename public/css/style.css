@@ -1,7 +1,6 @@
 /* Global Styles */
 #heading {
     color: white;
-
 }
 
 body {
@@ -23,22 +22,21 @@ body {
 }
 
 .bg-primary {
-    background-color: #1417a3 !important;
+    background-color: #FF9933 !important;
 }
 
 .btn-primary {
-    background-color: #4ECDC4;
-    border-color: #4ECDC4;
+    background-color: #FF9933;
+    border-color: #FF9933;
 }
 
 .btn-primary:hover {
-    background-color: #45B7AA;
-    border-color: #45B7AA;
+    background-color: #e07a1a;
+    border-color: #e07a1a;
 }
 
 .navbar {
-    background-color: #9d9ffe !important;
-
+    background-color: #5C3A21 !important;
 }
 
 .card {
@@ -48,13 +46,16 @@ body {
 
 .card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 15px rgba(92, 58, 33, 0.15);
 }
 
 .section-title {
     position: relative;
     display: inline-block;
     padding-bottom: 10px;
+    font-size: 2.5rem;
+    color: #333;
+    font-weight: bold;
 }
 
 .section-title::after {
@@ -64,35 +65,26 @@ body {
     bottom: 0;
     width: 50px;
     height: 2px;
-    background-color: #FF6B6B;
+    background-color: #FF9933;
 }
-
-/* gallery */
 
 /* Services Section */
 .services-icon {
     font-size: 2.5rem;
-    color: var(--primary-color);
+    color: #FF9933;
     margin-bottom: 1.5rem;
     transition: all 0.3s ease;
 }
 
 .card:hover .services-icon {
     transform: scale(1.2);
-    color: var(--secondary-color);
+    color: #e07a1a;
 }
 
-/* testimonials card */
+/* Testimonials */
 .testimonials-section {
-    background: url('path-to-background-image.jpg') no-repeat center center;
     background-size: cover;
     padding: 60px 0;
-}
-
-.section-title {
-    font-size: 2.5rem;
-    color: #333;
-    font-weight: bold;
 }
 
 .testimonial-card {
@@ -103,7 +95,7 @@ body {
 
 .testimonial-card:hover {
     transform: translateY(-10px);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 15px rgba(92, 58, 33, 0.15);
 }
 
 .testimonial-image-wrapper {
@@ -131,14 +123,14 @@ body {
 }
 
 .navbar-nav .nav-link.active {
-    color: #fbfa08 !important;
+    color: #FFC107 !important;
 }
 
 .fw-bold {
     font-weight: bold;
 }
 
-/* Responsive Design */
+/* Responsive */
 @media (max-width: 768px) {
     .testimonial-card {
         text-align: center;

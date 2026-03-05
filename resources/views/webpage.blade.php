@@ -49,8 +49,9 @@
   {{-- AOS Animate on Scroll --}}
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" />
 
-  {{-- Custom CSS from public/css/webpage.css --}}
+  {{-- Custom CSS --}}
   <link rel="stylesheet" href="{{ asset('css/webpage.css') }}" />
+  <link rel="stylesheet" href="{{ asset('css/responsive.css') }}" />
 
   {{-- JSON-LD Structured Data --}}
   <script type="application/ld+json">
@@ -126,13 +127,11 @@
         <li class="nav-item"><a class="nav-link" href="#gallery"    data-en="Gallery"    data-gu="ગેલેરી">Gallery</a></li>
         <li class="nav-item"><a class="nav-link" href="#testimonials" data-en="Reviews"  data-gu="સમીક્ષાઓ">Reviews</a></li>
         <li class="nav-item"><a class="nav-link" href="#contact"    data-en="Contact"    data-gu="સંપર્ક">Contact</a></li>
-        <li class="nav-item ms-lg-2">
+        <li class="nav-item ms-lg-2 d-flex gap-2 align-items-center">
           <button class="btn btn-lang d-flex align-items-center" id="langToggle" aria-label="Switch language">
             <i class="bi bi-translate me-1"></i>
-            <span id="langLabel">ગુ</span>
+            <span id="langLabel">ગુજરાતી</span>
           </button>
-        </li>
-        <li class="nav-item ms-lg-1">
           <a href="{{ route('login') }}" class="btn btn-admin d-flex align-items-center" aria-label="Admin Login">
             <i class="bi bi-shield-lock me-1"></i>Admin
           </a>
@@ -148,7 +147,7 @@
   <div class="hero-bg-pattern" aria-hidden="true"></div>
   <div class="container hero-content">
     <div class="row align-items-center min-vh-hero">
-      <div class="col-lg-6 col-md-8" data-aos="fade-right" data-aos-duration="900">
+      <div class="col-12 col-lg-6 hero-text-col" data-aos="fade-right" data-aos-duration="900">
         <span class="hero-badge" data-en="🌟 Vadodara's Favourite" data-gu="🌟 વડોદરાની પ્રિય">🌟 Vadodara's Favourite</span>
         <h1 class="hero-title">
           <span data-en="Authentic Gujarati" data-gu="અસ્સલ ગુજરાતી">Authentic Gujarati</span><br>
