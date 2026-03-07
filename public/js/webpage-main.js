@@ -234,7 +234,7 @@
 
       // Simulate async send (open WhatsApp)
       setTimeout(function () {
-        window.open('https://wa.me/91XXXXXXXXXX?text=' + waText, '_blank', 'noopener,noreferrer');
+        window.open('https://wa.me/919574659456?text=' + waText, '_blank', 'noopener,noreferrer');
 
         // Reset form
         form.reset();

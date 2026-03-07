@@ -484,7 +484,7 @@ a:hover { color: var(--saffron-dark); }
   animation: float 4s ease-in-out infinite;
 }
 
-.hero-dish-1 { top: 30px; left: 60px; }
+.hero-dish-1 { top: 30px; left: 110px; }
 .hero-dish-1 img { width: 200px; height: 200px; animation-delay: 0s; }
 
 .hero-dish-2 { bottom: 20px; right: 30px; }

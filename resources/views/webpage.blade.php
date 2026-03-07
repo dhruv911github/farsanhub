@@ -60,7 +60,7 @@
     "@type": "LocalBusiness",
     "@id": "{{ url('/') }}",
     "name": "Bhramani Khandavi House",
-    "alternateName": "ભ્રામણી ખાંડવી હાઉસ",
+    "alternateName": "બ્રાહ્માણી ખાંડવી હાઉસ",
     "description": "Authentic Gujarati Farsan shop specializing in Khandavi, Samosa, Khaman, Dhokla, Patra and more. Wholesale and retail orders available.",
     "url": "{{ url('/') }}",
     "telephone": "+91-XXXXXXXXXX",
@@ -109,8 +109,8 @@
         </svg>
       </div>
       <div>
-        <span class="brand-name" data-en="Bhramani Khandavi House" data-gu="ભ્રામણી ખાંડવી હાઉસ">Bhramani Khandavi House</span>
-        <small class="brand-sub d-block" data-en="Authentic Gujarati Farsan" data-gu="અસ્સલ ગુજરાતી ફરસાણ">Authentic Gujarati Farsan</small>
+        <span class="brand-name" data-en="Bhramani Khandavi House" data-gu="બ્રાહ્માણી ખાંડવી હાઉસ">Bhramani Khandavi House</span>
+        <small class="brand-sub d-block" data-en="Authentic Gujarati Farsan" data-gu="અસલી ગુજરાતી ફરસાણ">Authentic Gujarati Farsan</small>
       </div>
     </a>
 
@@ -150,14 +150,14 @@
       <div class="col-12 col-lg-6 hero-text-col" data-aos="fade-right" data-aos-duration="900">
         <span class="hero-badge" data-en="🌟 Vadodara's Favourite" data-gu="🌟 વડોદરાની પ્રિય">🌟 Vadodara's Favourite</span>
         <h1 class="hero-title">
-          <span data-en="Authentic Gujarati" data-gu="અસ્સલ ગુજરાતી">Authentic Gujarati</span><br>
+          <span data-en="Authentic Gujarati" data-gu="અસલી ગુજરાતી સ્વાદ">Authentic Gujarati</span><br>
           <span class="text-highlight" data-en="Taste Since Years" data-gu="સ્વાદ સૈ વર્ષ">Taste Since Years</span>
         </h1>
         <p class="hero-subtitle" data-en="From our kitchen to your heart — freshly made Khandavi, Samosa, Khaman, Dhokla &amp; more. Pure taste, pure love." data-gu="અમારી રસોઈથી તમારા હૃદય સુધી — તાજી ખાંડવી, સામોસા, ખમણ, ઢોકળા અને વધુ. શુદ્ધ સ્વાદ, શુદ્ધ પ્રેમ.">
           From our kitchen to your heart — freshly made Khandavi, Samosa, Khaman, Dhokla &amp; more. Pure taste, pure love.
         </p>
         <div class="hero-cta d-flex flex-wrap gap-3">
-          <a href="https://wa.me/91XXXXXXXXXX?text=Hello%2C%20I%20want%20to%20place%20an%20order" class="btn btn-primary-custom btn-lg" target="_blank" rel="noopener noreferrer" data-en="Order on WhatsApp" data-gu="WhatsApp પર ઓર્ડર કરો">
+          <a href="https://wa.me/919574659456?text=Hello%2C%20I%20want%20to%20place%20an%20order" class="btn btn-primary-custom btn-lg" target="_blank" rel="noopener noreferrer" data-en="Order on WhatsApp" data-gu="WhatsApp પર ઓર્ડર કરો">
             <i class="bi bi-whatsapp me-2"></i>Order on WhatsApp
           </a>
           <a href="#products" class="btn btn-outline-custom btn-lg" data-en="View Products" data-gu="ઉત્પાદનો જુઓ">
@@ -184,17 +184,17 @@
       <div class="col-lg-6 d-none d-lg-flex justify-content-end" data-aos="fade-left" data-aos-duration="900" data-aos-delay="200">
         <div class="hero-image-wrap">
           <div class="hero-dish hero-dish-1">
-            <img src="{{ asset('images/farsan/khandavi.webp') }}" alt="Fresh Khandavi" loading="eager" width="200" height="200"
+            <img src="{{ asset('images/farsan/khandavi.jpg') }}" alt="Fresh Khandavi" loading="eager" width="200" height="200"
               onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22><rect fill=%22%23FF993322%22 width=%22200%22 height=%22200%22 rx=%22100%22/><text x=%2250%25%22 y=%2255%25%22 text-anchor=%22middle%22 font-size=%2240%22>🥗</text></svg>'" />
             <span class="dish-label" data-en="Khandavi" data-gu="ખાંડવી">Khandavi</span>
           </div>
           <div class="hero-dish hero-dish-2">
-            <img src="{{ asset('images/farsan/samosa.webp') }}" alt="Crispy Samosa" loading="eager" width="160" height="160"
+            <img src="{{ asset('images/farsan/samosa.jpg') }}" alt="Crispy Samosa" loading="eager" width="160" height="160"
               onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22160%22 height=%22160%22><rect fill=%22%23FFC10722%22 width=%22160%22 height=%22160%22 rx=%2280%22/><text x=%2250%25%22 y=%2255%25%22 text-anchor=%22middle%22 font-size=%2240%22>🥟</text></svg>'" />
             <span class="dish-label" data-en="Samosa" data-gu="સામોસા">Samosa</span>
           </div>
           <div class="hero-dish hero-dish-3">
-            <img src="{{ asset('images/farsan/khaman.webp') }}" alt="Soft Khaman" loading="eager" width="140" height="140"
+            <img src="{{ asset('images/farsan/khaman.jpg') }}" alt="Soft Khaman" loading="eager" width="140" height="140"
               onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22140%22 height=%22140%22><rect fill=%22%23FF993322%22 width=%22140%22 height=%22140%22 rx=%2270%22/><text x=%2250%25%22 y=%2255%25%22 text-anchor=%22middle%22 font-size=%2236%22>🍰</text></svg>'" />
             <span class="dish-label" data-en="Khaman" data-gu="ખમણ">Khaman</span>
           </div>
@@ -229,7 +229,7 @@
           <span data-en="A Legacy of" data-gu="નો વારસો">A Legacy of</span>
           <span class="text-saffron" data-en=" Authentic Taste" data-gu=" અસ્સલ સ્વાદ"> Authentic Taste</span>
         </h2>
-        <p class="section-text" data-en="Bhramani Khandavi House has been serving the people of Vadodara with the most authentic and flavorful Gujarati Farsan for years. Nestled in the heart of Shubhanpura, our shop is a beloved destination for food lovers who crave the real taste of Gujarat." data-gu="ભ્રામણી ખાંડવી હાઉસ વર્ષોથી વડોદરાના લોકોને સૌથી અસ્સલ અને સ્વાદિષ્ટ ગુજરાતી ફરસાણ પ્રદાન કરતી આવ્યું છે. શુભાનપુરાના હ્રદયમાં વસેલ, અમારી દુકાન ગુજરાતના સાચા સ્વાદ માટે ભૂખ્યા ખોરાક-પ્રેમીઓ માટે એક પ્રિય સ્થળ છે.">
+        <p class="section-text" data-en="Bhramani Khandavi House has been serving the people of Vadodara with the most authentic and flavorful Gujarati Farsan for years. Nestled in the heart of Shubhanpura, our shop is a beloved destination for food lovers who crave the real taste of Gujarat." data-gu="બ્રાહ્માણી ખાંડવી હાઉસ વર્ષોથી વડોદરાના લોકોને સૌથી અસ્સલ અને સ્વાદિષ્ટ ગુજરાતી ફરસાણ પ્રદાન કરતી આવ્યું છે. શુભાનપુરાના હ્રદયમાં વસેલ, અમારી દુકાન ગુજરાતના સાચા સ્વાદ માટે ભૂખ્યા ખોરાક-પ્રેમીઓ માટે એક પ્રિય સ્થળ છે.">
           Bhramani Khandavi House has been serving the people of Vadodara with the most authentic and flavorful Gujarati Farsan for years. Nestled in the heart of Shubhanpura, our shop is a beloved destination for food lovers who crave the real taste of Gujarat.
         </p>
         <div class="row g-3 mt-2">
@@ -276,7 +276,7 @@
         <span data-en="Freshly Made " data-gu="તાજી બનાવેલ ">Freshly Made </span>
         <span class="text-saffron" data-en="Farsan" data-gu="ફરસાણ">Farsan</span>
       </h2>
-      <p class="section-subtitle" data-en="Each item is crafted with authentic Gujarati recipes, fresh ingredients, and lots of love." data-gu="દરેક આઇટમ અસ્સલ ગુજરાતી રેસિપી, તાજી સામગ્રી અને ઘણો પ્રેમ સાથે તૈયાર.">
+      <p class="section-subtitle" data-en="Each item is crafted with authentic Gujarati recipes, fresh ingredients, and lots of love." data-gu="દરેક આઇટમ અસલી ગુજરાતી રેસિપી, તાજી સામગ્રી અને ઘણો પ્રેમ સાથે તૈયાર.">
         Each item is crafted with authentic Gujarati recipes, fresh ingredients, and lots of love.
       </p>
     </div>
@@ -287,7 +287,7 @@
         <div class="product-card featured-product">
           <div class="product-badge" data-en="⭐ Special" data-gu="⭐ વિશેષ">⭐ Special</div>
           <div class="product-img-wrap">
-            <img src="{{ asset('images/farsan/khandavi.webp') }}" alt="Khandavi" loading="lazy" width="380" height="240"
+            <img src="{{ asset('images/farsan/khandavi.jpg') }}" alt="Khandavi" loading="lazy" width="380" height="240"
               onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22380%22 height=%22240%22><rect fill=%22%23FF993322%22 width=%22380%22 height=%22240%22/><text x=%2250%25%22 y=%2255%25%22 text-anchor=%22middle%22 font-size=%2270%22>🥗</text></svg>'" />
           </div>
           <div class="product-body">
@@ -296,7 +296,7 @@
               Our signature dish — silky smooth, spiced besan rolls garnished with fresh coconut and mustard seeds.
             </p>
             <div class="product-footer">
-              <a href="https://wa.me/91XXXXXXXXXX?text=Hello%2C%20I%20want%20to%20order%20Khandavi" class="btn btn-product" target="_blank" rel="noopener noreferrer" data-en="Order Now" data-gu="હવે ઓર્ડર કરો">
+              <a href="https://wa.me/919574659456?text=Hello%2C%20I%20want%20to%20order%20Khandavi" class="btn btn-product" target="_blank" rel="noopener noreferrer" data-en="Order Now" data-gu="હવે ઓર્ડર કરો">
                 <i class="bi bi-whatsapp me-1"></i>Order Now
               </a>
             </div>
@@ -309,7 +309,7 @@
         <div class="product-card featured-product">
           <div class="product-badge" data-en="🔥 Popular" data-gu="🔥 લોકપ્રિય">🔥 Popular</div>
           <div class="product-img-wrap">
-            <img src="{{ asset('images/farsan/samosa.webp') }}" alt="Crispy Samosa" loading="lazy" width="380" height="240"
+            <img src="{{ asset('images/farsan/samosa.jpg') }}" alt="Crispy Samosa" loading="lazy" width="380" height="240"
               onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22380%22 height=%22240%22><rect fill=%22%23FFC10722%22 width=%22380%22 height=%22240%22/><text x=%2250%25%22 y=%2255%25%22 text-anchor=%22middle%22 font-size=%2270%22>🥟</text></svg>'" />
           </div>
           <div class="product-body">
@@ -318,7 +318,7 @@
               Crispy golden crust filled with perfectly spiced potato-pea stuffing. Best served hot!
             </p>
             <div class="product-footer">
-              <a href="https://wa.me/91XXXXXXXXXX?text=Hello%2C%20I%20want%20to%20order%20Samosa" class="btn btn-product" target="_blank" rel="noopener noreferrer" data-en="Order Now" data-gu="હવે ઓર્ડર કરો">
+              <a href="https://wa.me/919574659456?text=Hello%2C%20I%20want%20to%20order%20Samosa" class="btn btn-product" target="_blank" rel="noopener noreferrer" data-en="Order Now" data-gu="હવે ઓર્ડર કરો">
                 <i class="bi bi-whatsapp me-1"></i>Order Now
               </a>
             </div>
@@ -330,7 +330,7 @@
       <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
         <div class="product-card">
           <div class="product-img-wrap">
-            <img src="{{ asset('images/farsan/khaman.webp') }}" alt="Soft Khaman" loading="lazy" width="380" height="240"
+            <img src="{{ asset('images/farsan/khaman.jpg') }}" alt="Soft Khaman" loading="lazy" width="380" height="240"
               onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22380%22 height=%22240%22><rect fill=%22%23FF993311%22 width=%22380%22 height=%22240%22/><text x=%2250%25%22 y=%2255%25%22 text-anchor=%22middle%22 font-size=%2270%22>🍰</text></svg>'" />
           </div>
           <div class="product-body">
@@ -339,7 +339,7 @@
               Soft, spongy &amp; tangy steamed chickpea cake. Light on stomach, heavy on taste!
             </p>
             <div class="product-footer">
-              <a href="https://wa.me/91XXXXXXXXXX?text=Hello%2C%20I%20want%20to%20order%20Khaman" class="btn btn-product" target="_blank" rel="noopener noreferrer" data-en="Order Now" data-gu="હવે ઓર્ડર કરો">
+              <a href="https://wa.me/919574659456?text=Hello%2C%20I%20want%20to%20order%20Khaman" class="btn btn-product" target="_blank" rel="noopener noreferrer" data-en="Order Now" data-gu="હવે ઓર્ડર કરો">
                 <i class="bi bi-whatsapp me-1"></i>Order Now
               </a>
             </div>
@@ -351,7 +351,7 @@
       <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="0">
         <div class="product-card">
           <div class="product-img-wrap">
-            <img src="{{ asset('images/farsan/patra.webp') }}" alt="Patra" loading="lazy" width="380" height="240"
+            <img src="{{ asset('images/farsan/patra.jpg') }}" alt="Patra" loading="lazy" width="380" height="240"
               onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22380%22 height=%22240%22><rect fill=%22%235C3A2222%22 width=%22380%22 height=%22240%22/><text x=%2250%25%22 y=%2255%25%22 text-anchor=%22middle%22 font-size=%2270%22>🌿</text></svg>'" />
           </div>
           <div class="product-body">
@@ -360,7 +360,7 @@
               Colocasia leaves rolled with spiced besan paste and steamed to perfection.
             </p>
             <div class="product-footer">
-              <a href="https://wa.me/91XXXXXXXXXX?text=Hello%2C%20I%20want%20to%20order%20Patra" class="btn btn-product" target="_blank" rel="noopener noreferrer" data-en="Order Now" data-gu="હવે ઓર્ડર કરો">
+              <a href="https://wa.me/919574659456?text=Hello%2C%20I%20want%20to%20order%20Patra" class="btn btn-product" target="_blank" rel="noopener noreferrer" data-en="Order Now" data-gu="હવે ઓર્ડર કરો">
                 <i class="bi bi-whatsapp me-1"></i>Order Now
               </a>
             </div>
@@ -372,7 +372,7 @@
       <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
         <div class="product-card">
           <div class="product-img-wrap">
-            <img src="{{ asset('images/farsan/dhokla.webp') }}" alt="Steamed Dhokla" loading="lazy" width="380" height="240"
+            <img src="{{ asset('images/farsan/dhokla.jpg') }}" alt="Steamed Dhokla" loading="lazy" width="380" height="240"
               onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22380%22 height=%22240%22><rect fill=%22%23FFC10722%22 width=%22380%22 height=%22240%22/><text x=%2250%25%22 y=%2255%25%22 text-anchor=%22middle%22 font-size=%2270%22>🟡</text></svg>'" />
           </div>
           <div class="product-body">
@@ -381,7 +381,7 @@
               Fluffy steamed rice-chickpea cake with tangy-sweet tempering. Healthy and delicious!
             </p>
             <div class="product-footer">
-              <a href="https://wa.me/91XXXXXXXXXX?text=Hello%2C%20I%20want%20to%20order%20Dhokla" class="btn btn-product" target="_blank" rel="noopener noreferrer" data-en="Order Now" data-gu="હવે ઓર્ડર કરો">
+              <a href="https://wa.me/919574659456?text=Hello%2C%20I%20want%20to%20order%20Dhokla" class="btn btn-product" target="_blank" rel="noopener noreferrer" data-en="Order Now" data-gu="હવે ઓર્ડર કરો">
                 <i class="bi bi-whatsapp me-1"></i>Order Now
               </a>
             </div>
@@ -393,7 +393,7 @@
       <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
         <div class="product-card">
           <div class="product-img-wrap">
-            <img src="{{ asset('images/farsan/mix-farsan.webp') }}" alt="Mix Farsan" loading="lazy" width="380" height="240"
+            <img src="{{ asset('images/farsan/mix-farsan.jpg') }}" alt="Mix Farsan" loading="lazy" width="380" height="240"
               onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22380%22 height=%22240%22><rect fill=%22%23FF993311%22 width=%22380%22 height=%22240%22/><text x=%2250%25%22 y=%2255%25%22 text-anchor=%22middle%22 font-size=%2270%22>🍽️</text></svg>'" />
           </div>
           <div class="product-body">
@@ -402,7 +402,7 @@
               A festive assortment of our best Farsan — perfect for parties, gifts &amp; daily snacking!
             </p>
             <div class="product-footer">
-              <a href="https://wa.me/91XXXXXXXXXX?text=Hello%2C%20I%20want%20to%20order%20Mix%20Farsan" class="btn btn-product" target="_blank" rel="noopener noreferrer" data-en="Order Now" data-gu="હવે ઓર્ડર કરો">
+              <a href="https://wa.me/919574659456?text=Hello%2C%20I%20want%20to%20order%20Mix%20Farsan" class="btn btn-product" target="_blank" rel="noopener noreferrer" data-en="Order Now" data-gu="હવે ઓર્ડર કરો">
                 <i class="bi bi-whatsapp me-1"></i>Order Now
               </a>
             </div>
@@ -436,7 +436,7 @@
           <div class="ws-feature" data-en="🎉 Engagement" data-gu="🎉 સગાઈ">🎉 Engagement</div>
         </div>
         <div class="d-flex gap-3 justify-content-center flex-wrap">
-          <a href="https://wa.me/91XXXXXXXXXX?text=Hello%2C%20I%20need%20bulk%20order%20inquiry" class="btn btn-yellow btn-lg" target="_blank" rel="noopener noreferrer" data-en="Get Bulk Quote on WhatsApp" data-gu="WhatsApp પર ભાવ મેળવો">
+          <a href="https://wa.me/919574659456?text=Hello%2C%20I%20need%20bulk%20order%20inquiry" class="btn btn-yellow btn-lg" target="_blank" rel="noopener noreferrer" data-en="Get Bulk Quote on WhatsApp" data-gu="WhatsApp પર ભાવ મેળવો">
             <i class="bi bi-whatsapp me-2"></i>Get Bulk Quote on WhatsApp
           </a>
           <a href="#contact" class="btn btn-outline-white btn-lg" data-en="Send Inquiry" data-gu="ઇન્ક્વાયરી મોકલો">
@@ -461,11 +461,11 @@
     <div class="gallery-grid" role="list" aria-label="Food gallery">
       @php
         $galleryItems = [
-          ['file' => 'khandavi.webp',  'emoji' => '🥗',  'en' => 'Khandavi',  'gu' => 'ખાંડવી',  'large' => true],
-          ['file' => 'samosa.webp',    'emoji' => '🥟',  'en' => 'Samosa',    'gu' => 'સામોસા',   'large' => false],
-          ['file' => 'khaman.webp',    'emoji' => '🍰',  'en' => 'Khaman',    'gu' => 'ખમણ',     'large' => false],
-          ['file' => 'dhokla.webp',    'emoji' => '🟡',  'en' => 'Dhokla',    'gu' => 'ઢોકળા',   'large' => false],
-          ['file' => 'patra.webp',     'emoji' => '🌿',  'en' => 'Patra',     'gu' => 'પાત્રા',   'large' => false],
+          ['file' => 'khandavi.jpg',  'emoji' => '🥗',  'en' => 'Khandavi',  'gu' => 'ખાંડવી',  'large' => true],
+          ['file' => 'samosa.jpg',    'emoji' => '🥟',  'en' => 'Samosa',    'gu' => 'સામોસા',   'large' => false],
+          ['file' => 'khaman.jpg',    'emoji' => '🍰',  'en' => 'Khaman',    'gu' => 'ખમણ',     'large' => false],
+          ['file' => 'dhokla.jpg',    'emoji' => '🟡',  'en' => 'Dhokla',    'gu' => 'ઢોકળા',   'large' => false],
+          ['file' => 'patra.jpg',     'emoji' => '🌿',  'en' => 'Patra',     'gu' => 'પાત્રા',   'large' => false],
           ['file' => 'shop-front.webp','emoji' => '🏪',  'en' => 'Our Shop',  'gu' => 'અમારી દુકાન','large' => true],
         ];
       @endphp
@@ -498,7 +498,7 @@
         $testimonials = [
           ['initial'=>'P','name_en'=>'Priya Shah','name_gu'=>'પ્રિયા શાહ','loc_en'=>'Regular Customer, Shubhanpura','loc_gu'=>'નિયમિત ગ્રાહક, શુભાનપુરા','stars'=>5,
            'text_en'=>'"The Khandavi from Bhramani is simply the best in Vadodara! The texture is perfect and the taste is just like home-made. We order every week!"',
-           'text_gu'=>'"ભ્રામણીની ખાંડવી વડોદરામાં સૌ કરતા ઉત્તમ! ટેક્સ્ચર પરફેક્ટ અને સ્વાદ ઘરની જેવો. અઠવાડિયે ઓર્ડર!"'],
+           'text_gu'=>'"બ્રાહ્માણીની ખાંડવી વડોદરામાં સૌ કરતા ઉત્તમ! ટેક્સ્ચર પરફેક્ટ અને સ્વાદ ઘરની જેવો. અઠવાડિયે ઓર્ડર!"'],
           ['initial'=>'R','name_en'=>'Rameshbhai Patel','name_gu'=>'રમેશભાઈ પટેલ','loc_en'=>'Wedding Client, Vadodara','loc_gu'=>'લગ્ન ક્લાઇન્ટ, વડોદરા','stars'=>5,
            'text_en'=>'"We ordered 50 kg Farsan for our daughter\'s wedding. Everything was fresh, delivered on time and the guests couldn\'t stop praising!"',
            'text_gu'=>'"50 કિલો ફરસાણ ઓર્ડર. તાજું, સમયસર ડિલિવરી. ભારે ભલામણ!"'],
@@ -539,7 +539,7 @@
             "The authentic taste of Gujarat in every bite!"
           </p>
           <div class="mt-3 text-center">
-            <a href="https://wa.me/91XXXXXXXXXX?text=Hello%2C%20I%20want%20to%20share%20feedback" class="btn btn-product-sm" target="_blank" rel="noopener noreferrer" data-en="Share Your Review" data-gu="સમીક્ષા શેર કરો">
+            <a href="https://wa.me/919574659456?text=Hello%2C%20I%20want%20to%20share%20feedback" class="btn btn-product-sm" target="_blank" rel="noopener noreferrer" data-en="Share Your Review" data-gu="સમીક્ષા શેર કરો">
               <i class="bi bi-whatsapp me-1"></i>Share Your Review
             </a>
           </div>
@@ -575,7 +575,7 @@
             <div class="contact-icon"><i class="bi bi-telephone-fill"></i></div>
             <div>
               <strong data-en="Phone" data-gu="ફોન">Phone</strong>
-              <p><a href="tel:+91XXXXXXXXXX" class="contact-link">+91 XXXXX XXXXX</a></p>
+              <p><a href="tel:+919574659456" class="contact-link">+91 XXXXX XXXXX</a></p>
             </div>
           </div>
           <div class="contact-info-item">
@@ -583,7 +583,7 @@
             <div>
               <strong>WhatsApp</strong>
               <p>
-                <a href="https://wa.me/91XXXXXXXXXX" class="btn btn-whatsapp-sm" target="_blank" rel="noopener noreferrer" data-en="Chat on WhatsApp" data-gu="WhatsApp પર ચેટ">
+                <a href="https://wa.me/919574659456" class="btn btn-whatsapp-sm" target="_blank" rel="noopener noreferrer" data-en="Chat on WhatsApp" data-gu="WhatsApp પર ચેટ">
                   <i class="bi bi-whatsapp me-1"></i>Chat on WhatsApp
                 </a>
               </p>
@@ -680,15 +680,15 @@
               <text x="21" y="27" text-anchor="middle" font-size="20" font-family="serif" fill="white">ભ</text>
             </svg>
             <div>
-              <span class="footer-brand-name" data-en="Bhramani Khandavi House" data-gu="ભ્રામણી ખાંડવી હાઉસ">Bhramani Khandavi House</span>
-              <small class="d-block" data-en="Authentic Gujarati Farsan" data-gu="અસ્સલ ગુજરાતી ફરસાણ">Authentic Gujarati Farsan</small>
+              <span class="footer-brand-name" data-en="Bhramani Khandavi House" data-gu="બ્રાહ્માણી ખાંડવી હાઉસ">Bhramani Khandavi House</span>
+              <small class="d-block" data-en="Authentic Gujarati Farsan" data-gu="અસલી ગુજરાતી ફરસાણ">Authentic Gujarati Farsan</small>
             </div>
           </div>
-          <p class="footer-text" data-en="Serving the most authentic and fresh Gujarati Farsan in Shubhanpura, Vadodara. Your happiness is our greatest recipe." data-gu="શુભાનપુરા, વડોદરામાં સૌથી અસ્સલ ગુજરાતી ફરસાણ. તમારી ખુશી અમારી ઉત્તમ રેસિપી.">
+          <p class="footer-text" data-en="Serving the most authentic and fresh Gujarati Farsan in Shubhanpura, Vadodara. Your happiness is our greatest recipe." data-gu="શુભાનપુરા, વડોદરામાં સૌથી અસલી ગુજરાતી ફરસાણ. તમારી ખુશી અમારી ઉત્તમ રેસિપી.">
             Serving the most authentic and fresh Gujarati Farsan in Shubhanpura, Vadodara.
           </p>
           <div class="social-links mt-3" aria-label="Social media links">
-            <a href="https://wa.me/91XXXXXXXXXX" class="social-btn" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><i class="bi bi-whatsapp"></i></a>
+            <a href="https://wa.me/919574659456" class="social-btn" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><i class="bi bi-whatsapp"></i></a>
             <a href="#" class="social-btn" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
             <a href="#" class="social-btn" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
           </div>
@@ -730,7 +730,7 @@
               <span>7:00 AM – 1:00 PM</span>
             </li>
           </ul>
-          <a href="https://wa.me/91XXXXXXXXXX?text=Hello%2C%20I%20want%20to%20order" class="btn btn-wa-footer mt-3" target="_blank" rel="noopener noreferrer" data-en="Order on WhatsApp" data-gu="WhatsApp પર ઓર્ડર">
+          <a href="https://wa.me/919574659456?text=Hello%2C%20I%20want%20to%20order" class="btn btn-wa-footer mt-3" target="_blank" rel="noopener noreferrer" data-en="Order on WhatsApp" data-gu="WhatsApp પર ઓર્ડર">
             <i class="bi bi-whatsapp me-2"></i>Order on WhatsApp
           </a>
         </div>
@@ -742,7 +742,7 @@
     <div class="container d-flex flex-wrap justify-content-between align-items-center gap-2">
       <p class="mb-0">
         &copy; <span id="currentYear"></span>
-        <span data-en="Bhramani Khandavi House. All Rights Reserved." data-gu="ભ્રામણી ખાંડવી હાઉસ. સર્વ અધિકાર સુરક્ષિત.">Bhramani Khandavi House. All Rights Reserved.</span>
+        <span data-en="Bhramani Khandavi House. All Rights Reserved." data-gu="બ્રાહ્માણી ખાંડવી હાઉસ. સર્વ અધિકાર સુરક્ષિત.">Bhramani Khandavi House. All Rights Reserved.</span>
       </p>
       <p class="mb-0 footer-made">
         <span data-en="Made with" data-gu="બનાવ્યું">Made with</span>
@@ -754,7 +754,7 @@
 </footer>
 
 {{-- ===================== FLOATING BUTTONS ===================== --}}
-<a href="https://wa.me/91XXXXXXXXXX?text=Hello%2C%20I%20want%20to%20order%20Farsan" class="float-whatsapp" target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp">
+<a href="https://wa.me/919574659456?text=Hello%2C%20I%20want%20to%20order%20Farsan" class="float-whatsapp" target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp">
   <i class="bi bi-whatsapp" aria-hidden="true"></i>
 </a>
 <button class="back-to-top" id="backToTop" aria-label="Back to top">
