@@ -62,9 +62,131 @@ a:hover { text-decoration: none !important; }
     backdrop-filter: opacity(0.1);
 }
 
+/* ── Admin Header ────────────────────────────────────────────── */
+
+/* Header row wrapper */
+.side-app .main-container > .d-flex {
+    padding: 0.6rem 0;
+}
+
+/* ── Hamburger toggle (mobile) ── */
+.sidebar-toggle-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: 1.5px solid #e0d0c0;
+    border-radius: 8px;
+    padding: 7px 10px;
+    color: #3a2a1a;
+    cursor: pointer;
+    line-height: 1;
+    transition: background-color 0.2s ease, border-color 0.2s ease,
+                color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.sidebar-toggle-btn:hover,
+.sidebar-toggle-btn:focus {
+    background-color: var(--primary-bg-color);
+    border-color: var(--primary-bg-color);
+    color: #fff;
+    box-shadow: 0 3px 10px rgba(255, 153, 51, 0.35);
+    outline: none;
+}
+
+.sidebar-toggle-btn:active {
+    background-color: var(--primary-bg-hover);
+    border-color: var(--primary-bg-hover);
+}
+
+/* ── Profile dropdown trigger ── */
+.profile-1 .nav-link {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+    padding: 0.35rem 0.6rem !important;
+    border-radius: 10px !important;
+    color: #3a2a1a !important;
+    font-weight: 500 !important;
+    transition: background-color 0.2s ease, box-shadow 0.2s ease !important;
+    border: 1.5px solid transparent !important;
+}
+
+.profile-1 .nav-link:hover {
+    background-color: rgba(255, 153, 51, 0.1) !important;
+    border-color: rgba(255, 153, 51, 0.3) !important;
+    box-shadow: 0 2px 8px rgba(255, 153, 51, 0.15) !important;
+}
+
+.profile-1 .nav-link:active,
+.profile-1 .nav-link.show {
+    background-color: rgba(255, 153, 51, 0.18) !important;
+    border-color: var(--primary-bg-color) !important;
+}
+
+/* Avatar image */
+.profile-user {
+    width: 36px !important;
+    height: 36px !important;
+    object-fit: cover !important;
+    border: 2px solid rgba(255, 153, 51, 0.3) !important;
+    border-radius: 50% !important;
+    transition: border-color 0.2s ease !important;
+}
+
+.profile-1 .nav-link:hover .profile-user {
+    border-color: var(--primary-bg-color) !important;
+}
+
+/* Dropdown chevron rotation on open */
+.profile-1 .nav-link .user-angle {
+    transition: transform 0.2s ease;
+    display: inline-block;
+}
+
+.profile-1 .nav-link.show .user-angle,
+.profile-1 .nav-link[aria-expanded="true"] .user-angle {
+    transform: rotate(180deg);
+}
+
+/* ── Dropdown menu ── */
+.profile-1 .dropdown-menu {
+    border: 1px solid rgba(255, 153, 51, 0.2) !important;
+    border-radius: 10px !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12) !important;
+    padding: 0.4rem !important;
+    min-width: 180px !important;
+}
+
+.dropdown-item {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+    padding: 0.55rem 0.85rem !important;
+    border-radius: 7px !important;
+    font-size: 0.875rem !important;
+    color: #3a2a1a !important;
+    font-weight: 400 !important;
+    transition: background-color 0.18s ease, color 0.18s ease !important;
+}
+
+.dropdown-item:hover,
+.dropdown-item:focus {
+    background-color: rgba(255, 153, 51, 0.1) !important;
+    color: var(--primary-bg-hover) !important;
+}
+
 .dropdown-item.active,
 .dropdown-item:active {
-    background-color: var(--primary-bg-hover);
+    background-color: var(--primary-bg-color) !important;
+    color: #fff !important;
+}
+
+/* Logout item: red tint on hover */
+.dropdown-item:last-child:hover,
+.dropdown-item:last-child:focus {
+    background-color: rgba(220, 53, 69, 0.08) !important;
+    color: #dc3545 !important;
 }
 
 /* ── Validation ─────────────────────────────────────────────── */
@@ -81,74 +203,115 @@ a:hover { text-decoration: none !important; }
 }
 
 /* ── Buttons ────────────────────────────────────────────────── */
-.button {
-    font-weight: 700 !important;
-    height: 35px !important;
-    border: 2px solid var(--primary-bg-color) !important;
-    border-radius: 8px !important;
-    text-align: center !important;
-    line-height: 1 !important;
-}
 
-.button:hover {
-    background-color: #ffffff !important;
-    color: var(--primary-bg-color) !important;
-    border: 2px solid var(--primary-bg-color) !important;
-    border-radius: 8px !important;
-}
-
+/* Base .btn reset — no forced width, proper sizing */
 .btn {
-    font-size: 18px !important;
-    font-weight: 500 !important;
-    height: 35px !important;
-    border: 2px solid var(--primary-bg-color) !important;
-    border-radius: 10px !important;
-    text-align: center !important;
-    line-height: 1 !important;
-    display: flex !important;
-    width: 100% !important;
-    padding: 12px 34px !important;
-    justify-content: center !important;
+    display: inline-flex !important;
     align-items: center !important;
-    gap: 10px !important;
-}
-
-.btn:hover {
-    background-color: #ffffff !important;
-    color: var(--primary-bg-color) !important;
-    border: 2px solid var(--primary-bg-color) !important;
+    justify-content: center !important;
+    gap: 0.4rem !important;
+    font-size: 0.875rem !important;
+    font-weight: 500 !important;
+    height: auto !important;
+    width: auto !important;
+    padding: 0.45rem 1.1rem !important;
     border-radius: 8px !important;
+    border: 2px solid transparent !important;
+    line-height: 1.5 !important;
+    text-align: center !important;
+    cursor: pointer !important;
+    transition: background-color 0.2s ease, color 0.2s ease,
+                border-color 0.2s ease, box-shadow 0.2s ease !important;
 }
 
-.btn-secondary {
-    background-color: #ffffff !important;
-    color: var(--primary-bg-color) !important;
-}
-
-.btn-secondary:hover {
-    color: #ffffff !important;
+/* Primary: saffron fill → darker on hover */
+.btn-primary {
     background-color: var(--primary-bg-color) !important;
+    border-color: var(--primary-bg-color) !important;
+    color: #fff !important;
 }
 
-.btn-primary:focus-visible {
-    background-color: #ffffff !important;
+.btn-primary:hover,
+.btn-primary:focus {
+    background-color: var(--primary-bg-hover) !important;
+    border-color: var(--primary-bg-hover) !important;
+    color: #fff !important;
+    box-shadow: 0 4px 12px rgba(255, 153, 51, 0.4) !important;
+}
+
+/* Secondary: outlined saffron → filled on hover */
+.btn-secondary {
+    background-color: #fff !important;
+    border-color: var(--primary-bg-color) !important;
     color: var(--primary-bg-color) !important;
-    border: 2px solid var(--primary-bg-color) !important;
-    border-radius: 8px !important;
+}
+
+.btn-secondary:hover,
+.btn-secondary:focus {
+    background-color: var(--primary-bg-color) !important;
+    border-color: var(--primary-bg-color) !important;
+    color: #fff !important;
+    box-shadow: 0 4px 12px rgba(255, 153, 51, 0.3) !important;
+}
+
+/* Danger: outlined red → filled on hover */
+.btn-danger {
+    background-color: #fff !important;
+    border-color: #dc3545 !important;
+    color: #dc3545 !important;
+}
+
+.btn-danger:hover,
+.btn-danger:focus {
+    background-color: #dc3545 !important;
+    border-color: #dc3545 !important;
+    color: #fff !important;
+    box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3) !important;
+}
+
+/* Keyboard focus ring */
+.btn-primary:focus-visible {
+    outline: 3px solid rgba(255, 153, 51, 0.5) !important;
+    outline-offset: 2px !important;
+    background-color: var(--primary-bg-hover) !important;
+    border-color: var(--primary-bg-hover) !important;
+    color: #fff !important;
 }
 
 .btn-secondary:focus-visible {
-    background-color: var(--primary-bg-color) !important;
-    color: #ffffff !important;
-    border: 2px solid var(--primary-bg-color) !important;
-    border-radius: 8px !important;
+    outline: 3px solid rgba(255, 153, 51, 0.5) !important;
+    outline-offset: 2px !important;
 }
 
-.btn-group { margin: 0 3% !important; }
-
+/* Disabled */
+.btn:disabled,
 button:disabled {
-    cursor: not-allowed;
+    opacity: 0.6 !important;
+    cursor: not-allowed !important;
     pointer-events: all !important;
+    box-shadow: none !important;
+}
+
+/* Button group spacing */
+.btn-group { margin: 0 !important; gap: 0.5rem !important; }
+
+/* Legacy .button class */
+.button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-weight: 600;
+    padding: 0.45rem 1rem;
+    border: 2px solid var(--primary-bg-color);
+    border-radius: 8px;
+    background-color: var(--primary-bg-color);
+    color: #fff;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.button:hover {
+    background-color: #fff;
+    color: var(--primary-bg-color);
 }
 
 /* ── Forms ──────────────────────────────────────────────────── */
@@ -499,7 +662,7 @@ div.form-group img { width: 65%; }
     padding: 0;
     position: absolute;
     top: 0.6rem;
-    right: 0.75rem;
+    right: 0.5rem;
 }
 
 .sidebar-close-btn:hover {
@@ -531,71 +694,80 @@ div.form-group img { width: 65%; }
 }
 
 .side-menu__item {
-    padding: 0.325rem 1.2rem !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.65rem !important;
+    padding: 0.55rem 1rem !important;
+    border-radius: 10px !important;
+    color: #3a2a1a !important;
+    transition: background-color 0.2s ease, color 0.2s ease !important;
+    margin-bottom: 2px !important;
 }
 
-/* Default: dark text/icon (desktop — inherits from template bg) */
+/* Default: dark text/icon */
 .side-menu__item .side-menu__label {
-    color: #1a1a1a;
+    color: inherit;
+    font-size: 0.875rem;
+    font-weight: 500;
 }
 
 .side-menu__item svg {
-    fill: #1a1a1a;
-    width: 11%;
-    height: 11%;
+    width: 20px !important;
+    height: 20px !important;
+    flex-shrink: 0;
+    /* Let SVG inherit color from the link — currentColor works for both fill & stroke */
+    color: inherit;
+    transition: color 0.2s ease;
+}
+
+/* Stroke-based icons (Heroicons style) — stroke follows color */
+.side-menu__item svg[stroke="currentColor"] {
+    fill: none;
+    stroke: currentColor;
+}
+
+/* Fill-based icons (Dashboard icon) — fill follows color */
+.side-menu__item svg:not([stroke]) path[fill="currentColor"] {
+    fill: currentColor;
 }
 
 /* Hover / focus */
 .side-menu__item:hover,
 .side-menu__item:focus {
-    color: var(--primary-bg-color) !important;
+    background-color: rgba(255, 153, 51, 0.12) !important;
+    color: var(--primary-bg-hover) !important;
 }
 
-.side-menu__item:hover .side-menu__icon,
 .side-menu__item:hover .side-menu__label,
-.side-menu__item:focus .side-menu__icon,
 .side-menu__item:focus .side-menu__label {
-    color: var(--primary-bg-color) !important;
-}
-
-.side-menu__item:hover svg,
-.side-menu__item:focus svg {
-    fill: var(--primary-bg-color) !important;
+    color: var(--primary-bg-hover) !important;
 }
 
 /* Active: saffron background, white text and icon */
-.side-menu__item.active,
-.side-menu__item.active .side-menu__label {
+.side-menu__item.active {
     background-color: var(--primary-bg-color) !important;
     color: #fff !important;
     border-radius: 10px !important;
-    padding: 3%;
+    box-shadow: 0 3px 10px rgba(255, 153, 51, 0.35) !important;
 }
 
-.side-menu__item.active .side-menu__icon,
-.side-menu__item.active:hover .side-menu__icon,
 .side-menu__item.active .side-menu__label {
-    background-color: var(--primary-bg-color) !important;
     color: #fff !important;
+    font-weight: 600;
 }
 
-.side-menu__item.active svg,
-.side-menu__item.active:hover svg {
-    fill: #fff !important;
-}
-
-.side-menu__item.active:hover .side-menu__icon {
+/* Keep active styling on hover */
+.side-menu__item.active:hover,
+.side-menu__item.active:focus {
+    background-color: var(--primary-bg-hover) !important;
     color: #fff !important;
-    fill: #fff !important;
 }
 
 /* Toggled sidebar icon sizing */
-body .side-menu__item svg                 { width: 11%; height: 11%; }
-body.sidenav-toggled-open .side-menu__item svg { width: 11% !important; height: 11%; }
-body.sidenav-toggled .side-menu__item svg      { width: 100%; }
+body.sidenav-toggled .side-menu__item svg { width: 20px !important; height: 20px !important; }
 
-.sidebar-mini.sidenav-toggled .side-menu__item.active .side-menu__icon {
-    fill: #fff !important;
+.sidebar-mini.sidenav-toggled .side-menu__item.active svg {
+    color: #fff !important;
 }
 
 /* ── Dropdown Arrow ──────────────────────────────────────────── */
@@ -622,37 +794,47 @@ body table th { font-family: "Roboto", sans-serif; font-size: 16px !important; f
 
 table.table-bordered.dataTable td.no-data { padding: 5% !important; }
 
+/* Small icon-link buttons inside table rows */
+tbody tr td div a.secondary,
+tbody tr td div a.primary {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 30px !important;
+    height: 30px !important;
+    min-width: 30px !important;
+    padding: 0 !important;
+    border-radius: 6px !important;
+    font-size: 0.78rem !important;
+    border: 1.5px solid !important;
+    transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+/* Outlined saffron (edit, view) */
 tbody tr td div a.secondary {
-    background-color: #ffffff !important;
+    background-color: #fff !important;
     color: var(--primary-bg-color) !important;
-    border: 2px solid var(--primary-bg-color) !important;
-    border-radius: 8px !important;
-    padding: 0.30rem !important;
-    font-size: 0.711rem !important;
-    min-width: 1.625rem !important;
-    height: 25px !important;
+    border-color: var(--primary-bg-color) !important;
 }
 
 tbody tr td div a.secondary:hover {
     background-color: var(--primary-bg-color) !important;
-    color: #ffffff !important;
-    border: 2px solid var(--primary-bg-color) !important;
-    border-radius: 8px !important;
-    padding: 0.30rem !important;
-    font-size: 0.711rem !important;
-    min-width: 1.625rem !important;
-    height: 25px !important;
+    color: #fff !important;
+    box-shadow: 0 2px 8px rgba(255, 153, 51, 0.35) !important;
 }
 
+/* Filled saffron (primary action) */
 tbody tr td div a.primary {
     background-color: var(--primary-bg-color) !important;
-    color: #ffffff !important;
-    border: 2px solid var(--primary-bg-color) !important;
-    border-radius: 8px !important;
-    height: 25px !important;
-    padding: 0.30rem !important;
-    font-size: 0.711rem !important;
-    min-width: 1.625rem !important;
+    color: #fff !important;
+    border-color: var(--primary-bg-color) !important;
+}
+
+tbody tr td div a.primary:hover {
+    background-color: var(--primary-bg-hover) !important;
+    border-color: var(--primary-bg-hover) !important;
+    color: #fff !important;
+    box-shadow: 0 2px 8px rgba(255, 153, 51, 0.4) !important;
 }
 
 /* ── Search & Filters ────────────────────────────────────────── */

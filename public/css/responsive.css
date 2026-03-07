@@ -200,25 +200,6 @@
     /* Hide desktop sidebar */
     .app-sidebar .main-menu { display: none; }
 
-    /* Toggle (hamburger) button */
-    .sidebar-toggle-btn {
-        background: none;
-        border: 1.5px solid #ddd;
-        border-radius: 8px;
-        padding: 6px 10px;
-        color: #1a1a1a;
-        cursor: pointer;
-        line-height: 1;
-    }
-
-    .sidebar-toggle-btn:hover,
-    .sidebar-toggle-btn:focus {
-        background: var(--primary-bg-color, #FF9933);
-        border-color: var(--primary-bg-color, #FF9933);
-        color: #fff;
-        outline: none;
-    }
-
     /* ── Header: language + admin half-half layout ── */
     .header-actions {
         flex: 1;
@@ -246,18 +227,39 @@
         max-width: 50%;
     }
 
+    /* ── Header: profile dropdown on mobile ── */
+    /* Tighter padding so it fits small screens */
+    .profile-1 .nav-link {
+        padding: 0.3rem 0.4rem !important;
+        gap: 0.35rem !important;
+    }
+
+    /* Hide username text on very small screens, keep only avatar */
+    .profile-1 .nav-link h6 {
+        font-size: 0.8rem !important;
+        max-width: 80px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+
+    /* Dropdown anchors full-width on mobile */
+    .profile-1 .dropdown-menu {
+        min-width: 160px !important;
+    }
+
     /* ── Offcanvas panel ── */
     #mobile-sidebar {
         background: #FFF7EE;
         border-right: 3px solid #FF9933;
-        max-width: 270px;
+        max-width: 280px;
     }
 
     /* Header: brown branded strip */
     #mobile-sidebar .offcanvas-header {
         /* background: linear-gradient(135deg, #5C3A21, #3d2010); */
         border-bottom: 2px solid #FF9933;
-        padding: 1rem 1.25rem;
+        padding: 1rem 0rem 1rem 0.5rem;
     }
 
     /* Make close button white on dark header */
@@ -276,34 +278,105 @@
     }
 
     /* ── Menu items ── */
-    /* Inactive: dark text + dark icon */
+    /* Inactive: use same color-inheritance approach as desktop */
+    .side-menu__item {
+        color: #3a2a1a !important;
+    }
+
     .side-menu__item .side-menu__label {
-        color: #1a1a1a !important;
+        color: inherit !important;
     }
 
-    .side-menu__item svg {
-        fill: #1a1a1a !important;
+    /* Stroke-based icons: stroke follows color */
+    .side-menu__item svg[stroke="currentColor"] {
+        fill: none !important;
+        stroke: currentColor !important;
     }
 
-    /* Hover / focus */
+    /* Fill-based icon (dashboard): fill follows color */
+    .side-menu__item svg:not([stroke]) path[fill="currentColor"] {
+        fill: currentColor !important;
+    }
+
+    /* Hover / focus: saffron tint background + saffron color */
+    .side-menu__item:hover,
+    .side-menu__item:focus {
+        background-color: rgba(255, 153, 51, 0.12) !important;
+        color: var(--primary-bg-hover) !important;
+    }
+
     .side-menu__item:hover .side-menu__label,
     .side-menu__item:focus .side-menu__label {
-        color: #FF9933 !important;
+        color: var(--primary-bg-hover) !important;
     }
 
-    .side-menu__item:hover svg,
-    .side-menu__item:focus svg {
-        fill: #FF9933 !important;
+    /* Active: saffron background, white text + icon */
+    .side-menu__item.active {
+        background-color: var(--primary-bg-color) !important;
+        color: #fff !important;
+        box-shadow: 0 3px 10px rgba(255, 153, 51, 0.35) !important;
     }
 
-    /* Active: white text + white icon on saffron */
     .side-menu__item.active .side-menu__label {
         color: #fff !important;
+        font-weight: 600 !important;
     }
 
-    .side-menu__item.active svg,
-    .side-menu__item.active:hover svg {
-        fill: #fff !important;
+    /* Active on hover: slightly darker saffron, keep white text */
+    .side-menu__item.active:hover,
+    .side-menu__item.active:focus {
+        background-color: var(--primary-bg-hover) !important;
+        color: #fff !important;
+    }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   ADMIN: Header — extra small screens (< 400px)
+   ───────────────────────────────────────────────────────────── */
+@media (max-width: 399.98px) {
+    /* Hide username on very small screens — avatar only */
+    .profile-1 .nav-link .p-1 {
+        display: none !important;
+    }
+
+    .profile-user {
+        width: 32px !important;
+        height: 32px !important;
+    }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   ADMIN: Button responsive overrides
+   ───────────────────────────────────────────────────────────── */
+
+/* On very small screens, form action buttons stack full-width */
+@media (max-width: 575.98px) {
+    /* Form submit / cancel buttons stack full-width */
+    .card-body .mb-3 .btn,
+    .modal-footer .btn {
+        width: 100% !important;
+        justify-content: center !important;
+    }
+
+    .modal-footer {
+        flex-direction: column !important;
+        gap: 0.5rem !important;
+    }
+
+    /* Table icon buttons: slightly bigger touch targets */
+    tbody tr td div a.secondary,
+    tbody tr td div a.primary {
+        width: 34px !important;
+        height: 34px !important;
+        min-width: 34px !important;
+    }
+}
+
+/* Tablet: ensure Add button in toolbar doesn't shrink oddly */
+@media (max-width: 767.98px) {
+    .btn {
+        font-size: 0.82rem !important;
+        padding: 0.4rem 0.9rem !important;
     }
 }
 
