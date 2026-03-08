@@ -214,7 +214,7 @@
             margin-top: 3px;
         }
 
-        /* ── ORDERS TABLE ────────────────────────── */
+        /* ── SECTION TITLE ───────────────────────── */
         .section-title {
             font-size: 10px;
             font-weight: bold;
@@ -224,133 +224,122 @@
             margin-bottom: 8px;
         }
 
-        .orders-table {
+        /* ── PIVOT TABLE ─────────────────────────── */
+        .pivot-table {
             width: 100%;
             border-collapse: collapse;
+            table-layout: auto;
         }
 
-        .orders-table thead tr {
+        .pivot-table thead tr {
             background: #1c1917;
         }
 
-        .orders-table th {
-            padding: 9px 10px;
-            font-size: 9px;
+        .pivot-table thead th {
+            padding: 9px 8px;
+            font-size: 8.5px;
             font-weight: bold;
             text-transform: uppercase;
-            letter-spacing: 0.8px;
+            letter-spacing: 0.6px;
             color: #e7e5e4;
-            border: none;
-            text-align: left;
-        }
-
-        .orders-table th.text-right {
-            text-align: right;
-        }
-
-        .orders-table th.text-center {
+            border: 1px solid #44403c;
             text-align: center;
         }
 
-        .orders-table tbody tr {
+        .pivot-table thead th.date-header {
+            text-align: left;
+            width: 90px;
+        }
+
+        .pivot-table thead th.total-header {
+            background: #292524;
+            color: #fcd34d;
+            width: 70px;
+        }
+
+        .pivot-table tbody tr {
             border-bottom: 1px solid #f5f5f4;
         }
 
-        .orders-table tbody tr.row-even {
+        .pivot-table tbody tr.row-even {
             background: #fafaf9;
         }
 
-        .orders-table tbody tr.row-odd {
+        .pivot-table tbody tr.row-odd {
             background: #ffffff;
         }
 
-        .orders-table td {
-            padding: 9px 10px;
+        .pivot-table tbody td {
+            padding: 8px 8px;
+            border: 1px solid #f0efee;
+            font-size: 10px;
             vertical-align: middle;
-            border: none;
-            font-size: 10.5px;
         }
 
-        .orders-table .sr-no {
-            color: #a8a29e;
-            font-size: 9px;
-            font-weight: bold;
-            text-align: center;
-        }
-
-        .orders-table .customer-main {
-            font-weight: bold;
-            color: #1c1917;
-            font-size: 11px;
-        }
-
-        .orders-table .customer-sub {
-            font-size: 9px;
-            color: #78716c;
-            margin-top: 1px;
-        }
-
-        .orders-table .product-name {
-            color: #292524;
-        }
-
-        .orders-table .qty {
-            text-align: center;
+        .pivot-table tbody td.date-cell {
+            font-size: 9.5px;
             font-weight: bold;
             color: #44403c;
+            text-align: left;
+            white-space: nowrap;
         }
 
-        .orders-table .price {
-            text-align: right;
+        .pivot-table tbody td.qty-cell {
+            text-align: center;
             color: #57534e;
         }
 
-        .orders-table .amount {
-            text-align: right;
+        .pivot-table tbody td.qty-cell.has-value {
             font-weight: bold;
             color: #1c1917;
         }
 
-        .orders-table .date-col {
+        .pivot-table tbody td.qty-empty {
             text-align: center;
-            font-size: 9.5px;
-            color: #78716c;
+            color: #d4d0cb;
+            font-size: 9px;
         }
 
-        .orders-table .status-col {
+        .pivot-table tbody td.row-total-cell {
             text-align: center;
-        }
-
-        /* Status badges */
-        .badge {
-            display: inline-block;
-            padding: 2px 7px;
-            border-radius: 10px;
-            font-size: 8px;
             font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .badge-delivered {
-            background: #d1fae5;
-            color: #065f46;
-            border: 1px solid #6ee7b7;
-        }
-
-        .badge-pending {
-            background: #fef3c7;
             color: #92400e;
-            border: 1px solid #fcd34d;
+            background: #fffbeb;
+            border-left: 2px solid #fcd34d;
         }
 
-        .badge-cancelled {
-            background: #fee2e2;
-            color: #991b1b;
-            border: 1px solid #fca5a5;
+        /* Monthly total row */
+        .pivot-table tfoot tr.monthly-total-row {
+            background: #1c1917;
         }
 
-        /* ── TOTALS SECTION ──────────────────────── */
+        .pivot-table tfoot td {
+            padding: 10px 8px;
+            border: 1px solid #44403c;
+            font-size: 10px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .pivot-table tfoot td.monthly-label {
+            text-align: left;
+            color: #fcd34d;
+            font-size: 9px;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+
+        .pivot-table tfoot td.monthly-qty {
+            color: #e7e5e4;
+        }
+
+        .pivot-table tfoot td.monthly-grand {
+            color: #fcd34d;
+            background: #292524;
+            font-size: 11px;
+        }
+
+        /* ── TOTALS / NOTE SECTION ───────────────── */
         .totals-wrapper {
             margin-top: 20px;
             width: 100%;
@@ -472,241 +461,271 @@
 </head>
 
 <body>
-    <div class="page">
+<div class="page">
 
-        <!-- TOP ACCENT BAR -->
-        <div class="accent-bar"></div>
+    <!-- TOP ACCENT BAR -->
+    <div class="accent-bar"></div>
 
-        <!-- ─── HEADER ─────────────────────────────── -->
-        <table class="header-table">
-            <tr>
-                <td class="brand-logo" style="width: 85px;">
-                    <img src="{{ $logoPath }}" alt="Logo">
-                </td>
-                <td class="brand-info">
-                    <div class="brand-name">Brahmani Khandvi &amp; Farsan</div>
-                    <div class="brand-tagline">Authentic Gujarati Snacks &amp; Farsan</div>
-                    <div class="brand-address">
-                        Shop No-06, Arkview Tower, near Hari Om Subhanpura Water Tank,<br>
-                        Subhanpura, Vadodara, Gujarat &ndash; 390021
-                    </div>
-                </td>
-                <td class="receipt-info">
-                    <div class="receipt-badge">Monthly Order Receipt</div>
-                    <div class="receipt-title">ORDER REPORT</div>
-                    <div class="receipt-sub">
-                        @if($monthName)
-                            {{ $monthName }}
-                        @else
-                            All Orders
-                        @endif
-                    </div>
-                    <div class="receipt-meta">
-                        <strong>Receipt No:</strong> {{ $receiptNo }}<br>
-                        <strong>Generated:</strong> {{ $reportDate }}<br>
-                        <strong>Total Orders:</strong> {{ $orders->count() }}
-                    </div>
-                </td>
-            </tr>
-        </table>
-
-        <hr class="divider divider-amber">
-
-        <!-- ─── CUSTOMER / PERIOD INFO ─────────────── -->
-        @if($customerInfo)
-        <table class="info-grid">
-            <tr>
-                <td class="info-box">
-                    <div class="info-label">Bill To</div>
-                    <div class="info-value-main">{{ $customerInfo->customer_name }}</div>
-                    <div class="info-value-sub">{{ $customerInfo->shop_name }}</div>
-                    @if($customerInfo->shop_address)
-                        <div class="info-value-small">{{ $customerInfo->shop_address }}{{ $customerInfo->city ? ', ' . $customerInfo->city : '' }}</div>
+    <!-- ─── HEADER ─────────────────────────────── -->
+    <table class="header-table">
+        <tr>
+            <td class="brand-logo" style="width: 85px;">
+                <img src="{{ $logoPath }}" alt="Logo">
+            </td>
+            <td class="brand-info">
+                <div class="brand-name">Brahmani Khandvi &amp; Farsan</div>
+                <div class="brand-tagline">Authentic Gujarati Snacks &amp; Farsan</div>
+                <div class="brand-address">
+                    Shop No-06, Arkview Tower, near Hari Om Subhanpura Water Tank,<br>
+                    Subhanpura, Vadodara, Gujarat &ndash; 390021
+                </div>
+            </td>
+            <td class="receipt-info">
+                <div class="receipt-badge">Monthly Order Report</div>
+                <div class="receipt-title">PRODUCT MATRIX</div>
+                <div class="receipt-sub">
+                    @if($monthName)
+                        {{ $monthName }}
+                    @else
+                        All Orders
                     @endif
-                    @if($customerInfo->customer_number)
-                        <div class="info-value-small" style="margin-top:4px;">
-                            <strong>Phone:</strong> {{ $customerInfo->customer_number }}
-                        </div>
-                    @endif
-                    @if($customerInfo->customer_email)
-                        <div class="info-value-small">
-                            <strong>Email:</strong> {{ $customerInfo->customer_email }}
-                        </div>
-                    @endif
-                </td>
-                <td class="info-box-spacer"></td>
-                <td class="info-box info-box-right">
-                    <div class="info-label">Report Details</div>
-                    <div class="info-value-main">{{ $monthName ?? 'All Records' }}</div>
-                    <div class="info-value-sub" style="margin-top:6px;">
-                        <strong>Period:</strong>
-                        @if($monthYear)
-                            01 {{ $monthName }} &ndash; {{ date('t', strtotime($monthYear . '-01')) }} {{ $monthName }}
-                        @else
-                            All Time
-                        @endif
+                </div>
+                <div class="receipt-meta">
+                    <strong>Receipt No:</strong> {{ $receiptNo }}<br>
+                    <strong>Generated:</strong> {{ $reportDate }}
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    <hr class="divider divider-amber">
+
+    <!-- ─── CUSTOMER / PERIOD INFO ─────────────── -->
+    @if($customerInfo)
+    <table class="info-grid">
+        <tr>
+            <td class="info-box">
+                <div class="info-label">Bill To</div>
+                <div class="info-value-main">{{ $customerInfo->customer_name }}</div>
+                <div class="info-value-sub">{{ $customerInfo->shop_name }}</div>
+                @if($customerInfo->shop_address)
+                    <div class="info-value-small">{{ $customerInfo->shop_address }}{{ $customerInfo->city ? ', ' . $customerInfo->city : '' }}</div>
+                @endif
+                @if($customerInfo->customer_number)
+                    <div class="info-value-small" style="margin-top:4px;">
+                        <strong>Phone:</strong> {{ $customerInfo->customer_number }}
                     </div>
-                    <div class="info-value-sub"><strong>Receipt No:</strong> {{ $receiptNo }}</div>
-                    <div class="info-value-sub"><strong>Generated On:</strong> {{ $reportDate }}</div>
-                    <div class="info-value-sub"><strong>Total Entries:</strong> {{ $orders->count() }}</div>
-                </td>
-            </tr>
-        </table>
-        @else
-        <table class="info-grid">
-            <tr>
-                <td class="info-box" style="width:50%;">
-                    <div class="info-label">Report Period</div>
-                    <div class="info-value-main">{{ $monthName ?? 'All Orders' }}</div>
+                @endif
+                @if($customerInfo->customer_email)
+                    <div class="info-value-small">
+                        <strong>Email:</strong> {{ $customerInfo->customer_email }}
+                    </div>
+                @endif
+            </td>
+            <td class="info-box-spacer"></td>
+            <td class="info-box info-box-right">
+                <div class="info-label">Report Details</div>
+                <div class="info-value-main">{{ $monthName ?? 'All Records' }}</div>
+                <div class="info-value-sub" style="margin-top:6px;">
+                    <strong>Period:</strong>
                     @if($monthYear)
-                        <div class="info-value-sub" style="margin-top:4px;">
-                            01 {{ $monthName }} &ndash; {{ date('t', strtotime($monthYear . '-01')) }} {{ $monthName }}
-                        </div>
+                        01 {{ $monthName }} &ndash; {{ date('t', strtotime($monthYear . '-01')) }} {{ $monthName }}
+                    @else
+                        All Time
                     @endif
-                </td>
-                <td class="info-box-spacer"></td>
-                <td class="info-box info-box-right" style="width:50%;">
-                    <div class="info-label">Summary</div>
-                    <div class="info-value-sub"><strong>Receipt No:</strong> {{ $receiptNo }}</div>
-                    <div class="info-value-sub"><strong>Generated On:</strong> {{ $reportDate }}</div>
-                    <div class="info-value-sub"><strong>Total Orders:</strong> {{ $orders->count() }}</div>
-                    <div class="info-value-sub"><strong>Customers:</strong> {{ $orders->unique('customer_id')->count() }}</div>
-                </td>
-            </tr>
-        </table>
-        @endif
-
-        <!-- ─── SUMMARY STRIP ──────────────────────── -->
-        <table class="summary-strip">
-            <tr>
-                <td class="summary-cell" style="border-right: none; border-radius: 4px 0 0 4px;">
-                    <div class="summary-cell-value">{{ $orders->count() }}</div>
-                    <div class="summary-cell-label">Total Orders</div>
-                </td>
-                <td class="summary-cell" style="border-right: none;">
-                    <div class="summary-cell-value">{{ $orders->unique('customer_id')->count() }}</div>
-                    <div class="summary-cell-label">Customers</div>
-                </td>
-                <td class="summary-cell" style="border-right: none;">
-                    <div class="summary-cell-value">{{ number_format($totalOrderQuantity) }} KG</div>
-                    <div class="summary-cell-label">Total Quantity</div>
-                </td>
-                <td class="summary-cell" style="border-radius: 0 4px 4px 0;">
-                    <div class="summary-cell-value">&#8377; {{ number_format($totalOrderAmount, 2) }}</div>
-                    <div class="summary-cell-label">Grand Total</div>
-                </td>
-            </tr>
-        </table>
-
-        <!-- ─── ORDERS TABLE ───────────────────────── -->
-        <div class="section-title">Order Details</div>
-
-        <table class="orders-table">
-            <thead>
-                <tr>
-                    <th style="width: 32px;" class="text-center">#</th>
-                    @if(!$customerInfo)
-                    <th style="width: 150px;">Customer / Shop</th>
-                    @endif
-                    <th>Product</th>
-                    <th style="width: 75px;" class="text-center">Qty (KG)</th>
-                    <th style="width: 80px;" class="text-right">Unit Price</th>
-                    <th style="width: 90px;" class="text-right">Amount</th>
-                    {{-- <th style="width: 70px;" class="text-center">Status</th> --}}
-                    <th style="width: 80px;" class="text-center">Date</th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse($orders as $index => $order)
-                    @php
-                        $rowClass = ($index % 2 === 0) ? 'row-even' : 'row-odd';
-                    @endphp
-                    <tr class="{{ $rowClass }}">
-                        <td class="sr-no">{{ str_pad($index + 1, 2, '0', STR_PAD_LEFT) }}</td>
-                        @if(!$customerInfo)
-                        <td>
-                            <div class="customer-main">{{ $order->customer_name ?? 'N/A' }}</div>
-                            <div class="customer-sub">{{ $order->shop_name ?? '-' }}</div>
-                        </td>
-                        @endif
-                        <td class="product-name">{{ $order->product_name ?? '-' }}</td>
-                        <td class="qty">{{ number_format($order->order_quantity, 0) }}</td>
-                        <td class="price">&#8377; {{ number_format($order->order_price, 2) }}</td>
-                        <td class="amount">&#8377; {{ number_format($order->calculated_total, 2) }}</td>
-                        {{-- <td class="status-col">
-                            <span class="badge {{ $badgeClass }}">{{ $statusLabel }}</span>
-                        </td> --}}
-                        <td class="date-col">
-                            {{ date('d M Y', strtotime($order->created_at)) }}
-                        </td>
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan="8" class="text-center" style="padding: 20px; color: #a8a29e;">
-                            No orders found for the selected period.
-                        </td>
-                    </tr>
-                @endforelse
-            </tbody>
-        </table>
-
-        <!-- ─── TOTALS SECTION ─────────────────────── -->
-        <table class="totals-wrapper">
-            <tr>
-                <td class="totals-left">
-                    <div class="note-box">
-                        <strong>Note:</strong><br>
-                        &bull; This is a computer-generated receipt and does not require a signature.<br>
-                        {{-- &bull; All amounts are in Indian Rupees (&#8377;).<br> --}}
-                        &bull; For any queries, contact us at the address mentioned above.
+                </div>
+                <div class="info-value-sub"><strong>Receipt No:</strong> {{ $receiptNo }}</div>
+                <div class="info-value-sub"><strong>Generated On:</strong> {{ $reportDate }}</div>
+            </td>
+        </tr>
+    </table>
+    @else
+    <table class="info-grid">
+        <tr>
+            <td class="info-box" style="width:50%;">
+                <div class="info-label">Report Period</div>
+                <div class="info-value-main">{{ $monthName ?? 'All Orders' }}</div>
+                @if($monthYear)
+                    <div class="info-value-sub" style="margin-top:4px;">
+                        01 {{ $monthName }} &ndash; {{ date('t', strtotime($monthYear . '-01')) }} {{ $monthName }}
                     </div>
-                </td>
-                <td class="totals-right">
-                    <table class="totals-table">
-                        <tr>
-                            <td class="t-label">Total Orders</td>
-                            <td class="t-value">{{ $orders->count() }}</td>
-                        </tr>
-                        <tr>
-                            <td class="t-label">Total Quantity</td>
-                            <td class="t-value">{{ number_format($totalOrderQuantity) }} KG</td>
-                        </tr>
-                        <tr>
-                            <td class="t-label">Sub Total</td>
-                            <td class="t-value">&#8377; {{ number_format($totalOrderAmount, 2) }}</td>
-                        </tr>
-                        <tr>
-                            <td class="t-label">Tax / GST</td>
-                            <td class="t-value" style="color: #78716c; font-weight: normal;">Included</td>
-                        </tr>
-                        <tr class="grand-row">
-                            <td class="grand-label">Grand Total</td>
-                            <td class="grand-value">&#8377; {{ number_format($totalOrderAmount, 2) }}</td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-        </table>
+                @endif
+            </td>
+            <td class="info-box-spacer"></td>
+            <td class="info-box info-box-right" style="width:50%;">
+                <div class="info-label">Summary</div>
+                <div class="info-value-sub"><strong>Receipt No:</strong> {{ $receiptNo }}</div>
+                <div class="info-value-sub"><strong>Generated On:</strong> {{ $reportDate }}</div>
+                <div class="info-value-sub"><strong>Customers:</strong> {{ $orders->unique('customer_id')->count() }}</div>
+            </td>
+        </tr>
+    </table>
+    @endif
 
-        <!-- ─── FOOTER ─────────────────────────────── -->
-        <hr class="footer-divider">
-        <table class="footer-table">
+    @php
+        // ── BUILD PIVOT MATRIX ──────────────────────
+        // Unique sorted products
+        $pivotProducts = $orders->pluck('product_name')->unique()->sort()->values();
+
+        // Group orders by date (sort key Y-m-d, display key d M Y)
+        $byDate = [];
+        foreach ($orders as $order) {
+            $rawDate  = $order->order_date ?: date('Y-m-d', strtotime($order->created_at));
+            $sortKey  = date('Y-m-d', strtotime($rawDate));
+            $dispDate = date('d M Y', strtotime($rawDate));
+
+            if (!isset($byDate[$sortKey])) {
+                $byDate[$sortKey] = ['_display' => $dispDate];
+            }
+            $pName = $order->product_name;
+            $byDate[$sortKey][$pName] = ($byDate[$sortKey][$pName] ?? 0) + $order->order_quantity;
+        }
+        ksort($byDate);
+
+        // Per-product column totals
+        $pivotProductTotals = [];
+        foreach ($pivotProducts as $p) {
+            $pivotProductTotals[$p] = 0;
+        }
+        foreach ($byDate as $row) {
+            foreach ($pivotProducts as $p) {
+                $pivotProductTotals[$p] += ($row[$p] ?? 0);
+            }
+        }
+
+        // Per-date row totals
+        $pivotDateTotals = [];
+        foreach ($byDate as $key => $row) {
+            $sum = 0;
+            foreach ($pivotProducts as $p) {
+                $sum += ($row[$p] ?? 0);
+            }
+            $pivotDateTotals[$key] = $sum;
+        }
+
+        $pivotGrandQty  = array_sum($pivotDateTotals);
+        $totalDays      = count($byDate);
+        $totalProdCount = $pivotProducts->count();
+    @endphp
+
+    <!-- ─── SUMMARY STRIP ──────────────────────── -->
+    <table class="summary-strip">
+        <tr>
+            <td class="summary-cell" style="border-right: none; border-radius: 4px 0 0 4px;">
+                <div class="summary-cell-value">{{ $totalDays }}</div>
+                <div class="summary-cell-label">Total Days</div>
+            </td>
+            <td class="summary-cell" style="border-right: none;">
+                <div class="summary-cell-value">{{ $totalProdCount }}</div>
+                <div class="summary-cell-label">Total Products</div>
+            </td>
+            <td class="summary-cell" style="border-right: none;">
+                <div class="summary-cell-value">{{ number_format($totalOrderQuantity) }} KG</div>
+                <div class="summary-cell-label">Total Quantity</div>
+            </td>
+            <td class="summary-cell" style="border-radius: 0 4px 4px 0;">
+                <div class="summary-cell-value">&#8377; {{ number_format($totalOrderAmount, 2) }}</div>
+                <div class="summary-cell-label">Grand Total</div>
+            </td>
+        </tr>
+    </table>
+
+    <!-- ─── PIVOT MATRIX TABLE ─────────────────── -->
+    <div class="section-title">Product Quantity Matrix &mdash; {{ $monthName ?? 'All Orders' }}</div>
+
+    <table class="pivot-table">
+        <thead>
             <tr>
-                <td class="footer-left">
-                    This receipt was generated automatically by the Brahmani Farsan Hub system.<br>
-                    &copy; {{ date('Y') }} Brahmani Khandvi &amp; Farsan House. All rights reserved.
-                </td>
-                <td class="footer-right">
-                    <strong>Brahmani Khandvi &amp; Farsan House</strong><br>
-                    Shop No-06, Arkview Tower, Subhanpura, Vadodara &ndash; 390021
-                </td>
+                <th class="date-header">Date</th>
+                @foreach($pivotProducts as $product)
+                    <th>{{ $product }}</th>
+                @endforeach
+                <th class="total-header">Total (KG)</th>
             </tr>
-        </table>
+        </thead>
+        <tbody>
+            @foreach($byDate as $sortKey => $row)
+                <tr class="{{ $loop->even ? 'row-even' : 'row-odd' }}">
+                    <td class="date-cell">{{ $row['_display'] }}</td>
+                    @foreach($pivotProducts as $product)
+                        @if(isset($row[$product]) && $row[$product] > 0)
+                            <td class="qty-cell has-value">{{ number_format($row[$product], 0) }}</td>
+                        @else
+                            <td class="qty-empty">&mdash;</td>
+                        @endif
+                    @endforeach
+                    <td class="row-total-cell">{{ number_format($pivotDateTotals[$sortKey], 0) }}</td>
+                </tr>
+            @endforeach
+        </tbody>
+        <tfoot>
+            <tr class="monthly-total-row">
+                <td class="monthly-label">Monthly Total</td>
+                @foreach($pivotProducts as $product)
+                    <td class="monthly-qty">{{ number_format($pivotProductTotals[$product], 0) }}</td>
+                @endforeach
+                <td class="monthly-grand">{{ number_format($pivotGrandQty, 0) }}</td>
+            </tr>
+        </tfoot>
+    </table>
 
-        <!-- BOTTOM ACCENT BAR -->
-        <div class="bottom-bar"></div>
+    <!-- ─── TOTALS / NOTE SECTION ─────────────── -->
+    <table class="totals-wrapper">
+        <tr>
+            <td class="totals-left">
+                <div class="note-box">
+                    <strong>Note:</strong><br>
+                    &bull; Quantities are in KG. Each cell shows total KG ordered for that product on that date.<br>
+                    &bull; &mdash; indicates no order for that product on that date.<br>
+                    &bull; This is a computer-generated report and does not require a signature.
+                </div>
+            </td>
+            <td class="totals-right">
+                <table class="totals-table">
+                    <tr>
+                        <td class="t-label">Total Days with Orders</td>
+                        <td class="t-value">{{ $totalDays }}</td>
+                    </tr>
+                    <tr>
+                        <td class="t-label">Total Products</td>
+                        <td class="t-value">{{ $totalProdCount }}</td>
+                    </tr>
+                    <tr>
+                        <td class="t-label">Total Quantity (KG)</td>
+                        <td class="t-value">{{ number_format($totalOrderQuantity) }} KG</td>
+                    </tr>
+                    <tr>
+                        <td class="t-label">Grand Total Amount</td>
+                        <td class="t-value">&#8377; {{ number_format($totalOrderAmount, 2) }}</td>
+                    </tr>
+                    <tr class="grand-row">
+                        <td class="grand-label">Grand Total</td>
+                        <td class="grand-value">&#8377; {{ number_format($totalOrderAmount, 2) }}</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
 
-    </div>
+    <!-- ─── FOOTER ─────────────────────────────── -->
+    <hr class="footer-divider">
+    <table class="footer-table">
+        <tr>
+            <td class="footer-left">
+                This report was generated automatically by the Brahmani Farsan Hub system.<br>
+                &copy; {{ date('Y') }} Brahmani Khandvi &amp; Farsan House. All rights reserved.
+            </td>
+            <td class="footer-right">
+                <strong>Brahmani Khandvi &amp; Farsan House</strong><br>
+                Shop No-06, Arkview Tower, Subhanpura, Vadodara &ndash; 390021
+            </td>
+        </tr>
+    </table>
+
+    <!-- BOTTOM ACCENT BAR -->
+    <div class="bottom-bar"></div>
+
+</div>
 </body>
 
 </html>

@@ -15,6 +15,7 @@ class Order extends Model
         'product_id',
         'order_quantity',
         'order_price',
+        'order_date',
         'status',
     ];
 

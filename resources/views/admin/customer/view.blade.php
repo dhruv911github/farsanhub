@@ -18,37 +18,54 @@
                                 width="100" height="100">
                         @endif
 
+                        {{-- Title: Shop Name --}}
+                        <h5 class="mt-3 text-danger fw-bold">{{ ucfirst($customer->shop_name ?? $customer->customer_name ?? '-') }}</h5>
 
-                        <h5 class="mt-3 text-danger">{{ ucfirst($customer->customer_name ?? '-') }}</h5>
-                        <ul class="list-unstyled small text-start mt-3 text-secondary">
-                            <li class="mb-2 d-flex justify-content-start">
-                                <i
-                                    class="fa fa-map-marker me-2 text-danger d-flex justify-content-center align-items-center"></i>
-                                <span class="fw-bolder">{{ $customer->shop_address ?? '-' }}</span>
+                        <ul class="list-unstyled small text-start mt-2 text-secondary">
+                            {{-- Owner Name --}}
+                            <li class="mb-2 d-flex align-items-start">
+                                <i class="fa fa-user me-2 text-primary mt-1"></i>
+                                <span class="fw-bolder">{{ ucfirst($customer->customer_name ?? '-') }}</span>
                             </li>
+                            {{-- Location / Address with Google Maps link --}}
+                            <li class="mb-2 d-flex align-items-start">
+                                <i class="fa fa-map-marker me-2 text-danger mt-1"></i>
+                                <span class="fw-bolder">
+                                    @if($customer->latitude && $customer->longitude)
+                                        <a href="https://maps.google.com/?q={{ $customer->latitude }},{{ $customer->longitude }}"
+                                           target="_blank" class="text-secondary text-decoration-none">
+                                            {{ $customer->shop_address ?? $customer->city ?? '-' }}
+                                            <i class="fa fa-external-link text-danger" style="font-size:10px;"></i>
+                                        </a>
+                                    @else
+                                        {{ $customer->shop_address ?? $customer->city ?? '-' }}
+                                    @endif
+                                </span>
+                            </li>
+                            {{-- City --}}
+                            @if($customer->city && $customer->city !== $customer->shop_address)
+                            <li class="mb-2 d-flex align-items-start">
+                                <i class="fa fa-home me-2 text-success mt-1"></i>
+                                <span class="fw-bolder">{{ $customer->city }}</span>
+                            </li>
+                            @endif
+                            {{-- Mobile --}}
                             <li class="mb-2">
                                 <i class="fa fa-phone me-2 text-success"></i>
-                                <span class="fw-bolder">{{ $customer->customer_number ?? '-' }}</span>
+                                @if($customer->customer_number)
+                                <a href="tel:+91{{ $customer->customer_number }}" class="fw-bolder text-secondary text-decoration-none">
+                                    +91 {{ substr($customer->customer_number, 0, 5) }} {{ substr($customer->customer_number, 5) }}
+                                </a>
+                                @else
+                                <span class="fw-bolder">-</span>
+                                @endif
                             </li>
-                            <li class="mb-2 d-flex justify-content-start">
-                                <i
-                                    class="fa fa-envelope me-2 text-primary d-flex justify-content-center align-items-center"></i>
-                                <span class="fw-bolder">{{ $customer->customer_email ?? '-' }}</span>
-                            </li>
+                            {{-- Status --}}
                             <li class="mb-2 pb-1">
                                 <i class="fa fa-info-circle me-2 text-warning"></i>
                                 <span class="badge {{ $customer->status == 'Active' ? 'bg-success' : 'bg-danger' }}">
                                     {{ $customer->status ?? '-' }}
                                 </span>
-                            </li>
-                            <li class="mb-2">
-                                <i class="fa fa-home me-2 text-success"></i>
-                                <span class="fw-bolder">{{ $customer->city ?? '-' }}</span>
-                            </li>
-                            <li class="mb-2">
-                                <i class="fa fa-calendar me-2 text-muted"></i>
-                                <span
-                                    class="fw-bolder">{{ $customer->created_at ? date('d-m-Y', strtotime($customer->created_at)) : '-' }}</span>
                             </li>
                         </ul>
 

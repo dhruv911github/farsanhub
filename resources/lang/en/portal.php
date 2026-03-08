@@ -94,6 +94,12 @@ return [
     'customer_created' => 'Customer created successfully!',
     'customer_updated' => 'Customer updated successfully!',
     'customer_deleted' => 'Customer deleted successfully!',
+    'order_created' => 'Order created successfully!',
+    'order_updated' => 'Order updated successfully!',
+    'order_deleted' => 'Order deleted successfully!',
+    'product_created' => 'Product created successfully!',
+    'product_updated' => 'Product updated successfully!',
+    'product_deleted' => 'Product deleted successfully!',
     'customer_withdrawal_created' => 'Customer withdrawal created successfully!',
     'accepted_formats' => 'Accepted formats: JPEG, PNG, JPG, GIF. Max size: 2MB',
 

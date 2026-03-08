@@ -5,11 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Customer;
 use Illuminate\Http\Request;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
-use Stichoza\GoogleTranslate\GoogleTranslate;
 
 class CustomerController extends Controller
 {
@@ -19,10 +17,8 @@ class CustomerController extends Controller
             Log::info($request->all());
             $limit = $request->limit ?? 8;
             $search = $request->search;
-            $sort = 'desc';
 
             $query = Customer::where('user_id', auth()->id());
-            // $query = Customer::where('status', 'active');
             if ($search) {
                 $query->where(function ($q) use ($search) {
                     $q->where('customer_name', 'like', "%{$search}%")
@@ -34,13 +30,9 @@ class CustomerController extends Controller
             }
 
             $query->orderBy('created_at', 'desc');
-
-            // Get paginated results
             $customers = $query->paginate($limit);
-            // $customers = $query->latest()->paginate($limit);
 
             if ($request->ajax()) {
-                Log::info('CustomerController@index ajax');
                 return view('admin.customer.view', ['customers' => $customers]);
             }
 
@@ -59,80 +51,73 @@ class CustomerController extends Controller
     public function store(Request $request)
     {
         try {
-            // Manually create the validator
+            // Normalize phone number: strip +91 / country code, spaces, dashes, keep last 10 digits
+            $normalizedPhone = $this->normalizePhone($request->customer_number ?? '');
+            $request->merge(['customer_number' => $normalizedPhone]);
+
             $validator = Validator::make($request->all(), [
-                'customer_name' => 'required',
-                'shop_name' => 'required', // Added shop_name validation
-                'shop_address' => 'required',
+                'customer_name'   => 'required',
+                'shop_name'       => 'required',
+                'shop_address'    => 'required',
                 'customer_number' => 'required|string|size:10|regex:/^[0-9]+$/',
-                'customer_email' => 'nullable|email',  // Add email validation if email is provided
-                'city' => 'required',
-                'customer_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-                'shop_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-                'status' => 'required',
-                'latitude' => 'nullable',
-                'longitude' => 'nullable',
+                'customer_email'  => 'nullable|email',
+                'city'            => 'required',
+                'customer_image'  => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120',
+                'shop_image'      => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120',
+                'status'          => 'required',
+                'latitude'        => 'nullable',
+                'longitude'       => 'nullable',
             ], [
-                'customer_name.required' => __('validation.required_customer_name'),
-                'shop_name.required' => __('validation.required_shop_name'), // Added shop_name validation message
-                'shop_address.required' => __('validation.required_shop_address'),
+                'customer_name.required'   => __('validation.required_customer_name'),
+                'shop_name.required'       => __('validation.required_shop_name'),
+                'shop_address.required'    => __('validation.required_shop_address'),
                 'customer_number.required' => __('validation.required_customer_number'),
-                'customer_number.string' => __('validation.string_customer_number'),
-                'customer_number.size' => __('validation.size_customer_number'),
-                'customer_number.regex' => __('validation.regex_customer_number'),
-                'customer_email.email' => __('validation.email_customer_email'), // Add email validation error message
-                'status.required' => __('validation.required_status'),
-                'city.required' => __('validation.required_city'),
-                'customer_image.image' => __('validation.image_customer_image'),
-                'customer_image.mimes' => __('validation.mimes_customer_image'),
-                'customer_image.max' => __('validation.max_customer_image'),
+                'customer_number.size'     => __('validation.size_customer_number'),
+                'customer_number.regex'    => __('validation.regex_customer_number'),
+                'customer_email.email'     => __('validation.email_customer_email'),
+                'status.required'          => __('validation.required_status'),
+                'city.required'            => __('validation.required_city'),
             ]);
-        
-            // Check if the validation fails
+
             if ($validator->fails()) {
-                // Debugging: dd($validator->fails()); will return true if validation fails
-                // dd($validator->errors()); // This will output the error messages
-                
-                // Redirect back with validation errors and old input
-                return redirect()->back()
-                ->withErrors($validator)
-                ->withInput();
-            }        
-            // dd($request->all());
-            
+                return redirect()->back()->withErrors($validator)->withInput();
+            }
+
             $customerimagePath = null;
             $shopimagePath = null;
+
             if ($request->hasFile('customer_image')) {
-                $customerimagePath = $request->file('customer_image')->store('customer_images', 'public');
+                $customerimagePath = $this->compressAndStoreImage(
+                    $request->file('customer_image'), 'customer_images'
+                );
             }
 
             if ($request->hasFile('shop_image')) {
-                $shopimagePath = $request->file('shop_image')->store('shop_images', 'public');
+                $shopimagePath = $this->compressAndStoreImage(
+                    $request->file('shop_image'), 'shop_images'
+                );
             }
-            
-            // Save the customer data
+
             Customer::create([
-                'user_id' => auth()->id(),
-                'customer_name' => $request->customer_name ?? '',
-                'shop_name' => $request->shop_name ?? '', // Added shop_name to create
-                'shop_address' => $request->shop_address ?? '',
-                'customer_number' => $request->customer_number ?? '',
-                'customer_email' => $request->customer_email ?? '',
-                'status' => $request->status ?? '',
-                'city' => $request->city ?? '',
-                'customer_image' => $customerimagePath,
-                'shop_image' => $shopimagePath,
+                'user_id'         => auth()->id(),
+                'customer_name'   => $request->customer_name,
+                'shop_name'       => $request->shop_name,
+                'shop_address'    => $request->shop_address,
+                'customer_number' => $normalizedPhone,
+                'customer_email'  => $request->customer_email ?? '',
+                'status'          => $request->status,
+                'city'            => $request->city,
+                'customer_image'  => $customerimagePath,
+                'shop_image'      => $shopimagePath,
+                'latitude'        => $request->latitude,
+                'longitude'       => $request->longitude,
             ]);
 
-            // Redirect to the customer index page with a success message
             return redirect()->route('admin.customer.index')
                 ->with('success', __('portal.customer_created'));
         } catch (\Exception $e) {
-            // Log the error message for debugging
             Log::error('customer creation error: ' . $e->getMessage());
-
-            // Optionally, redirect back with an error message
-            return redirect()->back()->withInput()->withErrors(['error' => 'Something went wrong']);
+            return redirect()->back()->withInput()->with('error', 'Something went wrong');
         }
     }
 
@@ -146,80 +131,73 @@ class CustomerController extends Controller
     {
         abort_if($customer->user_id !== auth()->id(), 403);
         try {
+            $normalizedPhone = $this->normalizePhone($request->customer_number ?? '');
+            $request->merge(['customer_number' => $normalizedPhone]);
+
             $validator = Validator::make($request->all(), [
-                'customer_name' => 'required',
-                'shop_name' => 'required', // Added shop_name validation
-                'shop_address' => 'required',
+                'customer_name'   => 'required',
+                'shop_name'       => 'required',
+                'shop_address'    => 'required',
                 'customer_number' => 'required|string|size:10|regex:/^[0-9]+$/',
-                'customer_email' => 'nullable',
-                'city' => 'required',
-                'customer_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-                'shop_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-                'status' => 'required',
-                'latitude' => 'nullable',
-                'longitude' => 'nullable',
+                'customer_email'  => 'nullable|email',
+                'city'            => 'required',
+                'customer_image'  => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120',
+                'shop_image'      => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120',
+                'status'          => 'required',
+                'latitude'        => 'nullable',
+                'longitude'       => 'nullable',
             ], [
-                'customer_name.required' => __('validation.required_customer_name'),
-                'shop_name.required' => __('validation.required_shop_name'), // Added shop_name validation message
-                'shop_address.required' => __('validation.required_shop_address'),
+                'customer_name.required'   => __('validation.required_customer_name'),
+                'shop_name.required'       => __('validation.required_shop_name'),
+                'shop_address.required'    => __('validation.required_shop_address'),
                 'customer_number.required' => __('validation.required_customer_number'),
-                'customer_number.string' => __('validation.string_customer_number'),
-                'customer_number.size' => __('validation.size_customer_number'),
-                'customer_number.regex' => __('validation.regex_customer_number'),
-                'customer_email.required' => __('validation.required_customer_email'),
-                'status.required' => __('validation.required_status'),
-                'city.required' => __('validation.required_city'),
-                // 'customer_image.required' => __('validation.required_customer_image'),
-                // 'customer_image.mimes' => __('validation.image'),
-                // 'customer_image.max' => __('validation.max'),
+                'customer_number.size'     => __('validation.size_customer_number'),
+                'customer_number.regex'    => __('validation.regex_customer_number'),
+                'status.required'          => __('validation.required_status'),
+                'city.required'            => __('validation.required_city'),
             ]);
-            
-            // Check if the validation fails
+
             if ($validator->fails()) {
-            //  dd($validator->errors()); // This will output the error messages
-            
-                // Redirect back with validation errors and old input
-                return redirect()->back()
-                ->withErrors($validator)
-                ->withInput();
+                return redirect()->back()->withErrors($validator)->withInput();
             }
-            // dd($request->all());
-            
+
             $data = [
-                'customer_name' => $request->customer_name ?? '',
-                'shop_name' => $request->shop_name ?? '', // Added shop_name to update data
-                'shop_address' => $request->shop_address ?? '',
-                'customer_number' => $request->customer_number ?? '',
-                'customer_email' => $request->customer_email ?? '',
-                'city' => $request->city ?? '',
-                'status' => $request->status ?? '',
+                'customer_name'   => $request->customer_name,
+                'shop_name'       => $request->shop_name,
+                'shop_address'    => $request->shop_address,
+                'customer_number' => $normalizedPhone,
+                'customer_email'  => $request->customer_email ?? '',
+                'city'            => $request->city,
+                'status'          => $request->status,
+                'latitude'        => $request->latitude,
+                'longitude'       => $request->longitude,
             ];
 
             if ($request->hasFile('customer_image')) {
-                // Delete old image
                 if ($customer->customer_image) {
                     Storage::disk('public')->delete($customer->customer_image);
                 }
-                $data['customer_image'] = $request->file('customer_image')->store('customer_images', 'public');
+                $data['customer_image'] = $this->compressAndStoreImage(
+                    $request->file('customer_image'), 'customer_images'
+                );
             }
 
             if ($request->hasFile('shop_image')) {
-                // Delete old image
                 if ($customer->shop_image) {
                     Storage::disk('public')->delete($customer->shop_image);
                 }
-                $data['shop_image'] = $request->file('shop_image')->store('shop_images', 'public');
+                $data['shop_image'] = $this->compressAndStoreImage(
+                    $request->file('shop_image'), 'shop_images'
+                );
             }
 
             $customer->update($data);
 
-            Log::info('customer update : ' . $customer->id);
             return redirect()->route('admin.customer.index')
                 ->with('success', __('portal.customer_updated'));
         } catch (\Throwable $th) {
             Log::error('CustomerController@update Error: ' . $th->getMessage());
-            return redirect()->back()
-                ->with('error', $th->getMessage());
+            return redirect()->back()->with('error', $th->getMessage());
         }
     }
 
@@ -227,13 +205,11 @@ class CustomerController extends Controller
     {
         try {
             $customerId = $request->input('customer_id');
-
             $customer = Customer::where('id', $customerId)->where('user_id', auth()->id())->firstOrFail();
 
             if ($customer->customer_image) {
                 Storage::disk('public')->delete($customer->customer_image);
             }
-
             if ($customer->shop_image) {
                 Storage::disk('public')->delete($customer->shop_image);
             }
@@ -244,28 +220,104 @@ class CustomerController extends Controller
                 ->with('success', __('portal.customer_deleted'));
         } catch (\Throwable $th) {
             Log::error('CustomerController@destroy Error: ' . $th->getMessage());
-            return redirect()->back()
-                ->with('error', $th->getMessage());
+            return redirect()->back()->with('error', $th->getMessage());
         }
     }
 
     public function leafletMap()
     {
-        $labharthis = Customer::where('user_id', auth()->id())->orderBy('id', 'desc')->get();
+        $customers = Customer::where('user_id', auth()->id())->orderBy('id', 'desc')->get();
 
         $locations = [];
-        foreach ($labharthis as $labharthi) {
-            if (!empty($labharthi->latitude) || !empty($labharthi->longitude)) {
+        foreach ($customers as $customer) {
+            if (!empty($customer->latitude) && !empty($customer->longitude)) {
                 $locations[] = [
-                    'lat' => $labharthi->latitude,
-                    'lng' => $labharthi->longitude,
-                    'label' => $labharthi->customer_name,
+                    'lat'   => $customer->latitude,
+                    'lng'   => $customer->longitude,
+                    'label' => $customer->customer_name,
                 ];
             }
         }
 
-        // dd($locations);
-
         return view('admin.leaflet-map', compact('locations'));
+    }
+
+    /**
+     * Normalize phone number: strip country code/spaces/dashes, return last 10 digits.
+     */
+    private function normalizePhone(string $phone): string
+    {
+        // Remove everything except digits
+        $digits = preg_replace('/\D/', '', $phone);
+
+        // If more than 10 digits (country code included), keep last 10
+        if (strlen($digits) > 10) {
+            $digits = substr($digits, -10);
+        }
+
+        return $digits;
+    }
+
+    /**
+     * Compress and store an uploaded image using GD, returns storage path.
+     */
+    private function compressAndStoreImage($file, string $folder, int $maxWidth = 1200, int $quality = 75): string
+    {
+        $extension = strtolower($file->getClientOriginalExtension());
+        $filename  = uniqid() . '.jpg';
+        $storagePath = $folder . '/' . $filename;
+        $fullPath    = storage_path('app/public/' . $storagePath);
+
+        // Ensure directory exists
+        if (!file_exists(dirname($fullPath))) {
+            mkdir(dirname($fullPath), 0755, true);
+        }
+
+        // Create GD image from uploaded file
+        $tmpPath = $file->getPathname();
+
+        $src = match ($extension) {
+            'jpg', 'jpeg' => @imagecreatefromjpeg($tmpPath),
+            'png'         => @imagecreatefrompng($tmpPath),
+            'gif'         => @imagecreatefromgif($tmpPath),
+            default       => @imagecreatefromjpeg($tmpPath),
+        };
+
+        // Fallback: just store original if GD fails
+        if (!$src) {
+            $file->storeAs($folder, $filename, 'public');
+            return $storagePath;
+        }
+
+        $origW = imagesx($src);
+        $origH = imagesy($src);
+
+        // Scale down if needed
+        if ($origW > $maxWidth) {
+            $ratio  = $maxWidth / $origW;
+            $newW   = $maxWidth;
+            $newH   = (int) round($origH * $ratio);
+        } else {
+            $newW = $origW;
+            $newH = $origH;
+        }
+
+        $dst = imagecreatetruecolor($newW, $newH);
+
+        // Preserve transparency for PNG
+        if ($extension === 'png') {
+            imagealphablending($dst, false);
+            imagesavealpha($dst, true);
+            $transparent = imagecolorallocatealpha($dst, 255, 255, 255, 127);
+            imagefill($dst, 0, 0, $transparent);
+        }
+
+        imagecopyresampled($dst, $src, 0, 0, 0, 0, $newW, $newH, $origW, $origH);
+        imagejpeg($dst, $fullPath, $quality);
+
+        imagedestroy($src);
+        imagedestroy($dst);
+
+        return $storagePath;
     }
 }

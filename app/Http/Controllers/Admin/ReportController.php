@@ -36,11 +36,11 @@ class ReportController extends Controller
             ->orderBy('customer_name')
             ->get();
 
-        // Order months for dropdown — grouped at DB level for performance
-        $orderMonths = Order::selectRaw("DATE_FORMAT(created_at, '%Y-%m') as value, DATE_FORMAT(created_at, '%M-%Y') as label")
+        // Order months for dropdown — use order_date when set, fall back to created_at
+        $orderMonths = Order::selectRaw("DATE_FORMAT(COALESCE(order_date, DATE(created_at)), '%Y-%m') as value, DATE_FORMAT(COALESCE(order_date, DATE(created_at)), '%M-%Y') as label")
             ->where('user_id', auth()->id())
-            ->groupByRaw("DATE_FORMAT(created_at, '%Y-%m'), DATE_FORMAT(created_at, '%M-%Y')")
-            ->orderByRaw("DATE_FORMAT(created_at, '%Y-%m') DESC")
+            ->groupByRaw("DATE_FORMAT(COALESCE(order_date, DATE(created_at)), '%Y-%m'), DATE_FORMAT(COALESCE(order_date, DATE(created_at)), '%M-%Y')")
+            ->orderByRaw("DATE_FORMAT(COALESCE(order_date, DATE(created_at)), '%Y-%m') DESC")
             ->get();
 
         // Expense months for dropdown — grouped at DB level for performance
@@ -61,11 +61,12 @@ class ReportController extends Controller
     public function customerReport(Request $request)
     {
         try {
-            // $monthYear = $request->input('month_year');
-            // $formatted = Carbon::parse($monthYear . '-01')->format('F-Y');
+            $count = Customer::where('user_id', auth()->id())->count();
+            if ($count === 0) {
+                return redirect()->back()->with('error', 'No customers found to export.');
+            }
 
             return Excel::download(new CustomerExport(), 'Customer-List.xlsx');
-            // return Excel::download(new CustomerExport(), $formatted . '-Customer-List.xlsx');
 
         } catch (\Throwable $th) {
             Log::error('ReportController@customerReport Error: ' . $th->getMessage());
@@ -76,6 +77,11 @@ class ReportController extends Controller
     public function productReport(Request $request)
     {
         try {
+            $count = \App\Models\Product::where('user_id', auth()->id())->count();
+            if ($count === 0) {
+                return redirect()->back()->with('error', 'No products found to export.');
+            }
+
             return Excel::download(new ProductExport(), 'Product-List.xlsx');
         } catch (\Throwable $th) {
             Log::error('ReportController@productReport Error: ' . $th->getMessage());
@@ -87,9 +93,12 @@ class ReportController extends Controller
     {
         try {
             $customerId = $request->input('customer_id');
-            $monthYear = $request->input('month_year');
-            // dd($monthYear); 
+            $monthYear  = $request->input('month_year');
             $exportType = $request->input('export_type');
+
+            if (!$monthYear) {
+                return redirect()->back()->with('error', 'Please select a month and year before exporting.');
+            }
 
             // Get filtered orders (same as before but improved with joins)
             $orders = Order::join('products', 'orders.product_id', '=', 'products.id')
@@ -99,9 +108,16 @@ class ReportController extends Controller
                     $query->where('orders.customer_id', $customerId);
                 })
                 ->when($monthYear, function ($query) use ($monthYear) {
-                    $start = Carbon::parse($monthYear . '-01')->startOfMonth();
-                    $end   = Carbon::parse($monthYear . '-01')->endOfMonth();
-                    $query->whereBetween('orders.created_at', [$start, $end]);
+                    $start = Carbon::parse($monthYear . '-01')->startOfMonth()->toDateString();
+                    $end   = Carbon::parse($monthYear . '-01')->endOfMonth()->toDateString();
+                    $query->where(function ($q) use ($start, $end) {
+                        $q->whereBetween('orders.order_date', [$start, $end])
+                          ->orWhere(function ($q2) use ($start, $end) {
+                              $q2->whereNull('orders.order_date')
+                                 ->whereDate('orders.created_at', '>=', $start)
+                                 ->whereDate('orders.created_at', '<=', $end);
+                          });
+                    });
                 })
                 ->select(
                     'orders.*',
@@ -116,7 +132,11 @@ class ReportController extends Controller
                 ->orderBy('orders.created_at', 'asc')
                 ->get();
 
-            // Excel Export (UNCHANGED)
+            if ($orders->isEmpty()) {
+                return redirect()->back()->with('error', 'No orders found for the selected filters. Please adjust your selection and try again.');
+            }
+
+            // Excel Export
             if ($exportType == 'excel') {
                 return Excel::download(
                     new OrderExport($customerId, $monthYear),
@@ -168,9 +188,11 @@ class ReportController extends Controller
                     'receiptNo' => $receiptNo,
                 ]);
 
-                $fileName = $monthName
-                    ? str_replace(' ', '-', $monthName) . '-Order-Report.pdf'
-                    : 'Order-Report.pdf';
+                $shopPart = $customerInfo
+                    ? rtrim(preg_replace('/[^A-Za-z0-9]+/', '-', $customerInfo->shop_name), '-') . '-'
+                    : '';
+                $datePart = now()->format('d-M-Y');
+                $fileName = $shopPart . 'Order-Receipt-' . $datePart . '.pdf';
 
                 return $pdf->download($fileName);
             }
@@ -184,8 +206,20 @@ class ReportController extends Controller
     {
         try {
             $monthYear = $request->input('month_year');
-            $formatted = Carbon::parse($monthYear . '-01')->format('F-Y');
 
+            if (!$monthYear) {
+                return redirect()->back()->with('error', 'Please select a month and year before exporting.');
+            }
+
+            $count = Expense::where('user_id', auth()->id())
+                ->whereRaw("DATE_FORMAT(created_at, '%Y-%m') = ?", [$monthYear])
+                ->count();
+
+            if ($count === 0) {
+                return redirect()->back()->with('error', 'No expenses found for the selected month.');
+            }
+
+            $formatted = Carbon::parse($monthYear . '-01')->format('F-Y');
             return Excel::download(new ExpenseExport($monthYear), $formatted . '-Expense-List.xlsx');
         } catch (\Throwable $th) {
             Log::error('ReportController@expenseReport Error: ' . $th->getMessage());

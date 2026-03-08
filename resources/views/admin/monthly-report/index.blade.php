@@ -15,7 +15,7 @@
 
     <div class="row">
 
-        <div class="col-sm-12 col-md-6 col-lg-3 mb-2">
+        <div class="col-sm-12 col-md-6 col-lg-4 mb-2">
             <div class="card ">
                 <div class="card-body">
                     <form action="{{ route('admin.monthly-report.order') }}" method="GET" enctype="multipart/form-data">
@@ -44,8 +44,7 @@
                         <div class="col-sm-12 col-md-6 col-lg-6 ps-0 d-flex gap-2">
 
                             <!-- Excel Button -->
-                            <button type="submit" name="export_type" value="excel" class="btn btn-primary"
-                                title="Export Excel">
+                            <button type="button" id="orderExcelBtn" class="btn btn-primary" title="Export Excel">
                                 <i class="fa fa-file-excel-o"></i>
                             </button>
 
@@ -60,7 +59,7 @@
             </div>
         </div>
 
-        <div class="col-sm-12 col-md-6 col-lg-3 mb-2">
+        <div class="col-sm-12 col-md-6 col-lg-2 mb-2">
             <div class="card ">
                 <div class="card-body">
                     <form action="{{ route('admin.monthly-report.customer') }}" method="GET"
@@ -88,7 +87,7 @@
             </div>
         </div>
 
-        <div class="col-sm-12 col-md-6 col-lg-3 mb-2">
+        <div class="col-sm-12 col-md-6 col-lg-2 mb-2">
             <div class="card ">
                 <div class="card-body">
                     <form action="{{ route('admin.monthly-report.product') }}" method="GET"
@@ -119,32 +118,36 @@
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
         <script>
-            document.getElementById('pdfExportBtn').addEventListener('click', function () {
-                const form = this.closest('form');
+            const orderWarning = Swal.mixin({
+                toast: true, position: 'top-end', showConfirmButton: false, timer: 3500
+            });
+
+            function submitOrderForm(exportType) {
+                const form = document.getElementById('orderExcelBtn').closest('form');
                 const monthYear = form.querySelector('select[name="month_year"]').value;
 
                 if (!monthYear) {
-                    Swal.mixin({
-                        toast: true,
-                        position: 'top-end',
-                        showConfirmButton: false,
-                        timer: 3500,
-                        // timerProgressBar: true,
-                    }).fire({
+                    orderWarning.fire({
                         icon: 'warning',
-                        text: 'Select Customer and any month and year before exporting PDF.',
+                        text: 'Please select a month and year before exporting.'
                     });
                     return;
                 }
 
-                // Inject hidden input and submit
                 const input = document.createElement('input');
                 input.type = 'hidden';
                 input.name = 'export_type';
-                input.value = 'pdf';
+                input.value = exportType;
                 form.appendChild(input);
                 form.submit();
-                form.removeChild(input);
+            }
+
+            document.getElementById('orderExcelBtn').addEventListener('click', function () {
+                submitOrderForm('excel');
+            });
+
+            document.getElementById('pdfExportBtn').addEventListener('click', function () {
+                submitOrderForm('pdf');
             });
         </script>
         @if (session()->has('success'))

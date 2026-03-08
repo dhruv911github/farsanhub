@@ -7,11 +7,8 @@ use App\Models\Customer;
 use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Http\Request;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
-use Stichoza\GoogleTranslate\GoogleTranslate;
 
 class OrderController extends Controller
 {
@@ -19,32 +16,23 @@ class OrderController extends Controller
     {
         try {
             $search = $request->has('search') && !empty($request->search) ? $request->search : null;
-            $limit = $request->has('limit') ? (int)$request->limit : 10;
+            $limit  = $request->has('limit') ? (int) $request->limit : 10;
 
-            // Query builder with joins
             $query = Order::join('products', 'orders.product_id', '=', 'products.id')
                 ->join('customers', 'orders.customer_id', '=', 'customers.id')
                 ->where('orders.user_id', auth()->id())
-                ->select(
-                    'orders.*',
-                    'products.product_name',
-                    'customers.customer_name',
-                    'customers.shop_name'
-                );
+                ->select('orders.*', 'products.product_name', 'customers.customer_name', 'customers.shop_name');
 
-            // Add date filters
-            if ($request->has('start_date') && $request->has('end_date')) {
-                $query->whereDate('orders.created_at', '>=', $request->start_date)
-                    ->whereDate('orders.created_at', '<=', $request->end_date);
+            if ($request->start_date) {
+                $query->whereDate('orders.order_date', '>=', $request->start_date);
             }
-
-            // Add customer_id filter
-            if ($request->has('customer_id')) {
+            if ($request->end_date) {
+                $query->whereDate('orders.order_date', '<=', $request->end_date);
+            }
+            if ($request->customer_id) {
                 $query->where('orders.customer_id', $request->customer_id);
             }
-            
-            // Global search
-            if (!empty($request->search)) {
+            if (!empty($search)) {
                 $query->where(function ($q) use ($search) {
                     $q->where('products.product_name', 'like', "%{$search}%")
                         ->orWhere('customers.customer_name', 'like', "%{$search}%")
@@ -52,85 +40,62 @@ class OrderController extends Controller
                 });
             }
 
-            $orders = $query->orderBy('orders.created_at', 'desc')
-                ->paginate($limit);
-
-            // // Debug logs
-            // Log::info('OrderController@index - SQL:', ['query' => $query->toSql()]);
-            // Log::info('OrderController@index - Bindings:', $query->getBindings());
+            $orders = $query->orderBy('orders.order_date', 'desc')->orderBy('orders.created_at', 'desc')->paginate($limit);
 
             if ($request->ajax()) {
-                Log::info('OrderController@index ajax');
                 return view('admin.order.view', ['orders' => $orders]);
             }
-
             return view('admin.order.index', compact('orders', 'limit', 'search'));
         } catch (\Exception $e) {
-            Log::error('OrderController@index error: ' . $e->getMessage(), ['exception' => $e]);
+            Log::error('OrderController@index error: ' . $e->getMessage());
             return redirect()->back()->with('error', 'Something went wrong while fetching orders.');
         }
     }
 
     public function create()
     {
-        $products = Product::select('product_name', 'id')->where('user_id', auth()->id())->get();
-        $customers = Customer::select('shop_name', 'customer_name', 'id')->where('user_id', auth()->id())->get();
+        $products  = Product::select('product_name', 'id')->where('user_id', auth()->id())->where('status', 'Active')->get();
+        $customers = Customer::select('shop_name', 'customer_name', 'id')->where('user_id', auth()->id())->where('status', 'Active')->get();
         return view('admin.order.create', compact('products', 'customers'));
     }
 
     public function store(Request $request)
     {
         try {
-            // Manually create the validator
             $validator = Validator::make($request->all(), [
-                'customer' => 'required|integer',
-                'product'  => 'required|integer',
-                'order_quantity' => 'required|numeric|min:1',
-            ], [
-                'customer.required' => __('validation.required_customer'),
-                'product.required'  => __('validation.required_product'),
-                'order_quantity.required' => __('validation.order_quantity'),
-                'order_quantity.min'      => __('validation.min_order_quantity'),
+                'customer'       => 'required|integer',
+                'product'        => 'required|integer',
+                'order_quantity' => 'required|numeric|min:0.01',
+                'order_date'     => 'required|date',
             ]);
 
             if ($validator->fails()) {
-                return redirect()->back()
-                    ->withErrors($validator)
-                    ->withInput();
+                return redirect()->back()->withErrors($validator)->withInput();
             }
 
-            // Verify the customer belongs to the authenticated user
-            $customer = Customer::where('id', $request->customer)
-                ->where('user_id', auth()->id())
-                ->firstOrFail();
-
-            // Verify the product belongs to the authenticated user
-            $Product = Product::where('id', $request->product)
-                ->where('user_id', auth()->id())
-                ->firstOrFail();
+            $customer = Customer::where('id', $request->customer)->where('user_id', auth()->id())->firstOrFail();
+            $product  = Product::where('id', $request->product)->where('user_id', auth()->id())->firstOrFail();
 
             Order::create([
                 'user_id'        => auth()->id(),
                 'customer_id'    => $customer->id,
-                'product_id'     => $Product->id,
+                'product_id'     => $product->id,
                 'order_quantity' => $request->order_quantity,
-                'order_price'    => $Product->product_base_price,
+                'order_price'    => $product->product_base_price,
+                'order_date'     => $request->order_date,
             ]);
 
-            // Redirect to the order index page with a success message
-            return redirect()->route('admin.order.index')
-                ->with('success', __('portal.order_created'));
+            return redirect()->route('admin.order.index')->with('success', __('portal.order_created'));
         } catch (\Exception $e) {
             Log::error('order creation error: ' . $e->getMessage());
-
-            return redirect()->back()->withInput()->withErrors(['error' => 'Something went wrong']);
+            return redirect()->back()->withInput()->with('error', 'Something went wrong');
         }
     }
 
     public function edit(Order $order)
     {
         abort_if($order->user_id !== auth()->id(), 403);
-        $products = Product::select('product_name', 'id')->where('user_id', auth()->id())->get();
+        $products  = Product::select('product_name', 'id')->where('user_id', auth()->id())->get();
         $customers = Customer::select('shop_name', 'customer_name', 'id')->where('user_id', auth()->id())->get();
         return view('admin.order.edit', compact('order', 'products', 'customers'));
     }
@@ -141,37 +106,27 @@ class OrderController extends Controller
         try {
             $validator = Validator::make($request->all(), [
                 'product'        => 'required|integer',
-                'order_quantity' => 'required|numeric|min:1',
-            ], [
-                'product.required'        => __('validation.required_product'),
-                'order_quantity.required' => __('validation.required_order_quantity'),
-                'order_quantity.numeric'  => __('validation.numeric_order_quantity'),
-                'order_quantity.min'      => __('validation.min_order_quantity'),
+                'order_quantity' => 'required|numeric|min:0.01',
+                'order_date'     => 'nullable|date',
             ]);
 
             if ($validator->fails()) {
-                return redirect()->back()
-                    ->withErrors($validator)
-                    ->withInput();
+                return redirect()->back()->withErrors($validator)->withInput();
             }
 
-            // Verify product belongs to authenticated user
-            $Product = Product::where('id', $request->product)
-                ->where('user_id', auth()->id())
-                ->firstOrFail();
+            $product = Product::where('id', $request->product)->where('user_id', auth()->id())->firstOrFail();
 
             $order->update([
-                'product_id'     => $Product->id,
+                'product_id'     => $product->id,
                 'order_quantity' => $request->order_quantity,
-                'order_price'    => $Product->product_base_price,
+                'order_price'    => $product->product_base_price,
+                'order_date'     => $request->order_date ?: $order->order_date,
             ]);
 
-            return redirect()->route('admin.order.index')
-                ->with('success', __('portal.order_updated'));
+            return redirect()->route('admin.order.index')->with('success', __('portal.order_updated'));
         } catch (\Throwable $th) {
             Log::error('OrderController@update Error: ' . $th->getMessage());
-            return redirect()->back()
-                ->with('error', $th->getMessage());
+            return redirect()->back()->with('error', $th->getMessage());
         }
     }
 
@@ -179,17 +134,12 @@ class OrderController extends Controller
     {
         try {
             $orderId = $request->input('order_id');
-
             $order = Order::where('id', $orderId)->where('user_id', auth()->id())->firstOrFail();
-
             $order->delete();
-
-            return redirect()->route('admin.order.index')
-                ->with('success', __('portal.order_deleted'));
+            return redirect()->route('admin.order.index')->with('success', __('portal.order_deleted'));
         } catch (\Throwable $th) {
             Log::error('OrderController@destroy Error: ' . $th->getMessage());
-            return redirect()->back()
-                ->with('error', $th->getMessage());
+            return redirect()->back()->with('error', $th->getMessage());
         }
     }
 }

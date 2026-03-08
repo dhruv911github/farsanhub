@@ -126,6 +126,12 @@ return [
     'customer_created' => 'દુકાનદાર બનાવાયેલ છે!',
     'customer_updated' => 'દુકાનદાર સુધારેલ છે!',
     'customer_deleted' => 'દુકાનદાર કાઢી નાખવાયેલ છે!',
+    'order_created' => 'ઓર્ડર બનાવાયેલ છે!',
+    'order_updated' => 'ઓર્ડર સુધારેલ છે!',
+    'order_deleted' => 'ઓર્ડર કાઢી નાખવાયેલ છે!',
+    'product_created' => 'પ્રોડક્ટ બનાવાયેલ છે!',
+    'product_updated' => 'પ્રોડક્ટ સુધારેલ છે!',
+    'product_deleted' => 'પ્રોડક્ટ કાઢી નાખવાયેલ છે!',
     'customer_withdrawal_created' => 'દુકાનદાર ઉપાડ બનાવાયેલ છે!',
 
     'accepted_formats' => 'પોસ્ટરનુ ફોર્હાટ: JPEG, PNG, JPG, GIF. મહત્તમ પોસ્ટરનુ માપ: 2MB',

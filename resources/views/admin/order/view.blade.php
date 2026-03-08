@@ -13,7 +13,7 @@
     <tbody>
         @if ($orders->isEmpty())
             <tr>
-                <td colspan="6" class="text-center text-danger">{{ @trans('messages.no_content') }}</td>
+                <td colspan="7" class="text-center text-danger">{{ @trans('messages.no_content') }}</td>
             </tr>
         @else
             @forelse($orders as $index => $order)
@@ -23,7 +23,7 @@
                     <td>{{ $order->product_name }}</td>
                     <td>{{ $order->order_quantity }} KG</td>
                     <td>₹{{ number_format($order->order_quantity * $order->order_price, 2) }}</td>
-                    <td style="white-space: nowrap;">{{ date('d-m-Y', strtotime($order->created_at)) }}</td>
+                    <td style="white-space: nowrap;">{{ date('d-m-Y', strtotime($order->order_date ?: $order->created_at)) }}</td>
                     <td class="text-center">
                         <div class="btn-group">
                             <a class="secondary edit-technician-btn me-2"
