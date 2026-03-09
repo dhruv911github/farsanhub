@@ -2,7 +2,7 @@
 
 <style>
     .table-responsive {
-        max-height: 400px;
+        max-height: 480px;
         overflow-y: auto;
     }
     @media (max-width: 576px) {

@@ -132,12 +132,18 @@ class OrderController extends Controller
     public function edit(Order $order)
     {
         abort_if($order->user_id !== auth()->id(), 403);
-        $products  = Product::where('user_id', auth()->id())
-            ->where(function($q) use ($order) {
-                $q->where('customer_id', $order->customer_id)
-                  ->orWhereNull('customer_id');
+        $products = Product::where('products.user_id', auth()->id())
+            ->leftJoin('product_prices', function($join) use ($order) {
+                $join->on('products.id', '=', 'product_prices.product_id')
+                     ->where('product_prices.customer_id', '=', $order->customer_id);
             })
-            ->select('product_name', 'unit', 'id')->get();
+            ->select(
+                'products.id',
+                'products.product_name',
+                'products.unit',
+                DB::raw('COALESCE(product_prices.price, products.product_base_price) as effective_price')
+            )
+            ->get();
         $customers = Customer::select('shop_name', 'customer_name', 'id')->where('user_id', auth()->id())->get();
         return view('admin.order.edit', compact('order', 'products', 'customers'));
     }

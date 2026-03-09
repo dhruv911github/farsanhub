@@ -6,10 +6,12 @@ use App\Exports\CustomerExport;
 use App\Exports\ExpenseExport;
 use App\Exports\OrderExport;
 use App\Exports\ProductExport;
+use App\Exports\PurchaseOrderExport;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\Customer;
 use App\Models\Expense;
+use App\Models\PurchaseOrder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Log;
@@ -50,11 +52,19 @@ class ReportController extends Controller
             ->orderByRaw("DATE_FORMAT(COALESCE(date, DATE(created_at)), '%Y-%m') DESC")
             ->get();
 
+        // Purchase order months for dropdown
+        $purchaseOrderMonths = PurchaseOrder::selectRaw("DATE_FORMAT(COALESCE(order_date, DATE(created_at)), '%Y-%m') as value, DATE_FORMAT(COALESCE(order_date, DATE(created_at)), '%M-%Y') as label")
+            ->where('user_id', auth()->id())
+            ->groupByRaw("DATE_FORMAT(COALESCE(order_date, DATE(created_at)), '%Y-%m'), DATE_FORMAT(COALESCE(order_date, DATE(created_at)), '%M-%Y')")
+            ->orderByRaw("DATE_FORMAT(COALESCE(order_date, DATE(created_at)), '%Y-%m') DESC")
+            ->get();
+
         return view('admin.monthly-report.index', compact(
             'selectedMonthYear',
             'customers',
             'orderMonths',
-            'expenseMonths'
+            'expenseMonths',
+            'purchaseOrderMonths'
         ));
     }
 
@@ -199,6 +209,38 @@ class ReportController extends Controller
         } catch (\Throwable $th) {
             Log::error('ReportController@orderReport Error: ' . $th->getMessage());
             return redirect()->back()->with('error', $th->getMessage());
+        }
+    }
+
+    public function purchaseOrderReport(Request $request)
+    {
+        try {
+            $customerId = $request->input('customer_id');
+            $monthYear  = $request->input('month_year');
+
+            if (!$monthYear) {
+                return redirect()->back()->with('error', 'Please select a month and year before exporting.');
+            }
+
+            $start = Carbon::parse($monthYear . '-01')->startOfMonth()->toDateString();
+            $end   = Carbon::parse($monthYear . '-01')->endOfMonth()->toDateString();
+
+            $count = PurchaseOrder::where('user_id', auth()->id())
+                ->when($customerId, fn($q) => $q->where('customer_id', $customerId))
+                ->whereBetween('order_date', [$start, $end])
+                ->count();
+
+            if ($count === 0) {
+                return redirect()->back()->with('error', 'No purchase orders found for the selected filters.');
+            }
+
+            $formatted = Carbon::parse($monthYear . '-01')->format('F-Y');
+            $fileName  = $formatted . '-Purchase-Orders.xlsx';
+
+            return Excel::download(new PurchaseOrderExport($customerId, $monthYear), $fileName);
+        } catch (\Throwable $th) {
+            Log::error('ReportController@purchaseOrderReport Error: ' . $th->getMessage());
+            return redirect()->back()->with('error', 'Could not export purchase orders. Please try again.');
         }
     }
 
