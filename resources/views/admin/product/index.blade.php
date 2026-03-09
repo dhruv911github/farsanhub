@@ -20,7 +20,13 @@
     .clickable-image { cursor: pointer; }
     @media (max-width: 767.98px) {
         .filter-bar > select,
-        .filter-bar > input { width: 100% !important; flex: 0 0 100% !important; }
+        .filter-bar > input { width: 100% !important; flex: 0 0 100% !important; margin-bottom: 5px; }
+        .product-card { padding: 0.5rem; }
+        .product-card h5 { font-size: 1.1rem; }
+    }
+    .table-responsive {
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
     }
 </style>
 

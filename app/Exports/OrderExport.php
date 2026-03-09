@@ -48,11 +48,17 @@ class OrderExport implements FromCollection, WithHeadings, WithStyles, WithColum
 
         // Filter by month-year if provided
         if ($this->monthYear) {
-            $start = Carbon::parse($this->monthYear . '-01')->startOfMonth();
-            $end = Carbon::parse($this->monthYear . '-01')->endOfMonth();
+            $start = Carbon::parse($this->monthYear . '-01')->startOfMonth()->toDateString();
+            $end = Carbon::parse($this->monthYear . '-01')->endOfMonth()->toDateString();
 
-            $query->whereDate('orders.created_at', '>=', $start)
-                ->whereDate('orders.created_at', '<=', $end);
+            $query->where(function ($q) use ($start, $end) {
+                $q->whereBetween('orders.order_date', [$start, $end])
+                  ->orWhere(function ($q2) use ($start, $end) {
+                      $q2->whereNull('orders.order_date')
+                         ->whereDate('orders.created_at', '>=', $start)
+                         ->whereDate('orders.created_at', '<=', $end);
+                  });
+            });
 
             Log::info('Export Date Range: ' . $start . ' to ' . $end);
         }
@@ -75,7 +81,7 @@ class OrderExport implements FromCollection, WithHeadings, WithStyles, WithColum
                 'order_quantity' => ($item->order_quantity ?? '0') . ' KG',
                 'order_price' => '₹ ' . $item->order_price ?? '',
                 'total_amount' => '₹ ' . $totalAmount,
-                'date' => $item->created_at ? date('d-m-Y', strtotime($item->created_at)) : '-',
+                'date' => $item->order_date ? date('d-m-Y', strtotime($item->order_date)) : ($item->created_at ? date('d-m-Y', strtotime($item->created_at)) : '-'),
             ];
         });
     }

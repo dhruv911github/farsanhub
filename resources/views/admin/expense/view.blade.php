@@ -15,8 +15,8 @@
         margin-left: 10px;
     }
 </style>
-
-<table class="table table-bordered border-bottom w-100 table-checkable no-footer " id="logs-table">
+<div class="table-responsive mb-2">
+<table class="table table-bordered border-bottom w-100 table-checkable no-footer mb-2" id="logs-table">
     <thead>
         <tr role="row">
             <th class="text-uppercase fw-bold">#</th>
@@ -54,6 +54,6 @@
     </tbody>
 </table>
 
-<div class="d-md-flex justify-content-center">
+<div class="d-flex justify-content-center">
     {{ $expenses->links('admin.parts.pagination') }}
 </div>

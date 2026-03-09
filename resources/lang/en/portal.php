@@ -54,6 +54,7 @@ return [
     'customers' => 'Customers',
     'customer_name' => 'Customer Name',
     'shop_name' => 'Shop Name',
+    'shop' => 'Shop',
     'shop_address' => 'Shop Address',
     'customer_mobile' => 'Customer Mobile',
     'city' => 'City',
@@ -123,7 +124,8 @@ return [
     'order_price' => 'Order Price',
     'customer' => 'Customer',
     'product' => 'Product',
+    'customer_specific_pricing' => 'Customer Specific Pricing',
+    'price' => 'Price',
 
     'contact_form_submitted' => 'Your message has been sent successfully!',
-
 ];

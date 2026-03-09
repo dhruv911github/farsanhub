@@ -21,10 +21,14 @@
 
                         <h5 class="mt-3 text-danger">{{ ucfirst($product->product_name ?? '-') }}</h5>
                         <ul class="list-unstyled small text-start mt-3 text-secondary">
-                            <li class="mb-2 d-flex justify-content-start">
-                                <i
-                                    class="fa fa-rupee me-2 text-danger d-flex justify-content-center align-items-center"></i>
-                                <span class="fw-bolder">{{ $product->product_base_price ?? '-' }} / kg</span>
+                            <li class="mb-2 d-flex justify-content-start align-items-center flex-wrap gap-1">
+                                <i class="fa fa-rupee me-1 text-danger"></i>
+                                <span class="fw-bolder fs-5 text-dark">{{ $product->effective_price ?? $product->product_base_price }} / kg</span>
+                                @if(isset($product->specific_price) && $product->specific_price)
+                                    <span class="badge bg-danger ms-1 small" style="font-size: 0.7rem;">Specific Price</span>
+                                @elseif(request()->has('customer_id') && request()->customer_id)
+                                    <span class="badge bg-secondary ms-1 small" style="font-size: 0.7rem;">Base Price</span>
+                                @endif
                             </li>
                             <li class="mb-2 pb-1">
                                 <i class="fa fa-info-circle me-2 text-warning"></i>

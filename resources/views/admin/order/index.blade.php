@@ -69,7 +69,7 @@
                         </a>
                     </div>
 
-                    <div id="order-cards" class="mt-4 table-responsive">
+                    <div id="order-cards" class="mt-4">
                         @include('admin.order.view')
                     </div>
                 </div>

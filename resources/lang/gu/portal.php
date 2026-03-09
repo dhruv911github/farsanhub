@@ -141,6 +141,7 @@ return [
     // Additional missing translations
     'customer_name' => 'ગ્રાહકનું નામ',
     'shop_name' => 'દુકાનનું નામ',
+    'shop' => 'દુકાન',
     'shop_address' => 'દુકાનનું સરનામું',
     'customer_email' => 'ગ્રાહક ઈમેઈલ',
     'shop_image' => 'દુકાનનો ફોટો',
@@ -149,5 +150,7 @@ return [
     'product_name' => 'પ્રોડક્ટનું નામ',
     'product_base_price' => 'પ્રોડક્ટની મૂળ કિંમત',
     'product_image' => 'પ્રોડક્ટનો ફોટો',
-    'reports' => 'રિપોર્ટ્સ'
+    'reports' => 'રિપોર્ટ્સ',
+    'customer_specific_pricing' => 'દુકાનદાર મુજબ કિંમત',
+    'price' => 'કિંમત'
 ];

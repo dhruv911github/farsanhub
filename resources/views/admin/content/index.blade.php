@@ -51,7 +51,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="mt-4 table-responsive">
+                <div class="mt-4">
                     @include('admin.content.view')
                 </div>
             </div>

@@ -47,7 +47,7 @@
                 </div>
 
                 <!-- Table content -->
-                <div class="mt-4 table-responsive">
+                <div class="mt-4">
                     @include('admin.expense.view')
                 </div>
             </div>

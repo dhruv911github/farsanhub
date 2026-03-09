@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Customer;
 use App\Models\Product;
+use App\Models\ProductPrice;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
@@ -20,24 +21,34 @@ class ProductController extends Controller
             $customerId = $request->customer_id;
             $productId  = $request->product_id;
 
-            $query = Product::where('user_id', auth()->id());
+            $query = Product::where('products.user_id', auth()->id());
 
             if ($search) {
                 $query->where(function ($q) use ($search) {
-                    $q->where('product_name', 'like', "%{$search}%")
-                        ->orWhere('product_base_price', 'like', "%{$search}%");
+                    $q->where('products.product_name', 'like', "%{$search}%")
+                        ->orWhere('products.product_base_price', 'like', "%{$search}%");
                 });
             }
 
             if ($customerId) {
-                $query->where('customer_id', $customerId);
+                $query->leftJoin('product_prices', function($join) use ($customerId) {
+                    $join->on('products.id', '=', 'product_prices.product_id')
+                         ->where('product_prices.customer_id', '=', $customerId);
+                })
+                ->select(
+                    'products.*',
+                    \Illuminate\Support\Facades\DB::raw('COALESCE(product_prices.price, products.product_base_price) as effective_price'),
+                    'product_prices.price as specific_price'
+                );
+            } else {
+                $query->select('products.*', \Illuminate\Support\Facades\DB::raw('products.product_base_price as effective_price'));
             }
 
             if ($productId) {
-                $query->where('id', $productId);
+                $query->where('products.id', $productId);
             }
 
-            $query->orderBy('created_at', 'desc');
+            $query->orderBy('products.created_at', 'desc');
             $products  = $query->paginate($limit);
             $customers = Customer::where('user_id', auth()->id())->select('id', 'customer_name', 'shop_name')->get();
             $allProducts = Product::where('user_id', auth()->id())->select('id', 'product_name')->get();
@@ -87,7 +98,7 @@ class ProductController extends Controller
                 );
             }
 
-            Product::create([
+            $product = Product::create([
                 'user_id'            => auth()->id(),
                 'customer_id'        => $request->customer_id ?: null,
                 'product_name'       => $request->product_name,
@@ -95,6 +106,20 @@ class ProductController extends Controller
                 'status'             => $request->status,
                 'product_image'      => $productimagePath,
             ]);
+
+            // Save customer specific prices if any
+            if ($request->has('customer_prices')) {
+                foreach ($request->customer_prices as $customerId => $price) {
+                    if ($price !== null && $price !== '') {
+                        ProductPrice::create([
+                            'user_id'     => auth()->id(),
+                            'product_id'  => $product->id,
+                            'customer_id' => $customerId,
+                            'price'       => $price,
+                        ]);
+                    }
+                }
+            }
 
             return redirect()->route('admin.product.index')
                 ->with('success', __('portal.product_created'));
@@ -147,6 +172,21 @@ class ProductController extends Controller
             }
 
             $product->update($data);
+
+            // Sync customer specific prices
+            ProductPrice::where('product_id', $product->id)->delete();
+            if ($request->has('customer_prices')) {
+                foreach ($request->customer_prices as $customerId => $price) {
+                    if ($price !== null && $price !== '') {
+                        ProductPrice::create([
+                            'user_id'     => auth()->id(),
+                            'product_id'  => $product->id,
+                            'customer_id' => $customerId,
+                            'price'       => $price,
+                        ]);
+                    }
+                }
+            }
 
             return redirect()->route('admin.product.index')
                 ->with('success', __('portal.product_updated'));

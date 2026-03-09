@@ -1,5 +1,16 @@
 @extends('layouts.app')
 
+<style>
+    .table-responsive {
+        max-height: 400px;
+        overflow-y: auto;
+    }
+    @media (max-width: 576px) {
+        .input-group-text { padding: 0.375rem 0.5rem; font-size: 0.8rem; }
+        .form-control { font-size: 0.9rem; }
+    }
+</style>
+
 @section('content')
     <div class="page-header">
         <div>
@@ -75,20 +86,41 @@
                                     @enderror
                                 </div>
 
-                                <div class="mb-3 col-md-6">
-                                    <label for="product_image" class="form-label">{{ @trans('portal.product_image') }}</label>
-                                    <div class="mb-2">
-                                        <img id="product_image_preview"
-                                            src="{{ ($product->product_image && file_exists(public_path('storage/' . $product->product_image))) ? asset('storage/' . $product->product_image) : '#' }}"
-                                            alt="{{ $product->product_name }}" class="img-thumbnail {{ ($product->product_image && file_exists(public_path('storage/' . $product->product_image))) ? '' : 'd-none' }}" style="max-width: 200px;">
+                                <div class="col-sm-12 col-md-8 col-lg-6 mb-3">
+                                    <h4 class="mb-3 text-danger border-bottom pb-2">{{ @trans('portal.customer_specific_pricing') }}</h4>
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered table-striped align-items-center">
+                                            <thead>
+                                                <tr>
+                                                    <!-- <th width="40%">{{ @trans('portal.customer') }}</th> -->
+                                                    <th width="30%" class="text-nowrap">{{ @trans('portal.shop_name') }}</th>
+                                                    <th width="70%" class="text-nowrap">{{ @trans('portal.price') }} (₹)</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach($customers as $customer)
+                                                    @php
+                                                        $customerPrice = $product->prices->where('customer_id', $customer->id)->first();
+                                                    @endphp
+                                                    <tr>
+                                                        <!-- <td>{{ $customer->customer_name }}</td> -->
+                                                        <td class="text-nowrap">{{ $customer->shop_name }}</td>
+                                                        <td>
+                                                            <div class="input-group">
+                                                                <input type="number" step="0.01" min="0" 
+                                                                    class="form-control" 
+                                                                    name="customer_prices[{{ $customer->id }}]" 
+                                                                    value="{{ old('customer_prices.' . $customer->id, $customerPrice ? $customerPrice->price : '') }}"
+                                                                    placeholder="{{ $product->product_base_price }}">
+                                                                <span class="input-group-text">/ kg</span>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
                                     </div>
-                                    <input type="file" class="form-control @error('product_image') is-invalid @enderror"
-                                        id="product_image" name="product_image" accept="image/*"
-                                        onchange="previewImage(this, 'product_image_preview')">
-                                    @error('product_image')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                    <small class="form-text text-muted">{{ @trans('portal.accepted_formats') }}</small>
+                                    <small class="text-muted">Leave blank to use the base price (₹{{ $product->product_base_price }}).</small>
                                 </div>
 
                                 <div class="mb-3 d-flex flex-wrap gap-2">

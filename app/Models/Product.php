@@ -8,8 +8,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Product extends Model
 {
-    use HasFactory, SoftDeletes;
-
     protected $fillable = [
         'user_id',
         'customer_id',
@@ -18,4 +16,9 @@ class Product extends Model
         'status',
         'product_image',
     ];
+
+    public function prices()
+    {
+        return $this->hasMany(ProductPrice::class);
+    }
 }

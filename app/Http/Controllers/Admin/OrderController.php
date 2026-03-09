@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\Customer;
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\ProductPrice;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
@@ -61,16 +63,34 @@ class OrderController extends Controller
     public function getProductsByCustomer(Request $request)
     {
         $customerId = $request->customer_id;
-        $products = Product::where('user_id', auth()->id())
-            ->where(function($q) use ($customerId) {
-                $q->where('customer_id', $customerId)
-                  ->orWhereNull('customer_id');
+        $products = Product::where('products.user_id', auth()->id())
+            ->where('products.status', 'Active')
+            ->leftJoin('product_prices', function($join) use ($customerId) {
+                $join->on('products.id', '=', 'product_prices.product_id')
+                     ->where('product_prices.customer_id', '=', $customerId);
             })
-            ->where('status', 'Active')
-            ->select('id', 'product_name', 'product_base_price')
+            ->select(
+                'products.id',
+                'products.product_name',
+                DB::raw('COALESCE(product_prices.price, products.product_base_price) as product_base_price')
+            )
             ->get();
         
         return response()->json($products);
+    }
+    
+    private function getEffectivePrice($productId, $customerId)
+    {
+        $specialPrice = ProductPrice::where('product_id', $productId)
+            ->where('customer_id', $customerId)
+            ->first();
+            
+        if ($specialPrice) {
+            return $specialPrice->price;
+        }
+        
+        $product = Product::findOrFail($productId);
+        return $product->product_base_price;
     }
 
     public function store(Request $request)
@@ -90,10 +110,6 @@ class OrderController extends Controller
             $customer = Customer::where('id', $request->customer)->where('user_id', auth()->id())->firstOrFail();
             $product  = Product::where('id', $request->product)
                 ->where('user_id', auth()->id())
-                ->where(function($q) use ($customer) {
-                    $q->where('customer_id', $customer->id)
-                      ->orWhereNull('customer_id');
-                })
                 ->firstOrFail();
 
             Order::create([
@@ -101,7 +117,7 @@ class OrderController extends Controller
                 'customer_id'    => $customer->id,
                 'product_id'     => $product->id,
                 'order_quantity' => $request->order_quantity,
-                'order_price'    => $product->product_base_price,
+                'order_price'    => $this->getEffectivePrice($product->id, $customer->id),
                 'order_date'     => $request->order_date,
             ]);
 
@@ -141,16 +157,12 @@ class OrderController extends Controller
 
             $product = Product::where('id', $request->product)
                 ->where('user_id', auth()->id())
-                ->where(function($q) use ($order) {
-                    $q->where('customer_id', $order->customer_id)
-                      ->orWhereNull('customer_id');
-                })
                 ->firstOrFail();
 
             $order->update([
                 'product_id'     => $product->id,
                 'order_quantity' => $request->order_quantity,
-                'order_price'    => $product->product_base_price,
+                'order_price'    => $this->getEffectivePrice($product->id, $order->customer_id),
                 'order_date'     => $request->order_date ?: $order->order_date,
             ]);
 
