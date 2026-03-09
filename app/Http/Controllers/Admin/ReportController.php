@@ -43,11 +43,11 @@ class ReportController extends Controller
             ->orderByRaw("DATE_FORMAT(COALESCE(order_date, DATE(created_at)), '%Y-%m') DESC")
             ->get();
 
-        // Expense months for dropdown — grouped at DB level for performance
-        $expenseMonths = Expense::selectRaw("DATE_FORMAT(created_at, '%Y-%m') as value, DATE_FORMAT(created_at, '%M-%Y') as label")
+        // Expense months for dropdown — use manual date when set, fall back to created_at
+        $expenseMonths = Expense::selectRaw("DATE_FORMAT(COALESCE(date, DATE(created_at)), '%Y-%m') as value, DATE_FORMAT(COALESCE(date, DATE(created_at)), '%M-%Y') as label")
             ->where('user_id', auth()->id())
-            ->groupByRaw("DATE_FORMAT(created_at, '%Y-%m'), DATE_FORMAT(created_at, '%M-%Y')")
-            ->orderByRaw("DATE_FORMAT(created_at, '%Y-%m') DESC")
+            ->groupByRaw("DATE_FORMAT(COALESCE(date, DATE(created_at)), '%Y-%m'), DATE_FORMAT(COALESCE(date, DATE(created_at)), '%M-%Y')")
+            ->orderByRaw("DATE_FORMAT(COALESCE(date, DATE(created_at)), '%Y-%m') DESC")
             ->get();
 
         return view('admin.monthly-report.index', compact(
@@ -212,7 +212,7 @@ class ReportController extends Controller
             }
 
             $count = Expense::where('user_id', auth()->id())
-                ->whereRaw("DATE_FORMAT(created_at, '%Y-%m') = ?", [$monthYear])
+                ->whereRaw("DATE_FORMAT(COALESCE(date, DATE(created_at)), '%Y-%m') = ?", [$monthYear])
                 ->count();
 
             if ($count === 0) {

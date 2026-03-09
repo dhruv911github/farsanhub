@@ -54,9 +54,23 @@ class OrderController extends Controller
 
     public function create()
     {
-        $products  = Product::select('product_name', 'id')->where('user_id', auth()->id())->where('status', 'Active')->get();
         $customers = Customer::select('shop_name', 'customer_name', 'id')->where('user_id', auth()->id())->where('status', 'Active')->get();
-        return view('admin.order.create', compact('products', 'customers'));
+        return view('admin.order.create', compact('customers'));
+    }
+
+    public function getProductsByCustomer(Request $request)
+    {
+        $customerId = $request->customer_id;
+        $products = Product::where('user_id', auth()->id())
+            ->where(function($q) use ($customerId) {
+                $q->where('customer_id', $customerId)
+                  ->orWhereNull('customer_id');
+            })
+            ->where('status', 'Active')
+            ->select('id', 'product_name', 'product_base_price')
+            ->get();
+        
+        return response()->json($products);
     }
 
     public function store(Request $request)
@@ -74,7 +88,13 @@ class OrderController extends Controller
             }
 
             $customer = Customer::where('id', $request->customer)->where('user_id', auth()->id())->firstOrFail();
-            $product  = Product::where('id', $request->product)->where('user_id', auth()->id())->firstOrFail();
+            $product  = Product::where('id', $request->product)
+                ->where('user_id', auth()->id())
+                ->where(function($q) use ($customer) {
+                    $q->where('customer_id', $customer->id)
+                      ->orWhereNull('customer_id');
+                })
+                ->firstOrFail();
 
             Order::create([
                 'user_id'        => auth()->id(),
@@ -95,7 +115,12 @@ class OrderController extends Controller
     public function edit(Order $order)
     {
         abort_if($order->user_id !== auth()->id(), 403);
-        $products  = Product::select('product_name', 'id')->where('user_id', auth()->id())->get();
+        $products  = Product::where('user_id', auth()->id())
+            ->where(function($q) use ($order) {
+                $q->where('customer_id', $order->customer_id)
+                  ->orWhereNull('customer_id');
+            })
+            ->select('product_name', 'id')->get();
         $customers = Customer::select('shop_name', 'customer_name', 'id')->where('user_id', auth()->id())->get();
         return view('admin.order.edit', compact('order', 'products', 'customers'));
     }
@@ -114,7 +139,13 @@ class OrderController extends Controller
                 return redirect()->back()->withErrors($validator)->withInput();
             }
 
-            $product = Product::where('id', $request->product)->where('user_id', auth()->id())->firstOrFail();
+            $product = Product::where('id', $request->product)
+                ->where('user_id', auth()->id())
+                ->where(function($q) use ($order) {
+                    $q->where('customer_id', $order->customer_id)
+                      ->orWhereNull('customer_id');
+                })
+                ->firstOrFail();
 
             $order->update([
                 'product_id'     => $product->id,

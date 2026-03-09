@@ -45,11 +45,6 @@
                                     <label for="product" class="form-label">{{ @trans('portal.product') }} <span class="text-danger">*</span></label>
                                     <select name="product" id="product" class="form-control form-select @error('product') is-invalid @enderror">
                                         <option value="">-- {{ @trans('portal.product') }} --</option>
-                                        @foreach ($products as $product)
-                                            <option value="{{ $product->id }}" {{ $product->id == old('product') ? 'selected' : '' }}>
-                                                {{ $product->product_name }}
-                                            </option>
-                                        @endforeach
                                     </select>
                                     @error('product')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -96,4 +91,32 @@
             </div>
         </div>
     </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#customer').change(function() {
+                var customerId = $(this).val();
+                var productSelect = $('#product');
+                productSelect.html('<option value="">-- {{ @trans("portal.product") }} --</option>');
+
+                if (customerId) {
+                    $.ajax({
+                        url: "{{ route('admin.order.products-by-customer') }}",
+                        type: "GET",
+                        data: { customer_id: customerId },
+                        success: function(data) {
+                            $.each(data, function(index, product) {
+                                productSelect.append('<option value="' + product.id + '">' + product.product_name + ' (₹' + product.product_base_price + ')</option>');
+                            });
+                        }
+                    });
+                }
+            });
+
+            // Trigger change if customer is already selected (for old input or redirect back)
+            if ($('#customer').val()) {
+                $('#customer').trigger('change');
+            }
+        });
+    </script>
 @endsection

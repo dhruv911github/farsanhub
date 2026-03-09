@@ -19,7 +19,7 @@ return new class extends Migration
             $table->integer('customer_id')->nullable();
             $table->integer('product_id')->nullable();
             $table->float('order_quantity', 8, 2)->nullable();
-            $table->integer('order_price')->nullable();
+            $table->decimal('order_price', 10, 2)->nullable();
             $table->string('status')->nullable();
             $table->timestamps();
         });

@@ -38,7 +38,7 @@
             @endforeach
             <tr class=" fw-bold">
                 <td colspan="3" class="text-end">Total:</td>
-                <td>{{ $orders->sum('order_quantity') }} KG</td>
+                <td>{{ number_format($orders->sum('order_quantity'), 2) }} KG</td>
                 <td>₹{{ number_format($orders->sum(function ($order) {return $order->order_quantity * $order->order_price;}),2) }}
                 </td>
                 <td colspan="2"></td>

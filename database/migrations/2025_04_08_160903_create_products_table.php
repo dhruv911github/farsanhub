@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id')->nullable();
             $table->string('product_name')->nullable();
-            $table->integer('product_base_price')->nullable();
+            $table->decimal('product_base_price', 10, 2)->nullable();
             $table->string('status')->nullable();
             $table->string('product_image');
             $table->softDeletes();
