@@ -54,23 +54,14 @@
                                             class="form-control @error('product_base_price') is-invalid @enderror"
                                             id="product_base_price" name="product_base_price" value="{{ old('product_base_price') }}"
                                             placeholder="0.00">
-                                        <span class="input-group-text">/ kg</span>
+                                        <select id="unit" name="unit" class="input-group-text form-select ps-0" style="max-width:100px; border-left:1px solid #ced4da;">
+                                            <option value="kg"   {{ old('unit', 'kg') == 'kg'   ? 'selected' : '' }}>/ kg</option>
+                                            <option value="Nang" {{ old('unit') == 'Nang' ? 'selected' : '' }}>/ Nang</option>
+                                        </select>
                                         @error('product_base_price')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
                                     </div>
-                                </div>
-
-                                <div class="col-md-6 mb-3">
-                                    <label for="customer_id" class="form-label">{{ @trans('portal.customer') }}</label>
-                                    <select class="form-select" id="customer_id" name="customer_id">
-                                        <option value="">-- {{ @trans('portal.customer') }} --</option>
-                                        @foreach($customers as $customer)
-                                            <option value="{{ $customer->id }}" {{ old('customer_id') == $customer->id ? 'selected' : '' }}>
-                                                {{ $customer->shop_name ?: $customer->customer_name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
                                 </div>
 
                                 <div class="col-md-6 mb-3">
@@ -117,12 +108,12 @@
                                                         <td>{{ $customer->shop_name }}</td>
                                                         <td>
                                                             <div class="input-group">
-                                                                <input type="number" step="0.01" min="0" 
-                                                                    class="form-control" 
-                                                                    name="customer_prices[{{ $customer->id }}]" 
+                                                                <input type="number" step="0.01" min="0"
+                                                                    class="form-control"
+                                                                    name="customer_prices[{{ $customer->id }}]"
                                                                     value="{{ old('customer_prices.' . $customer->id) }}"
                                                                     placeholder="Base Price">
-                                                                <span class="input-group-text">/ kg</span>
+                                                                <span class="input-group-text unit-label">/ kg</span>
                                                             </div>
                                                         </td>
                                                     </tr>
@@ -162,5 +153,12 @@ function previewImage(input, previewId) {
         reader.readAsDataURL(input.files[0]);
     }
 }
+
+document.getElementById('unit').addEventListener('change', function () {
+    var label = '/ ' + this.value;
+    document.querySelectorAll('.unit-label').forEach(function (el) {
+        el.textContent = label;
+    });
+});
 </script>
 @endsection

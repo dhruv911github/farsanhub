@@ -27,6 +27,12 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
+    <!-- Flatpickr -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <style>
+        .flatpickr-input.form-control { background-color: #fff !important; cursor: pointer; }
+    </style>
+
 </head>
 
 
@@ -74,6 +80,30 @@
     <!-- Include Leaflet CSS and JS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+    <!-- Flatpickr JS + global date picker init -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('input[type="date"]').forEach(function (el) {
+                var config = {
+                    dateFormat: 'Y-m-d',
+                    altInput: true,
+                    altFormat: 'd-m-Y',
+                    allowInput: false,
+                    disableMobile: true,
+                };
+                // If the input has data-fp-onchange, call that window function on date select
+                if (el.dataset.fpOnchange) {
+                    var fnName = el.dataset.fpOnchange;
+                    config.onChange = function () {
+                        if (typeof window[fnName] === 'function') window[fnName]();
+                    };
+                }
+                flatpickr(el, config);
+            });
+        });
+    </script>
 
     <script>
         let map;

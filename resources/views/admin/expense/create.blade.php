@@ -47,7 +47,7 @@
 
                             <div class="mb-3 col-md-6">
                                 <label for="date" class="form-label">{{ @trans('portal.date') }}</label>
-                                <input type="date" class="form-control" name="date" id="date" value="{{ old('date') }}">
+                                <input type="date" class="form-control" placeholder="DD-MM-YYYY" name="date" id="date" value="{{ old('date') }}">
                                 @error('date')
                                 <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror

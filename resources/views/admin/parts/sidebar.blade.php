@@ -5,9 +5,9 @@
         <div class="main-sidemenu text-center pb-3">
             <img src="{{ asset('images/logo.png') }}" alt="logo" class="dashboard-logo" width="100px">
         </div>
-        <div class="p-0 side-menu">
+        <div class="pt-2 side-menu">
 
-            <div class="slide animate-right">
+            <div class="slide animate-right px-2">
                 <a @class(['side-menu__item has-link', 'active' => request()->routeIs('admin.dashboard')])
                     data-bs-toggle="slide" href="{{ route('admin.dashboard') }}">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1772 1772">
@@ -18,7 +18,7 @@
                 </a>
             </div>
 
-            <div class="slide animate-right">
+            <div class="slide animate-right px-2">
                 <a @class(['side-menu__item has-link', 'active' => request()->routeIs('admin.expense.*')])
                     data-bs-toggle="slide" href="{{ route('admin.expense.index') }}">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -28,7 +28,7 @@
                 </a>
             </div>
 
-            <div class="slide animate-right">
+            <div class="slide animate-right px-2">
                 <a @class(['side-menu__item has-link', 'active' => request()->routeIs('admin.customer.*')])
                     data-bs-toggle="slide" href="{{ route('admin.customer.index') }}">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -38,7 +38,7 @@
                 </a>
             </div>
 
-            <div class="slide animate-right">
+            <div class="slide animate-right px-2">
                 <a @class(['side-menu__item has-link', 'active' => request()->routeIs('admin.product.*')])
                     data-bs-toggle="slide" href="{{ route('admin.product.index') }}">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -48,7 +48,7 @@
                 </a>
             </div>
 
-            <div class="slide animate-right">
+            <div class="slide animate-right px-2">
                 <a @class(['side-menu__item has-link', 'active' => request()->routeIs('admin.order.*')])
                     data-bs-toggle="slide" href="{{ route('admin.order.index') }}">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -58,7 +58,7 @@
                 </a>
             </div>
 
-            <div class="slide animate-right">
+            <div class="slide animate-right px-2">
                 <a @class(['side-menu__item has-link', 'active' => request()->routeIs('admin.monthly-report.*')])
                     data-bs-toggle="slide" href="{{ route('admin.monthly-report.index') }}">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -91,9 +91,9 @@
             </button>
         </div>
         <div class="offcanvas-body p-0">
-            <div class="p-0 side-menu">
+            <div class="pt-2 side-menu">
 
-                <div class="slide animate-right">
+                <div class="slide animate-right px-2">
                     <a @class(['side-menu__item has-link', 'active' => request()->routeIs('admin.dashboard')])
                         data-bs-toggle="slide" href="{{ route('admin.dashboard') }}">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1772 1772">
@@ -104,7 +104,7 @@
                     </a>
                 </div>
 
-                <div class="slide animate-right">
+                <div class="slide animate-right px-2">
                     <a @class(['side-menu__item has-link', 'active' => request()->routeIs('admin.expense.*')])
                         data-bs-toggle="slide" href="{{ route('admin.expense.index') }}">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -114,7 +114,7 @@
                     </a>
                 </div>
 
-                <div class="slide animate-right">
+                <div class="slide animate-right px-2">
                     <a @class(['side-menu__item has-link', 'active' => request()->routeIs('admin.customer.*')])
                         data-bs-toggle="slide" href="{{ route('admin.customer.index') }}">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -124,7 +124,7 @@
                     </a>
                 </div>
 
-                <div class="slide animate-right">
+                <div class="slide animate-right px-2">
                     <a @class(['side-menu__item has-link', 'active' => request()->routeIs('admin.product.*')])
                         data-bs-toggle="slide" href="{{ route('admin.product.index') }}">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -134,7 +134,7 @@
                     </a>
                 </div>
 
-                <div class="slide animate-right">
+                <div class="slide animate-right px-2">
                     <a @class(['side-menu__item has-link', 'active' => request()->routeIs('admin.order.*')])
                         data-bs-toggle="slide" href="{{ route('admin.order.index') }}">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -144,7 +144,7 @@
                     </a>
                 </div>
 
-                <div class="slide animate-right">
+                <div class="slide animate-right px-2">
                     <a @class(['side-menu__item has-link', 'active' => request()->routeIs('admin.monthly-report.*')])
                         data-bs-toggle="slide" href="{{ route('admin.monthly-report.index') }}">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">

@@ -52,13 +52,13 @@
                                 </div>
 
                                 <div class="col-md-6 mb-3">
-                                    <label for="order_quantity" class="form-label">{{ @trans('portal.order_quantity') }} (kg) <span class="text-danger">*</span></label>
+                                    <label for="order_quantity" class="form-label">{{ @trans('portal.order_quantity') }} (<span id="qty-unit-label">kg</span>) <span class="text-danger">*</span></label>
                                     <div class="input-group">
                                         <input type="number" step="0.01" min="0.01"
                                             class="form-control @error('order_quantity') is-invalid @enderror"
                                             id="order_quantity" name="order_quantity"
                                             value="{{ old('order_quantity') }}" placeholder="e.g. 2.5">
-                                        <span class="input-group-text">kg</span>
+                                        <span class="input-group-text" id="qty-unit-badge">kg</span>
                                         @error('order_quantity')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -106,7 +106,7 @@
                         data: { customer_id: customerId },
                         success: function(data) {
                             $.each(data, function(index, product) {
-                                productSelect.append('<option value="' + product.id + '">' + product.product_name + ' (₹' + product.product_base_price + ')</option>');
+                                productSelect.append('<option value="' + product.id + '" data-unit="' + (product.unit || 'kg') + '">' + product.product_name + ' (₹' + product.product_base_price + ')</option>');
                             });
                         }
                     });
@@ -117,6 +117,13 @@
             if ($('#customer').val()) {
                 $('#customer').trigger('change');
             }
+
+            // Update unit label when product changes
+            $('#product').on('change', function () {
+                var unit = $(this).find('option:selected').data('unit') || 'kg';
+                $('#qty-unit-label').text(unit);
+                $('#qty-unit-badge').text(unit);
+            });
         });
     </script>
 @endsection

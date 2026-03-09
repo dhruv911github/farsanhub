@@ -13,6 +13,7 @@ class Product extends Model
         'customer_id',
         'product_name',
         'product_base_price',
+        'unit',
         'status',
         'product_image',
     ];

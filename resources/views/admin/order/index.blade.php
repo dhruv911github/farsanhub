@@ -52,13 +52,13 @@
                             <option value="24">24</option>
                             <option value="32">32</option>
                         </select>
-                        <div class="filter-date-wrap flex-shrink-0" style="width:145px;">
+                        <div class="filter-date-wrap flex-shrink-0" style="width:155px;">
                             <small class="d-block d-lg-none text-muted" style="font-size:11px; margin-bottom:2px;">Start Date</small>
-                            <input type="date" name="start_date" class="form-control" id="start-date" onchange="checkDatesAndReload()">
+                            <input type="date" name="start_date" class="form-control" id="start-date" placeholder="Start Date" data-fp-onchange="checkDatesAndReload">
                         </div>
-                        <div class="filter-date-wrap flex-shrink-0" style="width:145px;">
+                        <div class="filter-date-wrap flex-shrink-0" style="width:155px;">
                             <small class="d-block d-lg-none text-muted" style="font-size:11px; margin-bottom:2px;">End Date</small>
-                            <input type="date" name="end_date" class="form-control" id="end-date" onchange="checkDatesAndReload()">
+                            <input type="date" name="end_date" class="form-control" id="end-date" placeholder="End Date" data-fp-onchange="checkDatesAndReload">
                         </div>
                         <input type="text" name="search" class="form-control" id="search-val"
                             onkeyup="reloadTable()" style="flex:1 1 0; min-width:0;"

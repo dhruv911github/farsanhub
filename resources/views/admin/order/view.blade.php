@@ -22,7 +22,7 @@
                     <td>{{ $orders->firstItem() + $index }}</td>
                     <td>{{ $order->customer_name }}</td>
                     <td>{{ $order->product_name }}</td>
-                    <td>{{ $order->order_quantity }} KG</td>
+                    <td>{{ $order->order_quantity }} {{ $order->unit ?? 'kg' }}</td>
                     <td>₹{{ number_format($order->order_quantity * $order->order_price, 2) }}</td>
                     <td style="white-space: nowrap;">{{ date('d-m-Y', strtotime($order->order_date ?: $order->created_at)) }}</td>
                     <td class="text-center">
@@ -39,7 +39,7 @@
             @endforeach
             <tr class=" fw-bold">
                 <td colspan="3" class="text-end">Total:</td>
-                <td>{{ number_format($orders->sum('order_quantity'), 2) }} KG</td>
+                <td>{{ number_format($orders->sum('order_quantity'), 2) }}</td>
                 <td>₹{{ number_format($orders->sum(function ($order) {return $order->order_quantity * $order->order_price;}),2) }}
                 </td>
                 <td colspan="2"></td>

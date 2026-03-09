@@ -76,9 +76,9 @@ class ProductController extends Controller
             $validator = Validator::make($request->all(), [
                 'product_name'       => 'required',
                 'product_base_price' => 'required|numeric|min:0',
+                'unit'               => 'required|in:kg,Nang',
                 'product_image'      => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120',
                 'status'             => 'required',
-                'customer_id'        => 'nullable|integer',
             ], [
                 'product_name.required'       => __('validation.required_product_name'),
                 'product_base_price.required' => __('validation.required_product_base_price'),
@@ -100,9 +100,9 @@ class ProductController extends Controller
 
             $product = Product::create([
                 'user_id'            => auth()->id(),
-                'customer_id'        => $request->customer_id ?: null,
                 'product_name'       => $request->product_name,
                 'product_base_price' => $request->product_base_price,
+                'unit'               => $request->unit,
                 'status'             => $request->status,
                 'product_image'      => $productimagePath,
             ]);
@@ -143,9 +143,9 @@ class ProductController extends Controller
             $validator = Validator::make($request->all(), [
                 'product_name'       => 'required',
                 'product_base_price' => 'required|numeric|min:0',
+                'unit'               => 'required|in:kg,Nang',
                 'product_image'      => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120',
                 'status'             => 'required',
-                'customer_id'        => 'nullable|integer',
             ], [
                 'product_name.required'       => __('validation.required_product_name'),
                 'product_base_price.required' => __('validation.required_product_base_price'),
@@ -158,8 +158,8 @@ class ProductController extends Controller
             $data = [
                 'product_name'       => $request->product_name,
                 'product_base_price' => $request->product_base_price,
+                'unit'               => $request->unit,
                 'status'             => $request->status,
-                'customer_id'        => $request->customer_id ?: null,
             ];
 
             if ($request->hasFile('product_image')) {

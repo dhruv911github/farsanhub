@@ -38,7 +38,7 @@
                                     <select name="product" class="form-control form-select @error('product') is-invalid @enderror">
                                         <option value="">-- {{ @trans('portal.product') }} --</option>
                                         @foreach ($products as $product)
-                                            <option value="{{ $product->id }}" {{ $product->id == $order->product_id ? 'selected' : '' }}>
+                                            <option value="{{ $product->id }}" data-unit="{{ $product->unit ?? 'kg' }}" {{ $product->id == $order->product_id ? 'selected' : '' }}>
                                                 {{ $product->product_name }}
                                             </option>
                                         @endforeach
@@ -49,13 +49,14 @@
                                 </div>
 
                                 <div class="col-md-6 mb-3">
-                                    <label for="order_quantity" class="form-label">{{ @trans('portal.order_quantity') }} (kg) <span class="text-danger">*</span></label>
+                                    @php $currentUnit = $products->where('id', $order->product_id)->first()?->unit ?? 'kg'; @endphp
+                                    <label for="order_quantity" class="form-label">{{ @trans('portal.order_quantity') }} (<span id="qty-unit-label">{{ $currentUnit }}</span>) <span class="text-danger">*</span></label>
                                     <div class="input-group">
                                         <input type="number" step="0.01" min="0.01"
                                             class="form-control @error('order_quantity') is-invalid @enderror"
                                             id="order_quantity" name="order_quantity"
                                             value="{{ old('order_quantity', $order->order_quantity) }}" placeholder="e.g. 2.5">
-                                        <span class="input-group-text">kg</span>
+                                        <span class="input-group-text" id="qty-unit-badge">{{ $currentUnit }}</span>
                                         @error('order_quantity')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -83,4 +84,11 @@
             </div>
         </div>
     </div>
+<script>
+document.querySelector('select[name="product"]').addEventListener('change', function () {
+    var unit = this.options[this.selectedIndex].dataset.unit || 'kg';
+    document.getElementById('qty-unit-label').textContent = unit;
+    document.getElementById('qty-unit-badge').textContent  = unit;
+});
+</script>
 @endsection

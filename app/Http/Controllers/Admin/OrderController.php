@@ -23,7 +23,7 @@ class OrderController extends Controller
             $query = Order::join('products', 'orders.product_id', '=', 'products.id')
                 ->join('customers', 'orders.customer_id', '=', 'customers.id')
                 ->where('orders.user_id', auth()->id())
-                ->select('orders.*', 'products.product_name', 'customers.customer_name', 'customers.shop_name');
+                ->select('orders.*', 'products.product_name', 'products.unit', 'customers.customer_name', 'customers.shop_name');
 
             if ($request->start_date) {
                 $query->whereDate('orders.order_date', '>=', $request->start_date);
@@ -72,6 +72,7 @@ class OrderController extends Controller
             ->select(
                 'products.id',
                 'products.product_name',
+                'products.unit',
                 DB::raw('COALESCE(product_prices.price, products.product_base_price) as product_base_price')
             )
             ->get();
@@ -136,7 +137,7 @@ class OrderController extends Controller
                 $q->where('customer_id', $order->customer_id)
                   ->orWhereNull('customer_id');
             })
-            ->select('product_name', 'id')->get();
+            ->select('product_name', 'unit', 'id')->get();
         $customers = Customer::select('shop_name', 'customer_name', 'id')->where('user_id', auth()->id())->get();
         return view('admin.order.edit', compact('order', 'products', 'customers'));
     }

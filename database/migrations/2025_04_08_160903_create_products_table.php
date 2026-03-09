@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('product_name')->nullable();
             $table->decimal('product_base_price', 10, 2)->nullable();
             $table->string('status')->nullable();
-            $table->string('product_image');
+            $table->string('product_image')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

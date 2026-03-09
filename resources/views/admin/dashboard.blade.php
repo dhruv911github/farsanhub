@@ -48,7 +48,7 @@
 }
 .dash-table { width: 100%; border-collapse: collapse; }
 .dash-table th {
-    font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px;
+    font-size: 14px !important; font-weight: 700; text-transform: uppercase; letter-spacing: .5px;
     color: #a8a29e; padding: 8px 10px; border-bottom: 2px solid #f5f5f4;
 }
 .dash-table td { font-size: 12px; color: #292524; padding: 10px 10px; border-bottom: 1px solid #f5f5f4; vertical-align: middle; }
@@ -103,9 +103,9 @@
 
 {{-- ── PAGE HEADER ──────────────────────────────────── --}}
 <div class="page-header d-flex flex-wrap justify-content-between align-items-center my-0">
-    <div>
+    <div class="d-flex align-items-center gap-2">
         <h1 class="page-title">{{ @trans('messages.dashboard') }}</h1>
-        <span class="month-badge mt-1 d-inline-block">{{ now()->format('F Y') }}</span>
+        <span class="month-badge d-inline-block">{{ now()->format('F Y') }}</span>
     </div>
     <div class="ms-auto pageheader-btn d-none d-xl-flex d-lg-flex mt-3">
         <ol class="breadcrumb">
@@ -271,10 +271,10 @@
         <div class="card table-card p-4 h-100">
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <div class="section-label mb-0">Recent Orders</div>
-                <a href="{{ route('admin.order.index') }}" class="btn btn-sm btn-outline-secondary" style="font-size:11px;">View All</a>
+                <a href="{{ route('admin.order.index') }}" class="btn btn-secondary flex-shrink-0 d-none d-md-flex align-items-center gap-1" style="font-size:11px;">View All</a>
             </div>
             <div class="table-responsive">
-                <table class="dash-table">
+                <table class="dash-table mb-2">
                     <thead>
                         <tr>
                             <th>Customer</th>
@@ -312,7 +312,7 @@
         <div class="card table-card p-4 h-100">
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <div class="section-label mb-0">Top Customers</div>
-                <a href="{{ route('admin.customer.index') }}" class="btn btn-sm btn-outline-secondary" style="font-size:11px;">View All</a>
+                <a href="{{ route('admin.customer.index') }}" class="btn btn-secondary flex-shrink-0 d-none d-md-flex align-items-center gap-1" style="font-size:11px;">View All</a>
             </div>
             @forelse($topCustomers as $c)
             <div class="cust-row">

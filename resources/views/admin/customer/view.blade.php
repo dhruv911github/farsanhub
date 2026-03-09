@@ -35,7 +35,7 @@
                                         <a href="https://maps.google.com/?q={{ $customer->latitude }},{{ $customer->longitude }}"
                                            target="_blank" class="text-secondary text-decoration-none">
                                             {{ $customer->shop_address ?? $customer->city ?? '-' }}
-                                            <i class="fa fa-external-link text-danger" style="font-size:10px;"></i>
+                                            <i class="fa fa-external-link text-danger ps-2" style="font-size:15px;"></i>
                                         </a>
                                     @else
                                         {{ $customer->shop_address ?? $customer->city ?? '-' }}
@@ -61,12 +61,12 @@
                                 @endif
                             </li>
                             {{-- Status --}}
-                            <li class="mb-2 pb-1">
+                            {{-- <li class="mb-2 pb-1">
                                 <i class="fa fa-info-circle me-2 text-warning"></i>
                                 <span class="badge {{ $customer->status == 'Active' ? 'bg-success' : 'bg-danger' }}">
                                     {{ $customer->status ?? '-' }}
                                 </span>
-                            </li>
+                            </li> --}}
                         </ul>
 
                         <div class="mt-3 d-flex justify-content-center gap-2">

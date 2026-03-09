@@ -1,28 +1,10 @@
 @extends('layouts.app')
 
 <style>
-    .product-card {
-        position: relative;
-        border-radius: 16px;
-        padding: 1rem;
-        background: #fff;
-        box-shadow: 0 0 0 2px rgba(255, 0, 0, 0.1);
-        background-clip: padding-box;
-        transition: transform 0.2s ease, box-shadow 0.3s ease;
-        border: 2px solid transparent;
-        background-origin: border-box;
-        background-image: linear-gradient(#fff, #fff), linear-gradient(45deg, #ffcccc, #ff9999);
-        background-clip: padding-box, border-box;
-    }
-    .product-card:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(253, 13, 13, 0.4); }
-    .product-card .card-body img { object-fit: cover; border: 3px solid #dee2e6; border-radius: 8px; }
-    .product-card ul li { margin-bottom: 6px; }
     .clickable-image { cursor: pointer; }
     @media (max-width: 767.98px) {
         .filter-bar > select,
         .filter-bar > input { width: 100% !important; flex: 0 0 100% !important; margin-bottom: 5px; }
-        .product-card { padding: 0.5rem; }
-        .product-card h5 { font-size: 1.1rem; }
     }
     .table-responsive {
         border-radius: 8px;
