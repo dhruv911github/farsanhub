@@ -44,10 +44,15 @@ class OrderController extends Controller
 
             $orders = $query->orderBy('orders.order_date', 'desc')->orderBy('orders.created_at', 'desc')->paginate($limit);
 
+            $customers = Customer::select('id', 'customer_name', 'shop_name')
+                ->where('user_id', auth()->id())
+                ->orderBy('customer_name')
+                ->get();
+
             if ($request->ajax()) {
                 return view('admin.order.view', ['orders' => $orders]);
             }
-            return view('admin.order.index', compact('orders', 'limit', 'search'));
+            return view('admin.order.index', compact('orders', 'limit', 'search', 'customers'));
         } catch (\Exception $e) {
             Log::error('OrderController@index error: ' . $e->getMessage());
             return redirect()->back()->with('error', 'Something went wrong while fetching orders.');

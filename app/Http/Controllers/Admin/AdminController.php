@@ -22,39 +22,86 @@ class AdminController extends Controller
         $this->middleware('admin');
     }
 
-    public function dashboard()
+    public function dashboard(Request $request)
     {
-        $uid = auth()->id();
+        $uid    = auth()->id();
+        $filter = $request->get('filter', 'today');
 
-        // ── STAT CARDS ───────────────────────────────────────────────
+        // ── BUILD DATE RANGE ─────────────────────────────────────────
+        switch ($filter) {
+            case 'yesterday':
+                $startDate   = Carbon::yesterday()->startOfDay();
+                $endDate     = Carbon::yesterday()->endOfDay();
+                $prevStart   = Carbon::yesterday()->subDay()->startOfDay();
+                $prevEnd     = Carbon::yesterday()->subDay()->endOfDay();
+                $filterLabel = 'Yesterday';
+                break;
+            case 'current_week':
+                $startDate   = Carbon::now()->startOfWeek();
+                $endDate     = Carbon::now()->endOfWeek();
+                $prevStart   = Carbon::now()->subWeek()->startOfWeek();
+                $prevEnd     = Carbon::now()->subWeek()->endOfWeek();
+                $filterLabel = 'This Week';
+                break;
+            case 'current_month':
+                $startDate   = Carbon::now()->startOfMonth();
+                $endDate     = Carbon::now()->endOfMonth();
+                $prevStart   = Carbon::now()->subMonth()->startOfMonth();
+                $prevEnd     = Carbon::now()->subMonth()->endOfMonth();
+                $filterLabel = 'This Month';
+                break;
+            case 'current_year':
+                $startDate   = Carbon::now()->startOfYear();
+                $endDate     = Carbon::now()->endOfYear();
+                $prevStart   = Carbon::now()->subYear()->startOfYear();
+                $prevEnd     = Carbon::now()->subYear()->endOfYear();
+                $filterLabel = 'This Year';
+                break;
+            default:
+                $filter      = 'today';
+                $startDate   = Carbon::today()->startOfDay();
+                $endDate     = Carbon::today()->endOfDay();
+                $prevStart   = Carbon::yesterday()->startOfDay();
+                $prevEnd     = Carbon::yesterday()->endOfDay();
+                $filterLabel = 'Today';
+                break;
+        }
+
+        $start = $startDate->toDateString();
+        $end   = $endDate->toDateString();
+        $pStart = $prevStart->toDateString();
+        $pEnd   = $prevEnd->toDateString();
+
+        // ── STAT CARDS (customers & products are always all-time) ────
         $totalCustomers = Customer::where('user_id', $uid)->count();
-        $totalOrders    = Order::where('user_id', $uid)->count();
         $totalProducts  = Product::where('user_id', $uid)->count();
-        $totalExpenses  = Expense::where('user_id', $uid)->sum('amount');
 
-        // ── THIS MONTH vs LAST MONTH ─────────────────────────────────
-        $thisMonth = Carbon::now()->format('Y-m');
-        $lastMonth = Carbon::now()->subMonth()->format('Y-m');
-
-        $thisMonthOrders = Order::where('user_id', $uid)
-            ->whereRaw("DATE_FORMAT(COALESCE(order_date, DATE(created_at)), '%Y-%m') = ?", [$thisMonth])
+        $totalOrders = Order::where('user_id', $uid)
+            ->whereRaw('COALESCE(order_date, DATE(created_at)) BETWEEN ? AND ?', [$start, $end])
             ->count();
 
+        $totalExpenses = Expense::where('user_id', $uid)
+            ->whereBetween('date', [$start, $end])
+            ->sum('amount');
+
+        // ── CURRENT PERIOD vs PREVIOUS PERIOD ───────────────────────
+        $thisMonthOrders = $totalOrders;
+
         $lastMonthOrders = Order::where('user_id', $uid)
-            ->whereRaw("DATE_FORMAT(COALESCE(order_date, DATE(created_at)), '%Y-%m') = ?", [$lastMonth])
+            ->whereRaw('COALESCE(order_date, DATE(created_at)) BETWEEN ? AND ?', [$pStart, $pEnd])
             ->count();
 
         $thisMonthRevenue = Order::where('user_id', $uid)
-            ->whereRaw("DATE_FORMAT(COALESCE(order_date, DATE(created_at)), '%Y-%m') = ?", [$thisMonth])
+            ->whereRaw('COALESCE(order_date, DATE(created_at)) BETWEEN ? AND ?', [$start, $end])
             ->selectRaw('SUM(order_quantity * order_price) as total')
             ->value('total') ?? 0;
 
         $lastMonthRevenue = Order::where('user_id', $uid)
-            ->whereRaw("DATE_FORMAT(COALESCE(order_date, DATE(created_at)), '%Y-%m') = ?", [$lastMonth])
+            ->whereRaw('COALESCE(order_date, DATE(created_at)) BETWEEN ? AND ?', [$pStart, $pEnd])
             ->selectRaw('SUM(order_quantity * order_price) as total')
             ->value('total') ?? 0;
 
-        // ── MONTHLY CHART DATA (last 6 months) ───────────────────────
+        // ── MONTHLY CHART DATA (last 6 months — always fixed) ────────
         $monthlyData = Order::where('user_id', $uid)
             ->selectRaw("DATE_FORMAT(COALESCE(order_date, DATE(created_at)), '%Y-%m') as month,
                          DATE_FORMAT(COALESCE(order_date, DATE(created_at)), '%b %Y') as label,
@@ -74,18 +121,20 @@ class AdminController extends Controller
         $chartRevenue  = $monthlyData->pluck('revenue')->map(fn($v) => round($v, 2));
         $chartQuantity = $monthlyData->pluck('quantity');
 
-        // ── TOP 5 PRODUCTS by quantity ────────────────────────────────
+        // ── TOP 5 PRODUCTS (filtered) ────────────────────────────────
         $topProducts = Order::where('orders.user_id', $uid)
             ->join('products', 'orders.product_id', '=', 'products.id')
-            ->selectRaw('products.product_name, SUM(orders.order_quantity) as total_qty')
-            ->groupBy('products.product_name')
+            ->whereRaw('COALESCE(orders.order_date, DATE(orders.created_at)) BETWEEN ? AND ?', [$start, $end])
+            ->selectRaw('products.product_name, SUM(orders.order_quantity) as total_qty, products.unit')
+            ->groupBy('products.product_name', 'products.unit')
             ->orderByDesc('total_qty')
             ->limit(5)
             ->get();
 
-        // ── TOP 5 CUSTOMERS by order count ───────────────────────────
+        // ── TOP 5 CUSTOMERS (filtered) ───────────────────────────────
         $topCustomers = Order::where('orders.user_id', $uid)
             ->join('customers', 'orders.customer_id', '=', 'customers.id')
+            ->whereRaw('COALESCE(orders.order_date, DATE(orders.created_at)) BETWEEN ? AND ?', [$start, $end])
             ->selectRaw('customers.customer_name, customers.shop_name,
                          COUNT(*) as order_count,
                          SUM(orders.order_quantity * orders.order_price) as total_amount,
@@ -95,10 +144,11 @@ class AdminController extends Controller
             ->limit(5)
             ->get();
 
-        // ── RECENT 8 ORDERS ──────────────────────────────────────────
+        // ── RECENT 8 ORDERS (filtered) ───────────────────────────────
         $recentOrders = Order::where('orders.user_id', $uid)
             ->join('products', 'orders.product_id', '=', 'products.id')
             ->join('customers', 'orders.customer_id', '=', 'customers.id')
+            ->whereRaw('COALESCE(orders.order_date, DATE(orders.created_at)) BETWEEN ? AND ?', [$start, $end])
             ->select(
                 'orders.id',
                 'orders.order_quantity',
@@ -106,6 +156,7 @@ class AdminController extends Controller
                 'orders.order_date',
                 'orders.created_at',
                 'products.product_name',
+                'products.unit',
                 'customers.customer_name',
                 'customers.shop_name'
             )
@@ -121,7 +172,8 @@ class AdminController extends Controller
             'totalCustomers', 'totalOrders', 'totalProducts', 'totalExpenses',
             'thisMonthOrders', 'lastMonthOrders', 'thisMonthRevenue', 'lastMonthRevenue',
             'chartLabels', 'chartOrders', 'chartRevenue', 'chartQuantity',
-            'topProducts', 'topCustomers', 'recentOrders'
+            'topProducts', 'topCustomers', 'recentOrders',
+            'filter', 'filterLabel'
         ));
     }
 

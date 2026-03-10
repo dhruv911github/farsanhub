@@ -52,6 +52,12 @@
                             <option value="24">24</option>
                             <option value="32">32</option>
                         </select>
+                        <select id="customer-filter" onchange="reloadTable()" class="form-select" style="flex:1 1 0; min-width:0;">
+                            <option value="">All Customers</option>
+                            @foreach($customers as $c)
+                            <option value="{{ $c->id }}">{{ $c->customer_name }}@if($c->shop_name) ({{ $c->shop_name }})@endif</option>
+                            @endforeach
+                        </select>
                         <div class="filter-date-wrap flex-shrink-0" style="width:155px;">
                             <small class="d-block d-lg-none text-muted" style="font-size:11px; margin-bottom:2px;">Start Date</small>
                             <input type="date" name="start_date" class="form-control" id="start-date" placeholder="Start Date" data-fp-onchange="checkDatesAndReload">
@@ -128,17 +134,18 @@
     }
 
     function reloadTable() {
-        var search    = $('#search-val').val();
-        var limit     = $('#selected_data').val();
-        var startDate = $('#start-date').val();
-        var endDate   = $('#end-date').val();
+        var search     = $('#search-val').val();
+        var limit      = $('#selected_data').val();
+        var startDate  = $('#start-date').val();
+        var endDate    = $('#end-date').val();
+        var customerId = $('#customer-filter').val();
 
         $.ajaxSetup({ headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') } });
 
         $.ajax({
             type: "GET",
             url: "{{ route('admin.order.index') }}",
-            data: { search: search, limit: limit, start_date: startDate, end_date: endDate },
+            data: { search: search, limit: limit, start_date: startDate, end_date: endDate, customer_id: customerId },
             success: function(response) { $('#order-cards').html(response); },
         });
     }

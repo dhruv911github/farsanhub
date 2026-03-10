@@ -105,22 +105,36 @@
 <div class="page-header d-flex flex-wrap justify-content-between align-items-center my-0">
     <div class="d-flex align-items-center gap-2">
         <h1 class="page-title">{{ @trans('messages.dashboard') }}</h1>
-        <span class="month-badge d-inline-block">{{ now()->format('F Y') }}</span>
+        <span class="month-badge d-inline-block">{{ $filterLabel }}</span>
     </div>
-    <div class="ms-auto pageheader-btn d-none d-xl-flex d-lg-flex mt-3">
-        <ol class="breadcrumb">
+    <div class="d-flex align-items-center gap-3 ms-auto mt-3">
+        {{-- Filter Dropdown --}}
+        <select id="dashFilter" class="form-select form-select-sm" style="width:auto; font-size:12px; border-radius:8px; border-color:#e7e5e4; cursor:pointer;">
+            <option value="today"         {{ $filter === 'today'         ? 'selected' : '' }}>Today</option>
+            <option value="yesterday"     {{ $filter === 'yesterday'     ? 'selected' : '' }}>Yesterday</option>
+            <option value="current_week"  {{ $filter === 'current_week'  ? 'selected' : '' }}>Current Week</option>
+            <option value="current_month" {{ $filter === 'current_month' ? 'selected' : '' }}>Current Month</option>
+            <option value="current_year"  {{ $filter === 'current_year'  ? 'selected' : '' }}>Current Year</option>
+        </select>
+        <ol class="breadcrumb d-none d-xl-flex d-lg-flex mb-0">
             <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Home</a></li>
             <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
         </ol>
     </div>
 </div>
+<script>
+    document.getElementById('dashFilter').addEventListener('change', function () {
+        window.location.href = '{{ route('admin.dashboard') }}?filter=' + this.value;
+    });
+</script>
 
 {{-- ── ROW 1 : STAT CARDS ───────────────────────────── --}}
 <div class="row g-3 mb-3">
 
     {{-- Customers --}}
     <div class="col-12 col-md-6 col-xl-3">
-        <div class="card dash-card p-3">
+        <a href="{{ route('admin.customer.index') }}" style="text-decoration:none; color:inherit;">
+        <div class="card dash-card p-3" style="cursor:pointer;">
             <div class="d-flex align-items-center gap-3">
                 <div class="icon-box" style="background:#dbeafe;">
                     <i class="fa fa-users" style="color:#3b82f6;"></i>
@@ -134,11 +148,13 @@
                 <i class="fa fa-circle"></i> All time total
             </div>
         </div>
+        </a>
     </div>
 
     {{-- Orders --}}
     <div class="col-12 col-md-6 col-xl-3">
-        <div class="card dash-card p-3">
+        <a href="{{ route('admin.order.index') }}" style="text-decoration:none; color:inherit;">
+        <div class="card dash-card p-3" style="cursor:pointer;">
             <div class="d-flex align-items-center gap-3">
                 <div class="icon-box" style="background:#fef3c7;">
                     <i class="fa fa-shopping-bag" style="color:#d97706;"></i>
@@ -155,17 +171,19 @@
             @endphp
             <div class="trend {{ $orderTrend }} mt-2">
                 <i class="fa {{ $orderIcon }}"></i>
-                {{ $thisMonthOrders }} this month
+                {{ $thisMonthOrders }} {{ $filterLabel }}
                 @if($lastMonthOrders > 0)
-                    ({{ $orderDiff >= 0 ? '+' : '' }}{{ $orderDiff }} vs last month)
+                    ({{ $orderDiff >= 0 ? '+' : '' }}{{ $orderDiff }} vs prev)
                 @endif
             </div>
         </div>
+        </a>
     </div>
 
     {{-- Products --}}
     <div class="col-12 col-md-6 col-xl-3">
-        <div class="card dash-card p-3">
+        <a href="{{ route('admin.product.index') }}" style="text-decoration:none; color:inherit;">
+        <div class="card dash-card p-3" style="cursor:pointer;">
             <div class="d-flex align-items-center gap-3">
                 <div class="icon-box" style="background:#d1fae5;">
                     <i class="fa fa-cube" style="color:#10b981;"></i>
@@ -179,6 +197,7 @@
                 <i class="fa fa-circle"></i> All time total
             </div>
         </div>
+        </a>
     </div>
 
     {{-- This Month Revenue --}}
@@ -189,7 +208,7 @@
                     <i class="fa fa-inr" style="color:#db2777;"></i>
                 </div>
                 <div>
-                    <div class="stat-label">This Month Revenue</div>
+                    <div class="stat-label">{{ $filterLabel }} Revenue</div>
                     <div class="stat-value" style="font-size:20px;">&#8377; {{ number_format($thisMonthRevenue, 0) }}</div>
                 </div>
             </div>
@@ -202,9 +221,9 @@
             <div class="trend {{ $revTrend }} mt-2">
                 <i class="fa {{ $revIcon }}"></i>
                 @if($revPct > 0)
-                    {{ $revPct }}% {{ $revDiff >= 0 ? 'more' : 'less' }} than last month
+                    {{ $revPct }}% {{ $revDiff >= 0 ? 'more' : 'less' }} than prev period
                 @else
-                    Same as last month
+                    Same as prev period
                 @endif
             </div>
         </div>
@@ -212,65 +231,14 @@
 
 </div>
 
-{{-- ── ROW 2 : CHARTS ───────────────────────────────── --}}
-<div class="row g-3 mb-3">
-
-    {{-- Monthly Revenue + Orders (area chart) --}}
-    <div class="col-12 col-xl-8">
-        <div class="card chart-card p-4 h-100">
-            <div class="d-flex justify-content-between align-items-start mb-3">
-                <div>
-                    <div class="chart-title">Monthly Overview</div>
-                    <div class="chart-sub">Revenue &amp; order count — last 6 months</div>
-                </div>
-                <div class="d-flex gap-2 flex-wrap justify-content-end">
-                    <span style="font-size:11px;"><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#d97706;margin-right:4px;"></span>Revenue</span>
-                    <span style="font-size:11px;"><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#3b82f6;margin-right:4px;"></span>Orders</span>
-                </div>
-            </div>
-            <div style="position:relative; height:260px;">
-                <canvas id="monthlyChart"></canvas>
-            </div>
-        </div>
-    </div>
-
-    {{-- Top Products doughnut --}}
-    <div class="col-12 col-xl-4">
-        <div class="card chart-card p-4 h-100">
-            <div class="chart-title mb-1">Top Products</div>
-            <div class="chart-sub mb-3">By total quantity (KG)</div>
-            <div style="position:relative; height:200px; display:flex; justify-content:center;">
-                <canvas id="productChart"></canvas>
-            </div>
-            {{-- Legend --}}
-            @php $donutColors = ['#d97706','#3b82f6','#10b981','#8b5cf6','#ef4444']; @endphp
-            <div class="mt-3">
-                @foreach($topProducts as $i => $p)
-                <div class="prod-row">
-                    <div class="prod-label">
-                        <span>{{ $p->product_name }}</span>
-                        <span>{{ number_format($p->total_qty, 0) }} KG</span>
-                    </div>
-                    @php $maxQty = $topProducts->max('total_qty'); @endphp
-                    <div class="prod-bar-wrap">
-                        <div class="prod-bar-fill" style="width:{{ $maxQty > 0 ? round($p->total_qty / $maxQty * 100) : 0 }}%; background:{{ $donutColors[$i % 5] }};"></div>
-                    </div>
-                </div>
-                @endforeach
-            </div>
-        </div>
-    </div>
-
-</div>
-
-{{-- ── ROW 3 : RECENT ORDERS + TOP CUSTOMERS ───────── --}}
+{{-- ── ROW 2 : RECENT ORDERS + TOP CUSTOMERS ───────── --}}
 <div class="row g-3 mb-3">
 
     {{-- Recent Orders table --}}
     <div class="col-12 col-xl-7">
         <div class="card table-card p-4 h-100">
             <div class="d-flex justify-content-between align-items-center mb-3">
-                <div class="section-label mb-0">Recent Orders</div>
+                <div class="section-label mb-0">Orders — {{ $filterLabel }}</div>
                 <a href="{{ route('admin.order.index') }}" class="btn btn-secondary flex-shrink-0 d-none d-md-flex align-items-center gap-1" style="font-size:11px;">View All</a>
             </div>
             <div class="table-responsive">
@@ -279,7 +247,7 @@
                         <tr>
                             <th>Customer</th>
                             <th>Product</th>
-                            <th class="text-center text-nowrap">Qty (KG)</th>
+                            <th class="text-center text-nowrap">Qty</th>
                             <th class="text-end">Amount</th>
                             <th class="text-end">Date</th>
                         </tr>
@@ -292,7 +260,7 @@
                                 <div class="sub-text">{{ $order->shop_name }}</div>
                             </td>
                             <td>{{ $order->product_name }}</td>
-                            <td class="text-center">{{ number_format($order->order_quantity, 0) }}</td>
+                            <td class="text-center">{{ number_format($order->order_quantity, 0) }} {{ $order->unit }}</td>
                             <td class="text-center amt">&#8377; {{ number_format($order->calculated_total, 0) }}</td>
                             <td class="text-end" style="font-size:11px; color:#a8a29e; white-space:nowrap;">{{ $order->display_date }}</td>
                         </tr>
@@ -326,6 +294,57 @@
             @empty
             <div style="color:#a8a29e; font-size:13px; text-align:center; padding:24px 0;">No customers yet.</div>
             @endforelse
+        </div>
+    </div>
+
+</div>
+
+{{-- ── ROW 3 : CHARTS ───────────────────────────────── --}}
+<div class="row g-3 mb-3">
+
+    {{-- Monthly Revenue + Orders (area chart) --}}
+    <div class="col-12 col-xl-8">
+        <div class="card chart-card p-4 h-100">
+            <div class="d-flex justify-content-between align-items-start mb-3">
+                <div>
+                    <div class="chart-title">Monthly Overview</div>
+                    <div class="chart-sub">Revenue &amp; order count — last 6 months</div>
+                </div>
+                <div class="d-flex gap-2 flex-wrap justify-content-end">
+                    <span style="font-size:11px;"><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#d97706;margin-right:4px;"></span>Revenue</span>
+                    <span style="font-size:11px;"><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#3b82f6;margin-right:4px;"></span>Orders</span>
+                </div>
+            </div>
+            <div style="position:relative; height:260px;">
+                <canvas id="monthlyChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    {{-- Top Products doughnut --}}
+    <div class="col-12 col-xl-4">
+        <div class="card chart-card p-4 h-100">
+            <div class="chart-title mb-1">Top Products</div>
+            <div class="chart-sub mb-3">By total quantity</div>
+            <div style="position:relative; height:200px; display:flex; justify-content:center;">
+                <canvas id="productChart"></canvas>
+            </div>
+            {{-- Legend --}}
+            @php $donutColors = ['#d97706','#3b82f6','#10b981','#8b5cf6','#ef4444']; @endphp
+            <div class="mt-3">
+                @foreach($topProducts as $i => $p)
+                <div class="prod-row">
+                    <div class="prod-label">
+                        <span>{{ $p->product_name }}</span>
+                        <span>{{ number_format($p->total_qty, 0) }} {{ $p->unit }}</span>
+                    </div>
+                    @php $maxQty = $topProducts->max('total_qty'); @endphp
+                    <div class="prod-bar-wrap">
+                        <div class="prod-bar-fill" style="width:{{ $maxQty > 0 ? round($p->total_qty / $maxQty * 100) : 0 }}%; background:{{ $donutColors[$i % 5] }};"></div>
+                    </div>
+                </div>
+                @endforeach
+            </div>
         </div>
     </div>
 
