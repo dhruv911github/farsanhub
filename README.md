@@ -46,13 +46,12 @@ Subhanpura, Vadodara, Gujarat – 390021
 | Module | What it does |
 |---|---|
 | Customers | Manage customer/shop profiles with geo-location |
-| Products | Maintain product catalog with base pricing and unit (kg/Nang) |
+| Products | Maintain product catalog with base pricing and unit (kg/pcs/etc.) |
 | Customer Pricing | Set customer-specific product prices overriding base price |
-| Orders (Sales) | Record and track daily sales orders with live total preview |
-| Purchase Orders | Record and track product purchase orders from suppliers |
+| Orders | Record sell and purchase orders with live total preview; filter by type/customer/date |
 | Expenses | Log business expenses by purpose and date |
 | Content | Upload and manage shop/product images |
-| Reports | Export all modules to Excel & PDF receipts by month |
+| Reports | Export orders (PDF), expenses/customers/products (Excel with customer-wise prices) |
 | Maps | Visualize customer locations on Leaflet map |
 
 ---
@@ -238,30 +237,14 @@ farsanhub/
 | user_id | BIGINT (FK → users) | Multi-user isolation |
 | customer_id | BIGINT (FK → customers) | |
 | product_id | BIGINT (FK → products) | |
-| order_quantity | DECIMAL(8,2) | Supports decimal (e.g. 2.5 kg) |
+| order_quantity | FLOAT(8,2) | Supports decimals (e.g. 2.5) |
 | order_price | DECIMAL(10,2) | Auto-resolved: customer price or base price |
-| order_date | DATE | Explicit date field ← **UPDATED** |
+| order_date | DATE | Explicit date field |
+| type | ENUM('sell','purchase') | Default `sell` ← **NEW** |
 | status | VARCHAR | |
 | created_at / updated_at | TIMESTAMP | |
 
-> **Note:** Order total = `order_quantity × order_price` (calculated at runtime, not stored)
-
----
-
-### `purchase_orders`
-| Column | Type | Notes |
-|---|---|---|
-| id | BIGINT (PK) | |
-| user_id | BIGINT (FK → users) | Multi-user isolation |
-| customer_id | BIGINT (FK → customers) | Used as supplier/party reference |
-| product_id | BIGINT (FK → products) | |
-| order_quantity | DECIMAL(8,2) | Quantity purchased |
-| order_price | DECIMAL(10,2) | Manual purchase rate (not auto-filled) |
-| order_date | DATE | Purchase date |
-| status | VARCHAR | Nullable |
-| created_at / updated_at | TIMESTAMP | |
-
-> **Key difference from sales orders:** Purchase rate is manually entered (not auto-resolved from customer pricing), since purchase prices are negotiated at time of buying.
+> **Note:** Order total = `order_quantity × order_price` (calculated at runtime, not stored). The `type` column replaced the old separate `purchase_orders` table.
 
 ---
 
@@ -413,7 +396,8 @@ admin       → AdminMiddleware: must have is_admin = true
 
 | Method | Description |
 |---|---|
-| `dashboard()` | Stats cards (customers, orders, products, revenue), chart data for last 6 months, recent orders, top customers |
+| `dashboard(Request)` | Stats cards filtered by `?filter=` period; charts (last 6 months fixed); recent orders; top customers; passes `$products` list for order product filter |
+| `ordersCount(Request)` | AJAX endpoint — returns `{"count": N}` filtered by period + optional `product_id` |
 | `changePassword()` | Show change password form |
 | `changePasswordPost(ChangePasswordRequest)` | Validate current password, update with bcrypt |
 
@@ -455,30 +439,15 @@ admin       → AdminMiddleware: must have is_admin = true
 
 | Method | Description |
 |---|---|
-| `index(Request)` | Paginated orders with joins (products+unit, customers). Filter by customer, date range. |
-| `create()` | Form with customer & product dropdowns |
-| `store(Request)` | Create order; auto-resolve `order_price` via `getEffectivePrice()` |
-| `edit(Order)` | Show edit form; fetch products with effective price via LEFT JOIN |
-| `update(Request, Order)` | Update order; re-resolve price from `getEffectivePrice()` |
+| `index(Request)` | Paginated orders with joins (products+unit, customers). Filter by type, customer, date range. |
+| `create()` | Form with Order Type radio, customer & product dropdowns |
+| `store(Request)` | Create order with `type`; auto-resolve `order_price` via `getEffectivePrice()` |
+| `edit(Order)` | Show edit form; products with effective price via LEFT JOIN |
+| `update(Request, Order)` | Update order including `type`; re-resolve price |
 | `destroy(Request)` | Hard delete order |
 | `getProductsByCustomer(Request)` | AJAX: returns products with resolved price (customer-specific or base) |
 
 **`getEffectivePrice($productId, $customerId)`** — Private method that checks `product_prices` table first, falls back to `product_base_price`.
-
----
-
-### `PurchaseOrderControll
-**File:** `app/Http/Controllers/Admin/PurchaseOrderController.php`
-
-| Method | Description |
-|---|---|
-| `index(Request)` | Paginated list with joins (products+unit, customers). Filter by date, supplier. AJAX support. |
-| `create()` | Form with party/supplier and product dropdowns |
-| `store(Request)` | Validate and create purchase order with manual rate |
-| `edit(PurchaseOrder)` | Show edit form; products with effective_price via LEFT JOIN |
-| `update(Request, PurchaseOrder)` | Update fields including manual rate |
-| `destroy(Request)` | Hard delete purchase order |
-| `getProductsByCustomer(Request)` | AJAX: returns products with resolved price for pre-filling rate |
 
 ---
 
@@ -487,12 +456,11 @@ admin       → AdminMiddleware: must have is_admin = true
 
 | Method | Description |
 |---|---|
-| `index()` | Report page with month dropdowns for orders, purchase orders, expenses |
-| `orderReport(Request)` | Export sales orders filtered by customer + month. Type: `excel` or `pdf` |
-| `purchaseOrderReport(Request)` | Export purchase orders filtered by party + month → Excel ← **NEW** |
-| `customerReport(Request)` | Export all customers to Excel |
-| `productReport(Request)` | Export all products to Excel |
-| `expenseReport(Request)` | Export expenses for selected month to Excel |
+| `index()` | Report page with month dropdowns for orders and expenses |
+| `orderReport(Request)` | Export orders filtered by customer + month → **PDF only** |
+| `customerReport(Request)` | Export all customers → Excel |
+| `productReport(Request)` | Export all products with customer-wise prices → Excel |
+| `expenseReport(Request)` | Export expenses for selected month → Excel |
 
 ---
 
@@ -533,17 +501,10 @@ Table: product_prices
 ### `Order`
 ```php
 Traits: HasFactory
-Fillable: user_id, customer_id, product_id, order_quantity, order_price, order_date, status
+Fillable: user_id, customer_id, product_id, order_quantity, order_price, order_date, type, status
+// 'type' added — values: 'sell' | 'purchase', default: 'sell'
 Relationships:
   customer() → belongsTo(Customer::class)
-```
-
-### `PurchaseOrders`
-```php
-Traits: HasFactory
-Table: purchase_orders
-Fillable: user_id, customer_id, product_id, order_quantity, order_price, order_date, status
-Casts: order_date → date
 ```
 
 ### `Expense`
@@ -570,8 +531,13 @@ All export classes implement `FromCollection`, `WithHeadings`, `WithStyles`, `Wi
 **Filter:** user_id = auth()->id()
 
 ### `ProductExport`
-**Columns:** Sr. No., Product Name, Product Base Price, Date
+**Columns:** Sr. No., Product Name, Unit, Base Price (₹), Customer, Customer Price (₹)
 **Filter:** user_id = auth()->id()
+**Features:**
+- Groups customer-specific prices under each product
+- Products with no custom pricing show `—` in customer columns
+- Styled header (orange background, bold, centered)
+- Column widths set for readability
 
 ### `OrderExport`
 **Constructor params:** `$customerId`, `$monthYear`
@@ -579,16 +545,7 @@ All export classes implement `FromCollection`, `WithHeadings`, `WithStyles`, `Wi
 **Features:**
 - Resolves effective price (customer-specific or base)
 - Calculates per-row total (qty × price)
-- Appends **Grand Total** row at bottom (merged cells A–D)
-- Bold header and grand total row
-- Number formatting for price columns
-
-### `PurchaseOrderExpo
-**Constructor params:** `$customerId`, `$monthYear`
-**Columns:** Sr. No., Party/Supplier, Shop Name, Product, Quantity, Purchase Rate, Total Amount, Date
-**Features:**
-- Filters by party (customer_id) and/or month
-- Appends **Grand Total** row (total quantity + total amount)
+- Appends **Grand Total** row at bottom
 - Bold header and grand total row
 
 ### `ExpenseExport`
@@ -813,26 +770,19 @@ resources/views/
 - When creating a sales order: system auto-resolves price via `COALESCE(customer_price, base_price)`
 - Price resolution handled by `OrderController@getEffectivePrice()`
 
-### Orders (Sales) Module
+### Orders Module
 - Full CRUD (hard delete)
+- **Order Type** — Sell (default) or Purchase, selected via radio buttons on create/edit
+- Type badge shown in listing (green Sell / blue Purchase)
+- **Type filter** and **Customer filter** dropdowns in listing
 - **AJAX product loading** based on selected customer (with resolved price)
-- **Live total preview** — updates instantly as quantity or product changes (`Rate × Qty = Total`)
+- Unit label and badge update live when product is selected (uses `getAttribute('data-unit')`)
+- After validation failure on create, previously selected product + unit are restored
+- **Live total preview** — Rate × Qty = Total, updates instantly
 - `order_price` auto-resolved from customer-specific pricing or product base price
-- Dynamic unit label (`kg` / `Nang`) pulled from product's `unit` field
-- Filter by customer and/or date range
+- Quantity supports decimals (e.g. 2.5); displayed without trailing zeros
+- Filter by type, customer, and/or date range
 - Orange-themed responsive table view with totals row
-- Multi-user isolated
-
-### Purchase Orders Mod
-- Full CRUD (hard delete)
-- Record product purchases from suppliers/parties
-- Party selected from existing customers list
-- Product selected via AJAX (pre-fills suggested rate from product pricing)
-- **Manual purchase rate entry** — rate is user-entered, not auto-resolved
-- **Live total preview** — Rate × Qty = Total, updates on any change
-- Dynamic unit label per product
-- Filter by date range and party
-- Same orange-themed table with totals row
 - Multi-user isolated
 
 ### Expenses Module
@@ -846,23 +796,26 @@ resources/views/
 - Global (shared across all users)
 
 ### Monthly Reports Module
-- **Layout:** 5 report cards in responsive `col-12 col-lg-4` grid
-- **Sales Orders** → Excel or PDF, filter by customer + month
-- **Purchase Orders** → Excel, filter by party + month ← **NEW**
+- **Layout:** 4 report cards in responsive `col-12 col-lg-4` grid
+- **Orders** → PDF only, filter by customer + month
 - **Expenses** → Excel, filter by month
 - **Customers** → Excel (all customers)
-- **Products** → Excel (all products)
-- PDF uses professional invoice layout with DomPDF
+- **Products** → Excel with full customer-wise pricing (Product Name, Unit, Base Price, Customer, Customer Price)
+- PDF uses professional invoice layout with DomPDF — per-row Qty+Unit, Rate, Amount, Type badge; summary strip; grand totals
+- Quantity in PDF shows natural decimals (no trailing zeros)
 - Validation: month must be selected before export
 
 ### Dashboard
-- 4 stat cards: Total Customers, Total Orders, Total Products, This Month Revenue
-- Monthly overview line chart (Revenue + Orders, last 6 months) — Chart.js
-- Top products doughnut chart + horizontal bar
+- 4 stat cards: Total Customers, **Total Orders** (with product filter), Total Products, Period Revenue
+- **Period filter** dropdown — Today / Yesterday / Current Week / Current Month / Current Year (default: Today)
+- **Total Orders card** — product select box for live AJAX count (`GET /admin/dashboard/orders-count?filter=&product_id=`)
+- Stat cards (Customers, Orders, Products) are clickable links to their module index pages
+- Monthly overview line chart (Revenue + Orders, last 6 months, always fixed) — Chart.js
+- Top products doughnut chart + bar legend showing actual product `unit` (not hardcoded "KG")
 - Monthly quantity dispatched bar chart
-- Recent orders table
+- Recent orders table — shows actual product `unit` in Qty column
 - Top customers list
-- All "View All" buttons fully responsive (visible on all screen sizes)
+- All data respects active period filter
 
 ### Date Picker (Global)
 - **Flatpickr** integrated globally in `app.blade.php`
@@ -988,6 +941,21 @@ php artisan optimize:clear
 
 ## 22. Changelog
 
+### v1.5 — March 2026
+- **REMOVED: Purchase Orders module** — replaced by `type` column on `orders` table
+- **NEW: Order Type** — `enum('sell','purchase') default 'sell'` column added to `orders` via migration; radio buttons on create/edit forms; type badge (green Sell / blue Purchase) in listing
+- **NEW: Type filter** on Order index listing
+- **NEW: Dashboard period filter** — Today / Yesterday / Current Week / Current Month / Current Year; all stat cards, charts, recent orders and top customers filter accordingly
+- **NEW: Total Orders product filter** — select box on Total Orders card triggers AJAX (`/admin/dashboard/orders-count`) and updates count live without page reload
+- **UPDATED: Stat cards** — Customers, Orders, Products cards are clickable links to their module index pages
+- **UPDATED: Order Report** — PDF only (Excel removed); redesigned PDF shows per-order rows with Qty, Unit, Rate (₹), Amount (₹), Type badge; summary strip; grand totals
+- **UPDATED: Product Excel Export** — now includes all customer-wise prices: Product Name, Unit, Base Price, Customer, Customer Price per row
+- **FIXED: Unit label in create/edit** — switched from jQuery `.data()` to `.attr('data-unit')` for reliable reading from dynamically added options; default label changed from hardcoded `kg` to `—` until product is selected; old product re-selected after validation failure
+- **FIXED: Unit badge on edit page load** — JS IIFE syncs unit badge from selected product's `data-unit` attribute on page load
+- **FIXED: Quantity decimal display** — `number_format(..., 2)` replaced with `rtrim(rtrim(..., '0'), '.')` across order listing, total row, and PDF; shows `2.5` not `2.50`, `1` not `1.00`
+- **FIXED: Unit in PDF** — always shows with `?? 'kg'` fallback (previously hidden when null)
+- **FIXED: Dashboard charts** — Top Products doughnut and Recent Orders table now show actual product `unit` instead of hardcoded "KG"
+
 ### v1.4 — March 2026
 - **NEW: Google OAuth Login** — "Continue with Google" button on login page (via `laravel/socialite`)
 - **NEW: Google account linking** — `google_id` column added to `users` table; linked automatically on first Google login by email match
@@ -1033,5 +1001,5 @@ php artisan optimize:clear
 
 ---
 
-*Documentation last updated: March 2026 — FarsanHub v1.4*
+*Documentation last updated: March 2026 — FarsanHub v1.5*
 *© 2025–2026 Brahmani Khandvi & Farsan House. All rights reserved.*

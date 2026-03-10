@@ -75,6 +75,7 @@ class AdminController extends Controller
         // ── STAT CARDS (customers & products are always all-time) ────
         $totalCustomers = Customer::where('user_id', $uid)->count();
         $totalProducts  = Product::where('user_id', $uid)->count();
+        $products       = Product::where('user_id', $uid)->orderBy('product_name')->get(['id', 'product_name', 'unit']);
 
         $totalOrders = Order::where('user_id', $uid)
             ->whereRaw('COALESCE(order_date, DATE(created_at)) BETWEEN ? AND ?', [$start, $end])
@@ -173,8 +174,45 @@ class AdminController extends Controller
             'thisMonthOrders', 'lastMonthOrders', 'thisMonthRevenue', 'lastMonthRevenue',
             'chartLabels', 'chartOrders', 'chartRevenue', 'chartQuantity',
             'topProducts', 'topCustomers', 'recentOrders',
-            'filter', 'filterLabel'
+            'filter', 'filterLabel', 'products'
         ));
+    }
+
+    public function ordersCount(Request $request)
+    {
+        $uid       = auth()->id();
+        $filter    = $request->get('filter', 'today');
+        $productId = $request->get('product_id');
+
+        switch ($filter) {
+            case 'yesterday':
+                $start = Carbon::yesterday()->toDateString();
+                $end   = Carbon::yesterday()->toDateString();
+                break;
+            case 'current_week':
+                $start = Carbon::now()->startOfWeek()->toDateString();
+                $end   = Carbon::now()->endOfWeek()->toDateString();
+                break;
+            case 'current_month':
+                $start = Carbon::now()->startOfMonth()->toDateString();
+                $end   = Carbon::now()->endOfMonth()->toDateString();
+                break;
+            case 'current_year':
+                $start = Carbon::now()->startOfYear()->toDateString();
+                $end   = Carbon::now()->endOfYear()->toDateString();
+                break;
+            default:
+                $start = Carbon::today()->toDateString();
+                $end   = Carbon::today()->toDateString();
+                break;
+        }
+
+        $count = Order::where('user_id', $uid)
+            ->whereRaw('COALESCE(order_date, DATE(created_at)) BETWEEN ? AND ?', [$start, $end])
+            ->when($productId, fn($q) => $q->where('product_id', $productId))
+            ->count();
+
+        return response()->json(['count' => $count]);
     }
 
     // change password

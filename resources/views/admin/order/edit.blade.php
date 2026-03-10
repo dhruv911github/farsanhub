@@ -122,12 +122,18 @@
         </div>
     </div>
 <script>
+function getSelectedUnit() {
+    var sel = document.getElementById('product');
+    var opt = sel.options[sel.selectedIndex];
+    return (opt && opt.getAttribute('data-unit')) || 'kg';
+}
+
 function updateTotal() {
     var sel   = document.getElementById('product');
     var opt   = sel.options[sel.selectedIndex];
-    var price = parseFloat(opt ? opt.dataset.price : 0) || 0;
+    var price = parseFloat(opt ? opt.getAttribute('data-price') : 0) || 0;
     var qty   = parseFloat(document.getElementById('order_quantity').value) || 0;
-    var unit  = opt ? (opt.dataset.unit || 'kg') : 'kg';
+    var unit  = getSelectedUnit();
 
     if (price > 0 && qty > 0) {
         var total = price * qty;
@@ -138,12 +144,19 @@ function updateTotal() {
 }
 
 document.getElementById('product').addEventListener('change', function () {
-    var unit = this.options[this.selectedIndex].dataset.unit || 'kg';
+    var unit = getSelectedUnit();
     document.getElementById('qty-unit-label').textContent = unit;
     document.getElementById('qty-unit-badge').textContent  = unit;
     updateTotal();
 });
 
 document.getElementById('order_quantity').addEventListener('input', updateTotal);
+
+// Ensure unit badge matches the selected product on page load
+(function () {
+    var unit = getSelectedUnit();
+    document.getElementById('qty-unit-label').textContent = unit;
+    document.getElementById('qty-unit-badge').textContent  = unit;
+})();
 </script>
 @endsection

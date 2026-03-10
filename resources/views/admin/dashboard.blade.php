@@ -97,6 +97,30 @@
 .text-amber { color: #d97706; }
 .bg-amber-soft { background: #fef3c7; }
 .border-amber  { border-color: #fcd34d !important; }
+
+/* ── ORDERS PRODUCT FILTER SELECT ───────────────── */
+.orders-prod-select {
+    width: 100%;
+    padding: 5px 28px 5px 10px;
+    border-radius: 8px;
+    border: 1.5px solid #fde68a;
+    font-size: 11.5px;
+    color: #374151;
+    background: #fffbeb url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23d97706'/%3E%3C/svg%3E") no-repeat right 10px center;
+    appearance: none;
+    -webkit-appearance: none;
+    cursor: pointer;
+    transition: border-color .15s, box-shadow .15s;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.orders-prod-select:focus {
+    outline: none;
+    border-color: #d97706;
+    box-shadow: 0 0 0 3px rgba(217,119,6,.15);
+    background-color: #fff;
+}
 </style>
 
 @section('content')
@@ -153,19 +177,30 @@
 
     {{-- Orders --}}
     <div class="col-12 col-md-6 col-xl-3">
-        <a href="{{ route('admin.order.index') }}" style="text-decoration:none; color:inherit;">
-        <div class="card dash-card p-3" style="cursor:pointer;">
+        <div class="card dash-card p-3">
+                    {{-- Product filter --}}
+            <div class="mb-2">
+                <select id="orderProductFilter" class="orders-prod-select">
+                    <option value="">All Products</option>
+                    @foreach($products as $product)
+                        <option value="{{ $product->id }}">{{ $product->product_name }}</option>
+                    @endforeach
+                </select>
+            </div>
             <div class="d-flex align-items-center gap-3">
-                <div class="icon-box" style="background:#fef3c7;">
+                <div class="icon-box" style="background:#fef3c7; flex-shrink:0;">
                     <i class="fa fa-shopping-bag" style="color:#d97706;"></i>
                 </div>
-                <div>
-                    <div class="stat-label">Total Orders</div>
-                    <div class="stat-value">{{ number_format($totalOrders) }}</div>
+                <div class="flex-grow-1" style="min-width:0;">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="stat-label">Total Orders</div>
+                        <a href="{{ route('admin.order.index') }}" style="font-size:10px; color:#d97706; text-decoration:none; white-space:nowrap; margin-top:1px; flex-shrink:0;">View All ›</a>
+                    </div>
+                    <div class="stat-value" id="ordersCountVal">{{ number_format($totalOrders) }}</div>
                 </div>
             </div>
             @php
-                $orderDiff = $thisMonthOrders - $lastMonthOrders;
+                $orderDiff  = $thisMonthOrders - $lastMonthOrders;
                 $orderTrend = $orderDiff > 0 ? 'up' : ($orderDiff < 0 ? 'down' : 'neutral');
                 $orderIcon  = $orderDiff > 0 ? 'fa-arrow-up' : ($orderDiff < 0 ? 'fa-arrow-down' : 'fa-minus');
             @endphp
@@ -177,7 +212,6 @@
                 @endif
             </div>
         </div>
-        </a>
     </div>
 
     {{-- Products --}}
@@ -504,6 +538,31 @@
             }
         }
     });
+</script>
+
+{{-- ── ORDERS PRODUCT FILTER ────────────────────── --}}
+<script>
+(function () {
+    var selectEl  = document.getElementById('orderProductFilter');
+    var countEl   = document.getElementById('ordersCountVal');
+    if (!selectEl || !countEl) return;
+
+    selectEl.addEventListener('change', function () {
+        var productId = this.value;
+        var filter    = '{{ $filter }}';
+        countEl.textContent = '...';
+
+        var url = '{{ route('admin.dashboard.orders-count') }}?filter=' + filter;
+        if (productId) url += '&product_id=' + productId;
+
+        fetch(url, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+            .then(function (r) { return r.json(); })
+            .then(function (data) {
+                countEl.textContent = Number(data.count).toLocaleString('en-IN');
+            })
+            .catch(function () { countEl.textContent = '—'; });
+    });
+})();
 </script>
 
 @endsection

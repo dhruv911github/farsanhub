@@ -55,6 +55,7 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->name('admin.')->group(fun
 
 
     Route::get('/dashboard', [App\Http\Controllers\Admin\AdminController::class, 'dashboard'])->name('dashboard');
+    Route::get('/dashboard/orders-count', [App\Http\Controllers\Admin\AdminController::class, 'ordersCount'])->name('dashboard.orders-count');
 
     // Content Routes
     Route::resource('contents', App\Http\Controllers\Admin\ContentController::class)->except('destroy');

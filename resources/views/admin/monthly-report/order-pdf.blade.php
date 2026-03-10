@@ -236,7 +236,7 @@
                 <div class="summary-cell-label">Customers</div>
             </td>
             <td class="summary-cell" style="border-right:none;">
-                <div class="summary-cell-value">{{ number_format($totalOrderQuantity, 2) }}</div>
+                <div class="summary-cell-value">{{ rtrim(rtrim(number_format($totalOrderQuantity, 4), '0'), '.') }}</div>
                 <div class="summary-cell-label">Total Quantity</div>
             </td>
             <td class="summary-cell" style="border-radius:0 4px 4px 0;">
@@ -277,8 +277,8 @@
                     <div class="td-shop">{{ $order->shop_name }}</div>
                 </td>
                 <td class="td-prod">{{ $order->product_name }}</td>
-                <td class="td-qty">{{ number_format($order->order_quantity, 2) }}
-                    @if(!empty($order->unit)) <span style="font-size:8px; font-weight:normal;">{{ $order->unit }}</span>@endif
+                <td class="td-qty">{{ rtrim(rtrim(number_format($order->order_quantity, 4), '0'), '.') }}
+                    <span style="font-size:8px; font-weight:normal;">{{ $order->unit ?? 'kg' }}</span>
                 </td>
                 <td class="td-rate">{{ number_format($order->order_price, 2) }}</td>
                 <td class="td-amt">{{ number_format($lineAmount, 2) }}</td>
@@ -295,7 +295,7 @@
         <tfoot>
             <tr>
                 <td colspan="4" class="ft-label">Grand Total</td>
-                <td class="ft-qty">{{ number_format($totalOrderQuantity, 2) }}</td>
+                <td class="ft-qty">{{ rtrim(rtrim(number_format($totalOrderQuantity, 4), '0'), '.') }}</td>
                 <td></td>
                 <td class="ft-amt">&#8377; {{ number_format($totalOrderAmount, 2) }}</td>
                 <td></td>
@@ -322,7 +322,7 @@
                     </tr>
                     <tr>
                         <td class="t-label">Total Quantity</td>
-                        <td class="t-value">{{ number_format($totalOrderQuantity, 2) }}</td>
+                        <td class="t-value">{{ rtrim(rtrim(number_format($totalOrderQuantity, 4), '0'), '.') }}</td>
                     </tr>
                     <tr>
                         <td class="t-label">Grand Total Amount</td>

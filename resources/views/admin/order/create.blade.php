@@ -70,13 +70,13 @@
                                 </div>
 
                                 <div class="col-md-6 mb-3">
-                                    <label for="order_quantity" class="form-label">{{ @trans('portal.order_quantity') }} (<span id="qty-unit-label">kg</span>) <span class="text-danger">*</span></label>
+                                    <label for="order_quantity" class="form-label">{{ @trans('portal.order_quantity') }} (<span id="qty-unit-label">—</span>) <span class="text-danger">*</span></label>
                                     <div class="input-group">
                                         <input type="number" step="0.01" min="0.01"
                                             class="form-control @error('order_quantity') is-invalid @enderror"
                                             id="order_quantity" name="order_quantity"
                                             value="{{ old('order_quantity') }}" placeholder="e.g. 2.5">
-                                        <span class="input-group-text" id="qty-unit-badge">kg</span>
+                                        <span class="input-group-text" id="qty-unit-badge">—</span>
                                         @error('order_quantity')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -127,9 +127,10 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script>
         function updateTotal() {
-            var price = parseFloat($('#product').find('option:selected').data('price')) || 0;
+            var selected = $('#product').find('option:selected');
+            var price = parseFloat(selected.attr('data-price')) || 0;
             var qty   = parseFloat($('#order_quantity').val()) || 0;
-            var unit  = $('#product').find('option:selected').data('unit') || 'kg';
+            var unit  = selected.attr('data-unit') || '—';
 
             if (price > 0 && qty > 0) {
                 var total = price * qty;
@@ -143,10 +144,14 @@
         }
 
         $(document).ready(function() {
+            var oldProduct = '{{ old('product') }}';
+
             $('#customer').change(function() {
                 var customerId = $(this).val();
                 var productSelect = $('#product');
                 productSelect.html('<option value="">-- {{ @trans("portal.product") }} --</option>');
+                $('#qty-unit-label').text('—');
+                $('#qty-unit-badge').text('—');
                 $('#total-summary').hide();
 
                 if (customerId) {
@@ -157,13 +162,18 @@
                         success: function(data) {
                             $.each(data, function(index, product) {
                                 productSelect.append(
-                                    '<option value="' + product.id + '"' +
-                                    ' data-unit="' + (product.unit || 'kg') + '"' +
-                                    ' data-price="' + product.product_base_price + '">' +
-                                    product.product_name + ' (₹' + product.product_base_price + ')' +
-                                    '</option>'
+                                    $('<option>', {
+                                        value: product.id,
+                                        text: product.product_name + ' (₹' + product.product_base_price + ')',
+                                        'data-unit': product.unit || 'kg',
+                                        'data-price': product.product_base_price
+                                    })
                                 );
                             });
+                            // Re-select previously chosen product (e.g. after validation error)
+                            if (oldProduct) {
+                                productSelect.val(oldProduct).trigger('change');
+                            }
                         }
                     });
                 }
@@ -174,7 +184,7 @@
             }
 
             $('#product').on('change', function () {
-                var unit = $(this).find('option:selected').data('unit') || 'kg';
+                var unit = $(this).find('option:selected').attr('data-unit') || '—';
                 $('#qty-unit-label').text(unit);
                 $('#qty-unit-badge').text(unit);
                 updateTotal();
