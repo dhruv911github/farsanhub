@@ -1,15 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8">
-    <title>Order Receipt - {{ $monthYear }}</title>
+    <title>Order Report - {{ $monthYear }}</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin:0; padding:0; box-sizing:border-box; }
 
         body {
             font-family: DejaVu Sans, sans-serif;
@@ -19,459 +14,141 @@
             background: #fff;
         }
 
-        /* ── PAGE LAYOUT ─────────────────────────── */
-        .page {
-            padding: 30px 36px;
-        }
+        .page { padding: 28px 34px; }
 
-        /* ── TOP ACCENT BAR ──────────────────────── */
-        .accent-bar {
-            background: #d97706;
-            height: 5px;
-            width: 100%;
-            margin-bottom: 24px;
-        }
+        /* ── ACCENT BAR ─── */
+        .accent-bar  { background:#d97706; height:5px; width:100%; margin-bottom:22px; }
+        .bottom-bar  { background:#d97706; height:4px; width:100%; margin-top:18px; }
 
-        /* ── HEADER ──────────────────────────────── */
-        .header-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 22px;
-        }
+        /* ── HEADER ─── */
+        .header-table { width:100%; border-collapse:collapse; margin-bottom:20px; }
+        .brand-logo   { vertical-align:middle; width:85px; }
+        .brand-logo img { width:78px; height:auto; }
+        .brand-info   { vertical-align:top; padding-top:4px; padding-left:10px; }
+        .brand-name   { font-size:16px; font-weight:bold; color:#1c1917; text-transform:uppercase; letter-spacing:1px; }
+        .brand-tagline{ font-size:8.5px; color:#78716c; margin-top:2px; }
+        .brand-address{ font-size:9px; color:#57534e; margin-top:5px; line-height:1.6; }
+        .receipt-info { vertical-align:top; text-align:right; }
+        .receipt-badge{ display:inline-block; background:#fef3c7; color:#92400e; font-size:8.5px; font-weight:bold;
+                        text-transform:uppercase; letter-spacing:1px; padding:3px 10px; border-radius:20px; border:1px solid #fcd34d; }
+        .receipt-title{ font-size:19px; font-weight:bold; color:#1c1917; margin-top:7px; }
+        .receipt-sub  { font-size:10.5px; color:#78716c; margin-top:3px; }
+        .receipt-meta { margin-top:9px; font-size:9px; color:#57534e; line-height:1.8; }
+        .receipt-meta strong { color:#1c1917; }
 
-        .brand-logo {
-            vertical-align: middle;
-        }
+        /* ── DIVIDERS ─── */
+        .divider        { border:none; border-top:1.5px solid #e7e5e4; margin:0 0 18px 0; }
+        .divider-amber  { border-top:2px solid #d97706; }
+        .footer-divider { border:none; border-top:1px solid #e7e5e4; margin:24px 0 12px 0; }
 
-        .brand-logo img {
-            width: 80px;
-            height: auto;
-        }
+        /* ── CUSTOMER / PERIOD INFO ─── */
+        .info-grid   { width:100%; border-collapse:collapse; margin-bottom:20px; }
+        .info-box    { width:50%; vertical-align:top; padding:12px 14px; border:1px solid #e7e5e4; background:#fafaf9; }
+        .info-box-right { border-left:3px solid #d97706; background:#fff; }
+        .info-box-spacer { width:14px; }
+        .info-label  { font-size:8px; font-weight:bold; text-transform:uppercase; letter-spacing:1px; color:#a8a29e; margin-bottom:5px; }
+        .info-value-main { font-size:12.5px; font-weight:bold; color:#1c1917; margin-bottom:2px; }
+        .info-value-sub  { font-size:9.5px; color:#57534e; margin-bottom:1px; }
+        .info-value-small{ font-size:8.5px; color:#78716c; }
 
-        .brand-info {
-            vertical-align: top;
-            padding-top: 4px;
-            padding-left: 10px;
-        }
+        /* ── SUMMARY STRIP ─── */
+        .summary-strip { width:100%; border-collapse:collapse; margin-bottom:20px; }
+        .summary-cell  { width:25%; text-align:center; padding:11px 8px; background:#fffbeb; border:1px solid #fde68a; }
+        .summary-cell-value { font-size:15px; font-weight:bold; color:#92400e; }
+        .summary-cell-label { font-size:8px; text-transform:uppercase; letter-spacing:0.5px; color:#a8a29e; margin-top:2px; }
 
-        .brand-name {
-            font-size: 17px;
-            font-weight: bold;
-            color: #1c1917;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            line-height: 1.2;
-        }
+        /* ── SECTION TITLE ─── */
+        .section-title { font-size:9.5px; font-weight:bold; text-transform:uppercase;
+                         letter-spacing:1px; color:#78716c; margin-bottom:7px; }
 
-        .brand-tagline {
-            font-size: 9px;
-            color: #78716c;
-            letter-spacing: 0.5px;
-            margin-top: 2px;
-        }
+        /* ── ORDERS TABLE ─── */
+        .orders-table { width:100%; border-collapse:collapse; }
 
-        .brand-address {
-            font-size: 9.5px;
-            color: #57534e;
-            margin-top: 6px;
-            line-height: 1.6;
+        .orders-table thead tr { background:#1c1917; }
+        .orders-table thead th {
+            padding:8px 7px;
+            font-size:8px;
+            font-weight:bold;
+            text-transform:uppercase;
+            letter-spacing:0.6px;
+            color:#e7e5e4;
+            border:1px solid #44403c;
+            text-align:center;
+            white-space:nowrap;
         }
+        .orders-table thead th.th-left { text-align:left; }
 
-        .receipt-info {
-            vertical-align: top;
-            text-align: right;
+        .orders-table tbody tr { border-bottom:1px solid #f0efee; }
+        .orders-table tbody tr.row-even { background:#fafaf9; }
+        .orders-table tbody tr.row-odd  { background:#ffffff; }
+
+        .orders-table tbody td {
+            padding:7px 7px;
+            border:1px solid #f0efee;
+            font-size:9.5px;
+            vertical-align:middle;
         }
+        .orders-table tbody td.td-no   { text-align:center; color:#78716c; font-size:9px; }
+        .orders-table tbody td.td-date { text-align:center; font-size:9px; color:#57534e; white-space:nowrap; }
+        .orders-table tbody td.td-cust { font-weight:600; color:#1c1917; }
+        .orders-table tbody td.td-shop { font-size:8.5px; color:#78716c; }
+        .orders-table tbody td.td-prod { color:#292524; }
+        .orders-table tbody td.td-qty  { text-align:center; font-weight:bold; color:#d97706; white-space:nowrap; }
+        .orders-table tbody td.td-rate { text-align:right; color:#57534e; white-space:nowrap; }
+        .orders-table tbody td.td-amt  { text-align:right; font-weight:bold; color:#92400e; white-space:nowrap; }
+        .orders-table tbody td.td-type { text-align:center; }
+        .badge-sell     { background:#d1fae5; color:#065f46; padding:1px 6px; border-radius:20px; font-size:8px; font-weight:bold; }
+        .badge-purchase { background:#dbeafe; color:#1e40af; padding:1px 6px; border-radius:20px; font-size:8px; font-weight:bold; }
 
-        .receipt-badge {
-            display: inline-block;
-            background: #fef3c7;
-            color: #92400e;
-            font-size: 9px;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            padding: 3px 10px;
-            border-radius: 20px;
-            border: 1px solid #fcd34d;
+        /* Grand total row */
+        .orders-table tfoot tr { background:#1c1917; }
+        .orders-table tfoot td {
+            padding:9px 7px;
+            border:1px solid #44403c;
+            font-size:9.5px;
+            font-weight:bold;
+            color:#e7e5e4;
         }
+        .orders-table tfoot td.ft-label { text-align:left; color:#fcd34d; font-size:8.5px; text-transform:uppercase; }
+        .orders-table tfoot td.ft-qty   { text-align:center; color:#e7e5e4; }
+        .orders-table tfoot td.ft-amt   { text-align:right; color:#fcd34d; font-size:11px; background:#292524; }
 
-        .receipt-title {
-            font-size: 20px;
-            font-weight: bold;
-            color: #1c1917;
-            margin-top: 8px;
-            line-height: 1;
-        }
-
-        .receipt-sub {
-            font-size: 11px;
-            color: #78716c;
-            margin-top: 4px;
-        }
-
-        .receipt-meta {
-            margin-top: 10px;
-            font-size: 9.5px;
-            color: #57534e;
-            line-height: 1.8;
-        }
-
-        .receipt-meta strong {
-            color: #1c1917;
-        }
-
-        /* ── DIVIDER ─────────────────────────────── */
-        .divider {
-            border: none;
-            border-top: 1.5px solid #e7e5e4;
-            margin: 0 0 20px 0;
-        }
-
-        .divider-amber {
-            border-top: 2px solid #d97706;
-        }
-
-        /* ── CUSTOMER INFO BLOCK ─────────────────── */
-        .info-grid {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 22px;
-        }
-
-        .info-box {
-            width: 50%;
-            vertical-align: top;
-            padding: 14px 16px;
-            border: 1px solid #e7e5e4;
-            border-radius: 4px;
-            background: #fafaf9;
-        }
-
-        .info-box-right {
-            padding-left: 20px;
-            background: #fff;
-            border: 1px solid #e7e5e4;
-            border-left: 3px solid #d97706;
-        }
-
-        .info-box-spacer {
-            width: 16px;
-        }
-
-        .info-label {
-            font-size: 8.5px;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: #a8a29e;
-            margin-bottom: 6px;
-        }
-
-        .info-value-main {
-            font-size: 13px;
-            font-weight: bold;
-            color: #1c1917;
-            margin-bottom: 2px;
-        }
-
-        .info-value-sub {
-            font-size: 10px;
-            color: #57534e;
-            margin-bottom: 1px;
-        }
-
-        .info-value-small {
-            font-size: 9px;
-            color: #78716c;
-        }
-
-        /* ── SUMMARY STRIP ───────────────────────── */
-        .summary-strip {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 22px;
-        }
-
-        .summary-cell {
-            width: 25%;
-            text-align: center;
-            padding: 12px 8px;
-            background: #fffbeb;
-            border: 1px solid #fde68a;
-        }
-
-        .summary-cell-value {
-            font-size: 16px;
-            font-weight: bold;
-            color: #92400e;
-        }
-
-        .summary-cell-label {
-            font-size: 8.5px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: #a8a29e;
-            margin-top: 3px;
-        }
-
-        /* ── SECTION TITLE ───────────────────────── */
-        .section-title {
-            font-size: 10px;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: #78716c;
-            margin-bottom: 8px;
-        }
-
-        /* ── PIVOT TABLE ─────────────────────────── */
-        .pivot-table {
-            width: 100%;
-            border-collapse: collapse;
-            table-layout: auto;
-        }
-
-        .pivot-table thead tr {
-            background: #1c1917;
-        }
-
-        .pivot-table thead th {
-            padding: 9px 8px;
-            font-size: 8.5px;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 0.6px;
-            color: #e7e5e4;
-            border: 1px solid #44403c;
-            text-align: center;
-        }
-
-        .pivot-table thead th.date-header {
-            text-align: left;
-            width: 90px;
-        }
-
-        .pivot-table thead th.total-header {
-            background: #292524;
-            color: #fcd34d;
-            width: 70px;
-        }
-
-        .pivot-table tbody tr {
-            border-bottom: 1px solid #f5f5f4;
-        }
-
-        .pivot-table tbody tr.row-even {
-            background: #fafaf9;
-        }
-
-        .pivot-table tbody tr.row-odd {
-            background: #ffffff;
-        }
-
-        .pivot-table tbody td {
-            padding: 8px 8px;
-            border: 1px solid #f0efee;
-            font-size: 10px;
-            vertical-align: middle;
-        }
-
-        .pivot-table tbody td.date-cell {
-            font-size: 9.5px;
-            font-weight: bold;
-            color: #44403c;
-            text-align: left;
-            white-space: nowrap;
-        }
-
-        .pivot-table tbody td.qty-cell {
-            text-align: center;
-            color: #57534e;
-        }
-
-        .pivot-table tbody td.qty-cell.has-value {
-            font-weight: bold;
-            color: #1c1917;
-        }
-
-        .pivot-table tbody td.qty-empty {
-            text-align: center;
-            color: #d4d0cb;
-            font-size: 9px;
-        }
-
-        .pivot-table tbody td.row-total-cell {
-            text-align: center;
-            font-weight: bold;
-            color: #92400e;
-            background: #fffbeb;
-            border-left: 2px solid #fcd34d;
-        }
-
-        /* Monthly total row */
-        .pivot-table tfoot tr.monthly-total-row {
-            background: #1c1917;
-        }
-
-        .pivot-table tfoot td {
-            padding: 10px 8px;
-            border: 1px solid #44403c;
-            font-size: 10px;
-            font-weight: bold;
-            text-align: center;
-        }
-
-        .pivot-table tfoot td.monthly-label {
-            text-align: left;
-            color: #fcd34d;
-            font-size: 9px;
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
-        }
-
-        .pivot-table tfoot td.monthly-qty {
-            color: #e7e5e4;
-        }
-
-        .pivot-table tfoot td.monthly-grand {
-            color: #fcd34d;
-            background: #292524;
-            font-size: 11px;
-        }
-
-        /* ── TOTALS / NOTE SECTION ───────────────── */
-        .totals-wrapper {
-            margin-top: 20px;
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .totals-left {
-            width: 55%;
-            vertical-align: bottom;
-            padding-right: 16px;
-        }
-
+        /* ── TOTALS SECTION ─── */
+        .totals-wrapper { margin-top:18px; width:100%; border-collapse:collapse; }
+        .totals-left    { width:55%; vertical-align:bottom; padding-right:14px; }
         .note-box {
-            background: #fafaf9;
-            border: 1px solid #e7e5e4;
-            border-left: 3px solid #d97706;
-            padding: 10px 14px;
-            font-size: 9.5px;
-            color: #57534e;
-            line-height: 1.7;
+            background:#fafaf9; border:1px solid #e7e5e4; border-left:3px solid #d97706;
+            padding:10px 13px; font-size:9px; color:#57534e; line-height:1.7;
         }
+        .note-box strong { color:#1c1917; }
+        .totals-right   { width:45%; vertical-align:top; }
+        .totals-table   { width:100%; border-collapse:collapse; border:1px solid #e7e5e4; }
+        .totals-table td{ padding:7px 12px; border-bottom:1px solid #f5f5f4; font-size:10px; }
+        .totals-table .t-label { color:#78716c; }
+        .totals-table .t-value { text-align:right; font-weight:bold; color:#1c1917; }
+        .totals-table .grand-row td { background:#1c1917; border-bottom:none; padding:10px 12px; }
+        .totals-table .grand-label  { color:#e7e5e4; font-size:10.5px; font-weight:bold; }
+        .totals-table .grand-value  { text-align:right; color:#fcd34d; font-size:14px; font-weight:bold; }
 
-        .note-box strong {
-            color: #1c1917;
-        }
+        /* ── FOOTER ─── */
+        .footer-table { width:100%; border-collapse:collapse; }
+        .footer-left  { font-size:8.5px; color:#a8a29e; vertical-align:middle; }
+        .footer-right { text-align:right; font-size:8.5px; color:#a8a29e; vertical-align:middle; }
+        .footer-right strong { color:#78716c; }
 
-        .totals-right {
-            width: 45%;
-            vertical-align: top;
-        }
-
-        .totals-table {
-            width: 100%;
-            border-collapse: collapse;
-            border: 1px solid #e7e5e4;
-        }
-
-        .totals-table td {
-            padding: 8px 14px;
-            border-bottom: 1px solid #f5f5f4;
-            font-size: 10.5px;
-        }
-
-        .totals-table .t-label {
-            color: #78716c;
-        }
-
-        .totals-table .t-value {
-            text-align: right;
-            font-weight: bold;
-            color: #1c1917;
-        }
-
-        .totals-table .grand-row {
-            background: #1c1917;
-        }
-
-        .totals-table .grand-row td {
-            border-bottom: none;
-            padding: 11px 14px;
-        }
-
-        .totals-table .grand-label {
-            color: #e7e5e4;
-            font-size: 11px;
-            font-weight: bold;
-        }
-
-        .totals-table .grand-value {
-            text-align: right;
-            color: #fcd34d;
-            font-size: 15px;
-            font-weight: bold;
-        }
-
-        /* ── FOOTER ──────────────────────────────── */
-        .footer-divider {
-            border: none;
-            border-top: 1px solid #e7e5e4;
-            margin: 28px 0 14px 0;
-        }
-
-        .footer-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .footer-left {
-            font-size: 9px;
-            color: #a8a29e;
-            vertical-align: middle;
-        }
-
-        .footer-right {
-            text-align: right;
-            font-size: 9px;
-            color: #a8a29e;
-            vertical-align: middle;
-        }
-
-        .footer-right strong {
-            color: #78716c;
-        }
-
-        /* ── BOTTOM ACCENT ───────────────────────── */
-        .bottom-bar {
-            background: #d97706;
-            height: 4px;
-            width: 100%;
-            margin-top: 18px;
-        }
-
-        /* ── HELPERS ─────────────────────────────── */
-        .text-right { text-align: right; }
-        .text-center { text-align: center; }
-        .fw-bold { font-weight: bold; }
-        .page-break { page-break-after: always; }
+        .text-right  { text-align:right; }
+        .text-center { text-align:center; }
     </style>
 </head>
-
 <body>
 <div class="page">
 
-    <!-- TOP ACCENT BAR -->
     <div class="accent-bar"></div>
 
-    <!-- ─── HEADER ─────────────────────────────── -->
+    {{-- HEADER --}}
     <table class="header-table">
         <tr>
-            <td class="brand-logo" style="width: 85px;">
-                <img src="{{ $logoPath }}" alt="Logo">
-            </td>
+            <td class="brand-logo"><img src="{{ $logoPath }}" alt="Logo"></td>
             <td class="brand-info">
                 <div class="brand-name">Brahmani Khandvi &amp; Farsan</div>
                 <div class="brand-tagline">Authentic Gujarati Snacks &amp; Farsan</div>
@@ -482,14 +159,8 @@
             </td>
             <td class="receipt-info">
                 <div class="receipt-badge">Monthly Order Report</div>
-                <div class="receipt-title">PRODUCT MATRIX</div>
-                <div class="receipt-sub">
-                    @if($monthName)
-                        {{ $monthName }}
-                    @else
-                        All Orders
-                    @endif
-                </div>
+                <div class="receipt-title">ORDER STATEMENT</div>
+                <div class="receipt-sub">{{ $monthName ?? 'All Orders' }}</div>
                 <div class="receipt-meta">
                     <strong>Receipt No:</strong> {{ $receiptNo }}<br>
                     <strong>Generated:</strong> {{ $reportDate }}
@@ -500,7 +171,7 @@
 
     <hr class="divider divider-amber">
 
-    <!-- ─── CUSTOMER / PERIOD INFO ─────────────── -->
+    {{-- CUSTOMER / PERIOD INFO --}}
     @if($customerInfo)
     <table class="info-grid">
         <tr>
@@ -509,30 +180,20 @@
                 <div class="info-value-main">{{ $customerInfo->customer_name }}</div>
                 <div class="info-value-sub">{{ $customerInfo->shop_name }}</div>
                 @if($customerInfo->shop_address)
-                    <div class="info-value-small">{{ $customerInfo->shop_address }}{{ $customerInfo->city ? ', ' . $customerInfo->city : '' }}</div>
+                    <div class="info-value-small">{{ $customerInfo->shop_address }}{{ $customerInfo->city ? ', '.$customerInfo->city : '' }}</div>
                 @endif
                 @if($customerInfo->customer_number)
-                    <div class="info-value-small" style="margin-top:4px;">
-                        <strong>Phone:</strong> {{ $customerInfo->customer_number }}
-                    </div>
-                @endif
-                @if($customerInfo->customer_email)
-                    <div class="info-value-small">
-                        <strong>Email:</strong> {{ $customerInfo->customer_email }}
-                    </div>
+                    <div class="info-value-small" style="margin-top:3px;"><strong>Phone:</strong> {{ $customerInfo->customer_number }}</div>
                 @endif
             </td>
             <td class="info-box-spacer"></td>
             <td class="info-box info-box-right">
                 <div class="info-label">Report Details</div>
                 <div class="info-value-main">{{ $monthName ?? 'All Records' }}</div>
-                <div class="info-value-sub" style="margin-top:6px;">
+                <div class="info-value-sub" style="margin-top:5px;">
                     <strong>Period:</strong>
-                    @if($monthYear)
-                        01 {{ $monthName }} &ndash; {{ date('t', strtotime($monthYear . '-01')) }} {{ $monthName }}
-                    @else
-                        All Time
-                    @endif
+                    @if($monthYear) 01 {{ $monthName }} &ndash; {{ date('t', strtotime($monthYear.'-01')) }} {{ $monthName }}
+                    @else All Time @endif
                 </div>
                 <div class="info-value-sub"><strong>Receipt No:</strong> {{ $receiptNo }}</div>
                 <div class="info-value-sub"><strong>Generated On:</strong> {{ $reportDate }}</div>
@@ -546,8 +207,8 @@
                 <div class="info-label">Report Period</div>
                 <div class="info-value-main">{{ $monthName ?? 'All Orders' }}</div>
                 @if($monthYear)
-                    <div class="info-value-sub" style="margin-top:4px;">
-                        01 {{ $monthName }} &ndash; {{ date('t', strtotime($monthYear . '-01')) }} {{ $monthName }}
+                    <div class="info-value-sub" style="margin-top:3px;">
+                        01 {{ $monthName }} &ndash; {{ date('t', strtotime($monthYear.'-01')) }} {{ $monthName }}
                     </div>
                 @endif
             </td>
@@ -557,142 +218,111 @@
                 <div class="info-value-sub"><strong>Receipt No:</strong> {{ $receiptNo }}</div>
                 <div class="info-value-sub"><strong>Generated On:</strong> {{ $reportDate }}</div>
                 <div class="info-value-sub"><strong>Customers:</strong> {{ $orders->unique('customer_id')->count() }}</div>
+                <div class="info-value-sub"><strong>Orders:</strong> {{ $orders->count() }}</div>
             </td>
         </tr>
     </table>
     @endif
 
-    @php
-        // ── BUILD PIVOT MATRIX ──────────────────────
-        // Unique sorted products
-        $pivotProducts = $orders->pluck('product_name')->unique()->sort()->values();
-
-        // Group orders by date (sort key Y-m-d, display key d M Y)
-        $byDate = [];
-        foreach ($orders as $order) {
-            $rawDate  = $order->order_date ?: date('Y-m-d', strtotime($order->created_at));
-            $sortKey  = date('Y-m-d', strtotime($rawDate));
-            $dispDate = date('d M Y', strtotime($rawDate));
-
-            if (!isset($byDate[$sortKey])) {
-                $byDate[$sortKey] = ['_display' => $dispDate];
-            }
-            $pName = $order->product_name;
-            $byDate[$sortKey][$pName] = ($byDate[$sortKey][$pName] ?? 0) + $order->order_quantity;
-        }
-        ksort($byDate);
-
-        // Per-product column totals
-        $pivotProductTotals = [];
-        foreach ($pivotProducts as $p) {
-            $pivotProductTotals[$p] = 0;
-        }
-        foreach ($byDate as $row) {
-            foreach ($pivotProducts as $p) {
-                $pivotProductTotals[$p] += ($row[$p] ?? 0);
-            }
-        }
-
-        // Per-date row totals
-        $pivotDateTotals = [];
-        foreach ($byDate as $key => $row) {
-            $sum = 0;
-            foreach ($pivotProducts as $p) {
-                $sum += ($row[$p] ?? 0);
-            }
-            $pivotDateTotals[$key] = $sum;
-        }
-
-        $pivotGrandQty  = array_sum($pivotDateTotals);
-        $totalDays      = count($byDate);
-        $totalProdCount = $pivotProducts->count();
-    @endphp
-
-    <!-- ─── SUMMARY STRIP ──────────────────────── -->
+    {{-- SUMMARY STRIP --}}
     <table class="summary-strip">
         <tr>
-            <td class="summary-cell" style="border-right: none; border-radius: 4px 0 0 4px;">
-                <div class="summary-cell-value">{{ $totalDays }}</div>
-                <div class="summary-cell-label">Total Days</div>
+            <td class="summary-cell" style="border-right:none; border-radius:4px 0 0 4px;">
+                <div class="summary-cell-value">{{ $orders->count() }}</div>
+                <div class="summary-cell-label">Total Orders</div>
             </td>
-            <td class="summary-cell" style="border-right: none;">
-                <div class="summary-cell-value">{{ $totalProdCount }}</div>
-                <div class="summary-cell-label">Total Products</div>
+            <td class="summary-cell" style="border-right:none;">
+                <div class="summary-cell-value">{{ $orders->unique('customer_id')->count() }}</div>
+                <div class="summary-cell-label">Customers</div>
             </td>
-            <td class="summary-cell" style="border-right: none;">
-                <div class="summary-cell-value">{{ number_format($totalOrderQuantity) }} KG</div>
+            <td class="summary-cell" style="border-right:none;">
+                <div class="summary-cell-value">{{ number_format($totalOrderQuantity, 2) }}</div>
                 <div class="summary-cell-label">Total Quantity</div>
             </td>
-            <td class="summary-cell" style="border-radius: 0 4px 4px 0;">
+            <td class="summary-cell" style="border-radius:0 4px 4px 0;">
                 <div class="summary-cell-value">&#8377; {{ number_format($totalOrderAmount, 2) }}</div>
                 <div class="summary-cell-label">Grand Total</div>
             </td>
         </tr>
     </table>
 
-    <!-- ─── PIVOT MATRIX TABLE ─────────────────── -->
-    <div class="section-title">Product Quantity Matrix &mdash; {{ $monthName ?? 'All Orders' }}</div>
+    {{-- ORDERS TABLE --}}
+    <div class="section-title">Order Details &mdash; {{ $monthName ?? 'All Orders' }}</div>
 
-    <table class="pivot-table">
+    <table class="orders-table">
         <thead>
             <tr>
-                <th class="date-header">Date</th>
-                @foreach($pivotProducts as $product)
-                    <th>{{ $product }}</th>
-                @endforeach
-                <th class="total-header">Total (KG)</th>
+                <th style="width:26px;">#</th>
+                <th style="width:62px;">Date</th>
+                <th class="th-left">Customer</th>
+                <th class="th-left">Product</th>
+                <th style="width:62px;">Qty</th>
+                <th style="width:56px;">Rate (&#8377;)</th>
+                <th style="width:70px;">Amount (&#8377;)</th>
+                <th style="width:52px;">Type</th>
             </tr>
         </thead>
         <tbody>
-            @foreach($byDate as $sortKey => $row)
-                <tr class="{{ $loop->even ? 'row-even' : 'row-odd' }}">
-                    <td class="date-cell">{{ $row['_display'] }}</td>
-                    @foreach($pivotProducts as $product)
-                        @if(isset($row[$product]) && $row[$product] > 0)
-                            <td class="qty-cell has-value">{{ number_format($row[$product], 0) }}</td>
-                        @else
-                            <td class="qty-empty">&mdash;</td>
-                        @endif
-                    @endforeach
-                    <td class="row-total-cell">{{ number_format($pivotDateTotals[$sortKey], 0) }}</td>
-                </tr>
+            @foreach($orders as $i => $order)
+            @php
+                $rowDate    = $order->order_date ?: date('Y-m-d', strtotime($order->created_at));
+                $dispDate   = date('d-m-Y', strtotime($rowDate));
+                $lineAmount = $order->order_quantity * $order->order_price;
+            @endphp
+            <tr class="{{ $loop->even ? 'row-even' : 'row-odd' }}">
+                <td class="td-no">{{ $i + 1 }}</td>
+                <td class="td-date">{{ $dispDate }}</td>
+                <td>
+                    <div class="td-cust">{{ $order->customer_name }}</div>
+                    <div class="td-shop">{{ $order->shop_name }}</div>
+                </td>
+                <td class="td-prod">{{ $order->product_name }}</td>
+                <td class="td-qty">{{ number_format($order->order_quantity, 2) }}
+                    @if(!empty($order->unit)) <span style="font-size:8px; font-weight:normal;">{{ $order->unit }}</span>@endif
+                </td>
+                <td class="td-rate">{{ number_format($order->order_price, 2) }}</td>
+                <td class="td-amt">{{ number_format($lineAmount, 2) }}</td>
+                <td class="td-type">
+                    @if(($order->type ?? 'sell') === 'purchase')
+                        <span class="badge-purchase">Purchase</span>
+                    @else
+                        <span class="badge-sell">Sell</span>
+                    @endif
+                </td>
+            </tr>
             @endforeach
         </tbody>
         <tfoot>
-            <tr class="monthly-total-row">
-                <td class="monthly-label">Monthly Total</td>
-                @foreach($pivotProducts as $product)
-                    <td class="monthly-qty">{{ number_format($pivotProductTotals[$product], 0) }}</td>
-                @endforeach
-                <td class="monthly-grand">{{ number_format($pivotGrandQty, 0) }}</td>
+            <tr>
+                <td colspan="4" class="ft-label">Grand Total</td>
+                <td class="ft-qty">{{ number_format($totalOrderQuantity, 2) }}</td>
+                <td></td>
+                <td class="ft-amt">&#8377; {{ number_format($totalOrderAmount, 2) }}</td>
+                <td></td>
             </tr>
         </tfoot>
     </table>
 
-    <!-- ─── TOTALS / NOTE SECTION ─────────────── -->
+    {{-- TOTALS SECTION --}}
     <table class="totals-wrapper">
         <tr>
             <td class="totals-left">
                 <div class="note-box">
                     <strong>Note:</strong><br>
-                    &bull; Quantities are in KG. Each cell shows total KG ordered for that product on that date.<br>
-                    &bull; &mdash; indicates no order for that product on that date.<br>
+                    &bull; Rate is the effective price per unit for this order.<br>
+                    &bull; Amount = Quantity &times; Rate.<br>
                     &bull; This is a computer-generated report and does not require a signature.
                 </div>
             </td>
             <td class="totals-right">
                 <table class="totals-table">
                     <tr>
-                        <td class="t-label">Total Days with Orders</td>
-                        <td class="t-value">{{ $totalDays }}</td>
+                        <td class="t-label">Total Orders</td>
+                        <td class="t-value">{{ $orders->count() }}</td>
                     </tr>
                     <tr>
-                        <td class="t-label">Total Products</td>
-                        <td class="t-value">{{ $totalProdCount }}</td>
-                    </tr>
-                    <tr>
-                        <td class="t-label">Total Quantity (KG)</td>
-                        <td class="t-value">{{ number_format($totalOrderQuantity) }} KG</td>
+                        <td class="t-label">Total Quantity</td>
+                        <td class="t-value">{{ number_format($totalOrderQuantity, 2) }}</td>
                     </tr>
                     <tr>
                         <td class="t-label">Grand Total Amount</td>
@@ -707,7 +337,6 @@
         </tr>
     </table>
 
-    <!-- ─── FOOTER ─────────────────────────────── -->
     <hr class="footer-divider">
     <table class="footer-table">
         <tr>
@@ -722,10 +351,8 @@
         </tr>
     </table>
 
-    <!-- BOTTOM ACCENT BAR -->
     <div class="bottom-bar"></div>
 
 </div>
 </body>
-
 </html>

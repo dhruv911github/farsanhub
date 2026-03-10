@@ -94,7 +94,6 @@ class ReportController extends Controller
         try {
             $customerId = $request->input('customer_id');
             $monthYear  = $request->input('month_year');
-            $exportType = $request->input('export_type');
 
             if (!$monthYear) {
                 return redirect()->back()->with('error', 'Please select a month and year before exporting.');
@@ -122,6 +121,7 @@ class ReportController extends Controller
                 ->select(
                     'orders.*',
                     'products.product_name',
+                    'products.unit',
                     'customers.customer_name',
                     'customers.shop_name',
                     'customers.customer_number',
@@ -129,6 +129,7 @@ class ReportController extends Controller
                     'customers.city',
                     'customers.customer_email'
                 )
+                ->orderBy('orders.order_date', 'asc')
                 ->orderBy('orders.created_at', 'asc')
                 ->get();
 
@@ -136,16 +137,8 @@ class ReportController extends Controller
                 return redirect()->back()->with('error', 'No orders found for the selected filters. Please adjust your selection and try again.');
             }
 
-            // Excel Export
-            if ($exportType == 'excel') {
-                return Excel::download(
-                    new OrderExport($customerId, $monthYear),
-                    'Order-List.xlsx'
-                );
-            }
-
-            // ✅ PDF Export (UPDATED LOGIC ONLY HERE)
-            if ($exportType == 'pdf') {
+            // PDF Export
+            {
 
                 $totalOrderAmount = 0;
                 $totalOrderQuantity = 0;

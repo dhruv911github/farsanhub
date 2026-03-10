@@ -3,56 +3,121 @@
 namespace App\Exports;
 
 use App\Models\Product;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\Log;
+use App\Models\ProductPrice;
+use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithStyles;
-use Maatwebsite\Excel\Concerns\WithColumnFormatting;
-use PhpOffice\PhpSpreadsheet\Calculation\MathTrig\Exp;
-use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
+use Maatwebsite\Excel\Concerns\WithColumnWidths;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
+use PhpOffice\PhpSpreadsheet\Style\Fill;
+use PhpOffice\PhpSpreadsheet\Style\Alignment;
 
-class ProductExport implements FromCollection, WithHeadings, WithStyles, WithColumnFormatting
+class ProductExport implements FromCollection, WithHeadings, WithStyles, WithColumnWidths
 {
     public function collection()
     {
-        $product = Product::where('user_id', auth()->id())->get();
-        Log::info('product record count: ' . $product->count());
+        // Fetch all products with their base prices
+        $products = Product::where('user_id', auth()->id())
+            ->orderBy('product_name')
+            ->get();
 
+        // Fetch all customer-specific prices for this user
+        $prices = ProductPrice::join('customers', 'product_prices.customer_id', '=', 'customers.id')
+            ->join('products', 'product_prices.product_id', '=', 'products.id')
+            ->where('product_prices.user_id', auth()->id())
+            ->select(
+                'product_prices.product_id',
+                'product_prices.customer_id',
+                'product_prices.price',
+                'customers.customer_name',
+                'customers.shop_name',
+                'products.product_name',
+                'products.product_base_price',
+                'products.unit'
+            )
+            ->orderBy('products.product_name')
+            ->orderBy('customers.customer_name')
+            ->get()
+            ->groupBy('product_id');
+
+        $rows = collect();
         $srNo = 1;
-        return $product->map(function ($item) use (&$srNo) { 
-            return [
-                'sr_no' => $srNo++, 
-                'product_name'   => $item->product_name ?? '-',
-                'product_base_price'   => '₹ '.$item->product_base_price ?? '-',
-                // 'status'   => $item->status ?? '-',
-                'date'   => $item->created_at ? date('d-m-Y', strtotime($item->created_at)) : '-',
-            ];
-        });
+
+        foreach ($products as $product) {
+            $customerPrices = $prices->get($product->id, collect());
+
+            if ($customerPrices->isEmpty()) {
+                // Product with no custom pricing — show base price row only
+                $rows->push([
+                    'sr_no'          => $srNo++,
+                    'product_name'   => $product->product_name,
+                    'unit'           => $product->unit ?? '-',
+                    'base_price'     => $product->product_base_price,
+                    'customer_name'  => '—',
+                    'customer_price' => '—',
+                ]);
+            } else {
+                // First row: product info + first customer price
+                $first = $customerPrices->first();
+                $rows->push([
+                    'sr_no'          => $srNo++,
+                    'product_name'   => $product->product_name,
+                    'unit'           => $product->unit ?? '-',
+                    'base_price'     => $product->product_base_price,
+                    'customer_name'  => $first->customer_name . ($first->shop_name ? ' (' . $first->shop_name . ')' : ''),
+                    'customer_price' => $first->price,
+                ]);
+
+                // Remaining customer rows (no repeated product info)
+                foreach ($customerPrices->slice(1) as $cp) {
+                    $rows->push([
+                        'sr_no'          => '',
+                        'product_name'   => '',
+                        'unit'           => '',
+                        'base_price'     => '',
+                        'customer_name'  => $cp->customer_name . ($cp->shop_name ? ' (' . $cp->shop_name . ')' : ''),
+                        'customer_price' => $cp->price,
+                    ]);
+                }
+            }
+        }
+
+        return $rows;
     }
 
     public function headings(): array
     {
         return [
-            'Sr. No.', 
-            trans('portal.product_name'),
-            trans('portal.product_base_price'),
-            // trans('portal.status'),
-            trans('portal.date'),
+            'Sr. No.',
+            'Product Name',
+            'Unit',
+            'Base Price (₹)',
+            'Customer',
+            'Customer Price (₹)',
+        ];
+    }
+
+    public function columnWidths(): array
+    {
+        return [
+            'A' => 8,
+            'B' => 30,
+            'C' => 10,
+            'D' => 18,
+            'E' => 35,
+            'F' => 20,
         ];
     }
 
     public function styles(Worksheet $sheet)
     {
-        $sheet->getStyle('A1:D1')->getFont()->setBold(true);
-    }
-
-    public function columnFormats(): array
-    {
-        return [
-            // 'F' => '#,##0.00',     // Amount
-            // 'M' => 'DD-MM-YYYY',   // Cheque Date
-        ];
+        // Bold header row
+        $sheet->getStyle('A1:F1')->getFont()->setBold(true);
+        $sheet->getStyle('A1:F1')->getFill()
+            ->setFillType(Fill::FILL_SOLID)
+            ->getStartColor()->setARGB('FFFFCC99');
+        $sheet->getStyle('A1:F1')->getAlignment()
+            ->setHorizontal(Alignment::HORIZONTAL_CENTER);
     }
 }

@@ -148,9 +148,6 @@
     </div>
 </div>
 
-{{-- ═══════════════════════════════════════════════
-     ROW 1 — Orders + Expenses (filter cards)
-════════════════════════════════════════════════ --}}
 <div class="row g-3 mb-3">
 
     {{-- SALES ORDERS --}}
@@ -190,9 +187,6 @@
                         </select>
                     </div>
                     <div class="rpt-btn-row">
-                        <button type="button" id="orderExcelBtn" class="rpt-btn rpt-btn-excel">
-                            <i class="fa fa-file-excel-o"></i> Excel
-                        </button>
                         <button type="button" id="pdfExportBtn" class="rpt-btn rpt-btn-pdf">
                             <i class="fa fa-file-pdf-o"></i> PDF
                         </button>
@@ -237,15 +231,8 @@
         </div>
     </div>
 
-</div>
-
-{{-- ═══════════════════════════════════════════════
-     ROW 2 — Customers + Products (quick export)
-════════════════════════════════════════════════ --}}
-<div class="row g-3">
-
     {{-- CUSTOMERS --}}
-    <div class="col-12 col-lg-4">
+    <div class="col-12 col-lg-2">
         <div class="card rpt-card">
             <div class="rpt-stripe"></div>
             <div class="rpt-head">
@@ -272,7 +259,7 @@
     </div>
 
     {{-- PRODUCTS --}}
-    <div class="col-12 col-lg-4">
+    <div class="col-12 col-lg-2">
         <div class="card rpt-card">
             <div class="rpt-stripe"></div>
             <div class="rpt-head">
@@ -297,8 +284,9 @@
             </div>
         </div>
     </div>
-
 </div>
+
+
 
 {{-- ── JS ────────────────────────────────────────────── --}}
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -307,8 +295,8 @@
         toast: true, position: 'top-end', showConfirmButton: false, timer: 3500
     });
 
-    function submitOrderForm(exportType) {
-        const form = document.getElementById('orderExcelBtn').closest('form');
+    document.getElementById('pdfExportBtn').addEventListener('click', function () {
+        const form = this.closest('form');
         const monthYear = form.querySelector('select[name="month_year"]').value;
 
         if (!monthYear) {
@@ -316,16 +304,8 @@
             return;
         }
 
-        const input = document.createElement('input');
-        input.type  = 'hidden';
-        input.name  = 'export_type';
-        input.value = exportType;
-        form.appendChild(input);
         form.submit();
-    }
-
-    document.getElementById('orderExcelBtn').addEventListener('click', function () { submitOrderForm('excel'); });
-    document.getElementById('pdfExportBtn').addEventListener('click',  function () { submitOrderForm('pdf');   });
+    });
 </script>
 
 @if (session()->has('success'))
