@@ -34,6 +34,9 @@ class OrderController extends Controller
             if ($request->customer_id) {
                 $query->where('orders.customer_id', $request->customer_id);
             }
+            if ($request->type) {
+                $query->where('orders.type', $request->type);
+            }
             if (!empty($search)) {
                 $query->where(function ($q) use ($search) {
                     $q->where('products.product_name', 'like', "%{$search}%")
@@ -125,6 +128,7 @@ class OrderController extends Controller
                 'order_quantity' => $request->order_quantity,
                 'order_price'    => $this->getEffectivePrice($product->id, $customer->id),
                 'order_date'     => $request->order_date,
+                'type'           => $request->type ?? 'sell',
             ]);
 
             return redirect()->route('admin.order.index')->with('success', __('portal.order_created'));
@@ -176,6 +180,7 @@ class OrderController extends Controller
                 'order_quantity' => $request->order_quantity,
                 'order_price'    => $this->getEffectivePrice($product->id, $order->customer_id),
                 'order_date'     => $request->order_date ?: $order->order_date,
+                'type'           => $request->type ?? $order->type,
             ]);
 
             return redirect()->route('admin.order.index')->with('success', __('portal.order_updated'));

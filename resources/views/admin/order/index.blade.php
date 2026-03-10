@@ -52,6 +52,11 @@
                             <option value="24">24</option>
                             <option value="32">32</option>
                         </select>
+                        <select id="type-filter" onchange="reloadTable()" class="form-select flex-shrink-0" style="width:130px;">
+                            <option value="">All Types</option>
+                            <option value="sell">Sell</option>
+                            <option value="purchase">Purchase</option>
+                        </select>
                         <select id="customer-filter" onchange="reloadTable()" class="form-select" style="flex:1 1 0; min-width:0;">
                             <option value="">All Customers</option>
                             @foreach($customers as $c)
@@ -139,13 +144,14 @@
         var startDate  = $('#start-date').val();
         var endDate    = $('#end-date').val();
         var customerId = $('#customer-filter').val();
+        var type       = $('#type-filter').val();
 
         $.ajaxSetup({ headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') } });
 
         $.ajax({
             type: "GET",
             url: "{{ route('admin.order.index') }}",
-            data: { search: search, limit: limit, start_date: startDate, end_date: endDate, customer_id: customerId },
+            data: { search: search, limit: limit, start_date: startDate, end_date: endDate, customer_id: customerId, type: type },
             success: function(response) { $('#order-cards').html(response); },
         });
     }

@@ -149,7 +149,7 @@
 </div>
 
 {{-- ═══════════════════════════════════════════════
-     ROW 1 — Sales Orders + Purchase Orders (filter cards)
+     ROW 1 — Orders + Expenses (filter cards)
 ════════════════════════════════════════════════ --}}
 <div class="row g-3 mb-3">
 
@@ -195,52 +195,6 @@
                         </button>
                         <button type="button" id="pdfExportBtn" class="rpt-btn rpt-btn-pdf">
                             <i class="fa fa-file-pdf-o"></i> PDF
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    {{-- PURCHASE ORDERS --}}
-    <div class="col-12 col-lg-4">
-        <div class="card rpt-card">
-            <div class="rpt-stripe"></div>
-            <div class="rpt-head">
-                <div class="rpt-icon"><i class="fa fa-truck"></i></div>
-                <div>
-                    <p class="rpt-title">Purchase Orders</p>
-                    <p class="rpt-sub">Filter by party &amp; month, then export</p>
-                </div>
-            </div>
-            <hr class="rpt-divider">
-            <div class="rpt-body">
-                <form action="{{ route('admin.monthly-report.purchase-order') }}" method="GET">
-                    <div class="mb-3">
-                        <label class="rpt-label">Party / Supplier</label>
-                        <select name="customer_id" class="rpt-select">
-                            <option value="">— All Parties —</option>
-                            @foreach ($customers as $customer)
-                                <option value="{{ $customer->id }}" {{ old('customer_id') == $customer->id ? 'selected' : '' }}>
-                                    {{ $customer->customer_name }} · {{ $customer->shop_name }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label class="rpt-label">{{ trans('portal.select_month_year') }}</label>
-                        <select name="month_year" class="rpt-select">
-                            <option value="">— {{ trans('portal.select_month_year') }} —</option>
-                            @foreach ($purchaseOrderMonths as $month)
-                                <option value="{{ $month['value'] }}" {{ old('month_year') == $month['value'] ? 'selected' : '' }}>
-                                    {{ $month['label'] }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="rpt-btn-row">
-                        <button type="submit" name="export_type" value="excel" class="rpt-btn rpt-btn-excel">
-                            <i class="fa fa-file-excel-o"></i> Excel
                         </button>
                     </div>
                 </form>

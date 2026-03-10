@@ -72,18 +72,12 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->name('admin.')->group(fun
     Route::get('order/products-by-customer', [App\Http\Controllers\Admin\OrderController::class, 'getProductsByCustomer'])->name('order.products-by-customer');
     Route::resource('order', App\Http\Controllers\Admin\OrderController::class)->except('destroy');
 
-    // Purchase Order Routes
-    Route::delete('purchase-order', [App\Http\Controllers\Admin\PurchaseOrderController::class, 'destroy'])->name('purchase-order.destroy');
-    Route::get('purchase-order/products-by-customer', [App\Http\Controllers\Admin\PurchaseOrderController::class, 'getProductsByCustomer'])->name('purchase-order.products-by-customer');
-    Route::resource('purchase-order', App\Http\Controllers\Admin\PurchaseOrderController::class)->except('destroy');
-
     // Reports
     Route::get('monthly-report', [App\Http\Controllers\Admin\ReportController::class, 'index'])->name('monthly-report.index');
     Route::get('monthly-report/expense', [App\Http\Controllers\Admin\ReportController::class, 'expenseReport'])->name('monthly-report.expense');
     Route::get('monthly-report/customer', [App\Http\Controllers\Admin\ReportController::class, 'customerReport'])->name('monthly-report.customer');
     Route::get('monthly-report/product', [App\Http\Controllers\Admin\ReportController::class, 'productReport'])->name('monthly-report.product');
     Route::get('monthly-report/order', [App\Http\Controllers\Admin\ReportController::class, 'orderReport'])->name('monthly-report.order');
-    Route::get('monthly-report/purchase-order', [App\Http\Controllers\Admin\ReportController::class, 'purchaseOrderReport'])->name('monthly-report.purchase-order');
 
     // change password
     Route::get('changePassword', [App\Http\Controllers\Admin\AdminController::class, 'changePassword'])->name('changePassword');

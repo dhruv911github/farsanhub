@@ -1,0 +1,39 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(php artisan migrate --path=database/migrations/2026_03_04_000001_add_performance_indexes.php)",
+      "Bash(php artisan config:cache)",
+      "Bash(php artisan route:cache)",
+      "Bash(php artisan view:cache)",
+      "Bash(ls -lh d:/wamp64/www/projects/farsanhub/public/js/farsan-*.js)",
+      "Bash(php artisan migrate --force)",
+      "Bash(php artisan migrate:rollback --step=1 --force)",
+      "Bash(grep -v \"//\")",
+      "WebSearch",
+      "WebFetch(domain:commons.wikimedia.org)",
+      "Bash(curl -s \"https://en.wikipedia.org/w/api.php?action=query&titles=File:Khandvi.jpg|File:North_Indian_style_samosa.jpg&prop=imageinfo&iiprop=url&format=json\")",
+      "Bash(curl -s \"https://en.wikipedia.org/w/api.php?action=query&titles=File:Khaman.jpg|File:Dhokla.jpg|File:Pathrode.jpg|File:Khandavi_01.JPG|File:Gujarati_khandvi.jpg&prop=imageinfo&iiprop=url&format=json\")",
+      "Bash(curl -s \"https://en.wikipedia.org/w/api.php?action=query&titles=File:Alu_vadi.jpg|File:Patra_\\(food\\).jpg|File:Gujarati_farsan.jpg|File:Indian_farsan.jpg|File:Namkeen.jpg&prop=imageinfo&iiprop=url&format=json\")",
+      "Bash(curl -s \"https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=patra+gujarati+food&srnamespace=6&srlimit=5&format=json\")",
+      "Bash(curl -s \"https://en.wikipedia.org/w/api.php?action=query&titles=File:Patra_\\(Gujarati_snack\\).jpg|File:PATRA.JPG&prop=imageinfo&iiprop=url&format=json\")",
+      "Bash(curl -L -A \"Mozilla/5.0\" -o \"khandavi.jpg\" \"https://upload.wikimedia.org/wikipedia/commons/c/c5/Khandavi_01.JPG\")",
+      "Bash(curl -L -A \"Mozilla/5.0\" -o \"samosa.jpg\" \"https://upload.wikimedia.org/wikipedia/commons/6/69/North_Indian_style_samosa.jpg\")",
+      "Bash(curl -L -A \"Mozilla/5.0\" -o \"khaman.jpg\" \"https://upload.wikimedia.org/wikipedia/commons/b/bd/Khaman.jpg\")",
+      "Bash(curl -L -A \"Mozilla/5.0\" -o \"dhokla.jpg\" \"https://upload.wikimedia.org/wikipedia/commons/0/06/Dhokla.jpg\")",
+      "Bash(curl -L -A \"Mozilla/5.0\" -o \"patra.jpg\" \"https://upload.wikimedia.org/wikipedia/commons/e/ee/Patra_%28Gujarati_snack%29.jpg\")",
+      "Bash(curl -L -A \"Mozilla/5.0\" -o \"mix-farsan.jpg\" \"https://upload.wikimedia.org/wikipedia/commons/8/8c/Namkeen.jpg\")",
+      "Bash(curl -v -L -A \"Mozilla/5.0\" \"https://upload.wikimedia.org/wikipedia/commons/b/bd/Khaman.jpg\")",
+      "Bash(curl -s \"https://en.wikipedia.org/w/api.php?action=query&titles=File:PATRA.JPG|File:Farsan.jpg|File:Gujarati_Farsan.jpg|File:Indian_snacks.jpg|File:Chivda.jpg&prop=imageinfo&iiprop=url&format=json\")",
+      "Bash(php artisan migrate)",
+      "Bash(where python)",
+      "Bash(where python3)",
+      "Bash(where py)",
+      "Bash(python -c \":*)",
+      "Bash(python write_files.py)",
+      "Bash(python update_index_views.py)",
+      "Bash(php artisan config:clear)",
+      "Bash(php artisan view:clear)",
+      "Bash(php artisan route:clear)"
+    ]
+  }
+}

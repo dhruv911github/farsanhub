@@ -33,6 +33,26 @@
                                     <input type="text" class="form-control" value="{{ $cust ? ($cust->shop_name ?: $cust->customer_name) : '' }}" readonly>
                                 </div>
 
+                                <div class="col-md-6 mb-3 d-flex align-items-end">
+                                    <div>
+                                        <label class="form-label fw-semibold d-block">Order Type <span class="text-danger">*</span></label>
+                                        <div class="d-flex gap-4">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="type" id="type_sell" value="sell" {{ old('type', $order->type ?? 'sell') === 'sell' ? 'checked' : '' }}>
+                                                <label class="form-check-label" for="type_sell">
+                                                    <span class="badge" style="background:#d1fae5; color:#065f46; font-size:13px;">Sell</span>
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="type" id="type_purchase" value="purchase" {{ old('type', $order->type) === 'purchase' ? 'checked' : '' }}>
+                                                <label class="form-check-label" for="type_purchase">
+                                                    <span class="badge" style="background:#dbeafe; color:#1e40af; font-size:13px;">Purchase</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <div class="col-md-6 mb-3">
                                     <label for="product" class="form-label">{{ @trans('portal.product') }} <span class="text-danger">*</span></label>
                                     <select name="product" id="product" class="form-control form-select @error('product') is-invalid @enderror">

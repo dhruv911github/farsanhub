@@ -3,6 +3,7 @@
     <thead>
         <tr role="row">
             <th class="text-uppercase fw-bold">#</th>
+             <th class="text-uppercase fw-bold text-center">Type</th>
             <th class="text-uppercase fw-bold">{{ @trans('portal.shop_name') }}</th>
             <th class="text-uppercase fw-bold">{{ @trans('portal.product_name') }}</th>
             <th class="text-uppercase fw-bold">{{ @trans('portal.order_quantity') }}</th>
@@ -14,12 +15,19 @@
     <tbody>
         @if ($orders->isEmpty())
             <tr>
-                <td colspan="7" class="text-center text-danger">{{ @trans('messages.no_content') }}</td>
+                <td colspan="8" class="text-center text-danger">{{ @trans('messages.no_content') }}</td>
             </tr>
         @else
             @forelse($orders as $index => $order)
                 <tr>
                     <td>{{ $orders->firstItem() + $index }}</td>
+                    <td class="text-center">
+    @if(($order->type ?? 'sell') === 'purchase')
+        <span class="badge bg-primary">Purchase</span>
+    @else
+        <span class="badge bg-success">Sell</span>
+    @endif
+</td>
                     <td>{{ $order->shop_name }}</td>
                     <td>{{ $order->product_name }}</td>
                     <td>{{ $order->order_quantity }} {{ $order->unit ?? 'kg' }}</td>
@@ -38,7 +46,7 @@
                 </tr>
             @endforeach
             <tr class=" fw-bold">
-                <td colspan="3" class="text-end">Total:</td>
+                <td colspan="4" class="text-end">Total:</td>
                 <td>{{ number_format($orders->sum('order_quantity'), 2) }}</td>
                 <td>₹{{ number_format($orders->sum(function ($order) {return $order->order_quantity * $order->order_price;}),2) }}
                 </td>
