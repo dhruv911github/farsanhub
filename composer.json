@@ -7,9 +7,11 @@
     "require": {
         "php": "^8.0.2",
         "barryvdh/laravel-dompdf": "^3.1",
+        "doctrine/dbal": "^4.4",
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^9.19",
         "laravel/sanctum": "^3.0",
+        "laravel/socialite": "^5.24",
         "laravel/tinker": "^2.7",
         "maatwebsite/excel": "^3.1",
         "proengsoft/laravel-jsvalidation": "^4.9",
