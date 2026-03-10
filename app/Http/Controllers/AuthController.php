@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Laravel\Socialite\Facades\Socialite;
 
 class AuthController extends Controller
@@ -117,6 +118,7 @@ class AuthController extends Controller
 
             return redirect()->route('admin.dashboard');
         } catch (\Exception $e) {
+            Log::error('Google OAuth login failed', ['error' => $e->getMessage()]);
             return redirect()->route('login')->with('error', 'Google login failed. Please try again.');
         }
     }

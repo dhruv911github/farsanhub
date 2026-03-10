@@ -27,8 +27,8 @@ Route::post('/login', [App\Http\Controllers\AuthController::class, 'login'])->mi
 Route::post('/logout', [App\Http\Controllers\AuthController::class, 'logout'])->name('logout');
 
 // Google OAuth Routes
-Route::get('/auth/google', [App\Http\Controllers\AuthController::class, 'redirectToGoogle'])->name('auth.google');
-Route::get('/auth/google/callback', [App\Http\Controllers\AuthController::class, 'handleGoogleCallback'])->name('auth.google.callback');
+Route::get('/auth/google', [App\Http\Controllers\AuthController::class, 'redirectToGoogle'])->middleware('throttle:10,1')->name('auth.google');
+Route::get('/auth/google/callback', [App\Http\Controllers\AuthController::class, 'handleGoogleCallback'])->middleware('throttle:10,1')->name('auth.google.callback');
 
 
 // Admin Routes

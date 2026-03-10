@@ -72,7 +72,7 @@ Subhanpura, Vadodara, Gujarat – 390021
 | JS Validation | proengsoft/laravel-jsvalidation ^4.9 |
 | Translation | stichoza/google-translate-php ^5.2 |
 | HTTP Client | guzzlehttp/guzzle ^7.2 |
-| Authentication | Laravel Session Auth (built-in) |
+| Authentication | Laravel Session Auth + Google OAuth (Socialite) |
 | Timezone | Asia/Kolkata |
 | Locale | `en` (English) / `gu` (Gujarati) |
 
@@ -172,7 +172,8 @@ farsanhub/
 | id | BIGINT (PK) | Auto-increment |
 | name | VARCHAR | User's display name |
 | email | VARCHAR (unique) | Login email |
-| password | VARCHAR | Bcrypt hashed |
+| google_id | VARCHAR (unique) | Google account ID — nullable, set on first Google login ← **NEW** |
+| password | VARCHAR | Bcrypt hashed — **nullable** for Google-only accounts ← **UPDATED** |
 | is_admin | BOOLEAN | `true` = can login to portal |
 | email_verified_at | TIMESTAMP | Nullable |
 | remember_token | VARCHAR | Nullable |
@@ -292,17 +293,30 @@ farsanhub/
 
 ## 5. Authentication & Roles
 
-FarsanHub uses Laravel's built-in session-based authentication. Only users with `is_admin = true` in the `users` table can access the portal.
+FarsanHub supports two login methods: **email/password** and **Google OAuth** (via Laravel Socialite). Only users with `is_admin = true` in the `users` table can access the portal regardless of login method.
 
-**Login Flow:**
-1. User visits `/` — redirected to login form
+**Email/Password Login Flow:**
+1. User visits `/admin` — login form is shown
 2. Submits email + password
 3. `AuthController@login` validates credentials
 4. Checks `is_admin` flag — if false, login is rejected
 5. On success: session regenerated, redirected to dashboard
 
+**Google OAuth Login Flow:**
+1. User clicks "Continue with Google" on login page
+2. Redirected to Google's consent screen via `GET /auth/google`
+3. Google redirects back to `GET /auth/google/callback`
+4. `AuthController@handleGoogleCallback` retrieves Google profile
+5. Looks up user by `google_id` first; falls back to matching by email
+6. On first Google login: `google_id` is linked to the existing account
+7. **No new accounts are created** — only pre-existing admin users can sign in via Google
+8. Checks `is_admin` flag — if false, login is rejected
+9. On success: session regenerated, redirected to dashboard
+
+> **Security note:** Google login cannot be used to create new admin accounts. The user's email must already exist in the database with `is_admin = true`.
+
 **Logout:**
-POST `/logout` → invalidates session → redirects to login
+POST `/logout` → invalidates session → redirects to home
 
 **Password Change:**
 Authenticated admin can change their password via `GET/POST /admin/changePassword`.
@@ -322,11 +336,13 @@ admin       → AdminMiddleware: must have is_admin = true
 ### Public Routes
 | Method | URI | Middleware | Controller@Method | Name |
 |---|---|---|---|---|
-| GET | `/` | — | `AuthController@showLogin` | `login` |
+| GET | `/admin` | — | `AuthController@showLogin` | `login` |
 | POST | `/login` | `throttle:5,1` | `AuthController@login` | `login.post` |
 | POST | `/logout` | — | `AuthController@logout` | `logout` |
+| GET | `/auth/google` | `throttle:10,1` | `AuthController@redirectToGoogle` | `auth.google` |
+| GET | `/auth/google/callback` | `throttle:10,1` | `AuthController@handleGoogleCallback` | `auth.google.callback` |
 
-> **Login is rate-limited** to 5 attempts per minute per IP to prevent brute-force attacks.
+> **Login is rate-limited:** Email login — 5 attempts/min per IP. Google OAuth — 10 requests/min per IP.
 
 ### Admin Routes (Middleware: `auth`, `admin`)
 
@@ -386,7 +402,9 @@ admin       → AdminMiddleware: must have is_admin = true
 |---|---|
 | `showLogin()` | Return login view |
 | `login(Request)` | Validate credentials, check `is_admin`, redirect to dashboard |
-| `logout(Request)` | Invalidate session, redirect to login |
+| `redirectToGoogle()` | Redirect user to Google's OAuth consent screen |
+| `handleGoogleCallback()` | Handle Google callback — match by `google_id` or email, link account, check `is_admin`, login |
+| `logout(Request)` | Invalidate session, redirect to home |
 
 ---
 
@@ -483,9 +501,11 @@ admin       → AdminMiddleware: must have is_admin = true
 ### `User`
 ```php
 Traits: HasApiTokens, HasFactory, Notifiable
-Fillable: name, email, password, is_admin
+Fillable: name, email, password, google_id, is_admin
 Casts: email_verified_at → datetime, is_admin → boolean
 Methods: isAdmin() → bool
+// google_id: nullable, linked on first Google OAuth login
+// password: nullable to support Google-only accounts
 ```
 
 ### `Customer`
@@ -753,6 +773,7 @@ resources/views/
 | `proengsoft/laravel-jsvalidation` | ^4.9 | Server-side rules in JS |
 | `stichoza/google-translate-php` | ^5.2 | Google Translate API |
 | `guzzlehttp/guzzle` | ^7.2 | HTTP client |
+| `laravel/socialite` | ^5.24 | Google OAuth login (Socialite) |
 | `laravel/tinker` | ^2.7 | Artisan REPL |
 
 ### Development
@@ -869,10 +890,15 @@ resources/views/
 | Measure | Implementation |
 |---|---|
 | Admin-only access | `is_admin = true` flag checked by `AdminMiddleware` on every admin route |
-| Session regeneration | Session ID regenerated on every login and logout |
-| Brute-force protection | Login route: `throttle:5,1` — max 5 attempts per minute per IP |
+| Session regeneration | Session ID regenerated on every login (both email and Google) and logout |
+| Brute-force protection (email) | Login route: `throttle:5,1` — max 5 attempts per minute per IP |
+| Brute-force protection (Google) | OAuth routes: `throttle:10,1` — max 10 requests per minute per IP |
 | Password hashing | All passwords stored using bcrypt via `Hash::make()` |
 | Current password verify | Change password requires current password confirmation |
+| Google: no auto-registration | Google OAuth **cannot create new accounts** — user email must already exist with `is_admin = true` |
+| Google: account linking | `google_id` is linked to existing account on first Google login — verified by matching email |
+| Google: error logging | OAuth failures are logged via `Log::error()` without exposing error details to the user |
+| Credentials storage | Google Client ID/Secret stored only in `.env` — never committed to version control |
 
 ### 20.2 Authorization (Ownership Checks)
 
@@ -962,6 +988,15 @@ php artisan optimize:clear
 
 ## 22. Changelog
 
+### v1.4 — March 2026
+- **NEW: Google OAuth Login** — "Continue with Google" button on login page (via `laravel/socialite`)
+- **NEW: Google account linking** — `google_id` column added to `users` table; linked automatically on first Google login by email match
+- **NEW: password nullable** — `users.password` is now nullable to support Google-only accounts
+- **SECURITY: OAuth rate limiting** — Google auth routes protected with `throttle:10,1`
+- **SECURITY: No auto-registration** — Google OAuth only allows pre-existing admin accounts; cannot create new users
+- **SECURITY: Error logging** — Google callback failures logged via `Log::error()` without leaking details to the user
+- **UI: Google button styling** — orange-themed (`#FF9933` border) button with hover glow, matching site theme; overrides global `a` tag styles
+
 ### v1.3 — March 2026
 - **NEW: Purchase Orders module** — full CRUD, sidebar entry, routes, views, orange-themed table
 - **NEW: Purchase Order Excel export** — in Reports module, filter by party + month
@@ -998,5 +1033,5 @@ php artisan optimize:clear
 
 ---
 
-*Documentation last updated: March 2026 — FarsanHub v1.3*
+*Documentation last updated: March 2026 — FarsanHub v1.4*
 *© 2025–2026 Brahmani Khandvi & Farsan House. All rights reserved.*
