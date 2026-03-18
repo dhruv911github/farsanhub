@@ -153,6 +153,10 @@
 
     /* Gallery: 2 columns */
     .gallery-grid           { gap: .6rem; }
+
+    /* Hero: remove full-screen forced height on mobile */
+    .hero-section           { min-height: auto; }
+    .min-vh-hero            { min-height: auto; }
 }
 
 /* Small mobile: < 576px */
@@ -171,6 +175,8 @@
     .hero-content           { padding-top: 85px; padding-bottom: 40px; }
     .hero-title             { font-size: 1.75rem; line-height: 1.2; }
     .hero-badge             { font-size: .75rem; }
+    .hero-section           { min-height: auto; }
+    .min-vh-hero            { min-height: auto; }
 
     /* About section */
     .about-feature-card     { padding: 1rem; }

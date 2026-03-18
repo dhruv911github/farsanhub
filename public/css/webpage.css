@@ -394,8 +394,8 @@ a:hover { color: var(--saffron-dark); }
 .hero-content {
   position: relative;
   z-index: 2;
-  padding-top: 100px;
-  padding-bottom: 80px;
+  padding-top: 30px;
+  padding-bottom: 30px;
 }
 
 .min-vh-hero { min-height: calc(100vh - var(--navbar-h)); }

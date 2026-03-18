@@ -63,7 +63,7 @@
     "alternateName": "બ્રાહ્માણી ખાંડવી હાઉસ",
     "description": "Authentic Gujarati Farsan shop specializing in Khandavi, Samosa, Khaman, Dhokla, Patra and more. Wholesale and retail orders available.",
     "url": "{{ url('/') }}",
-    "telephone": "+91-XXXXXXXXXX",
+    "telephone": "+91-9574659456",
     "address": {
       "@type": "PostalAddress",
       "streetAddress": "Shubhanpura Area",
@@ -147,14 +147,24 @@
   <div class="hero-bg-pattern" aria-hidden="true"></div>
   <div class="container hero-content">
     <div class="row align-items-center min-vh-hero">
-      <div class="col-12 col-lg-6 hero-text-col" data-aos="fade-right" data-aos-duration="900">
-        <span class="hero-badge" data-en="🌟 Vadodara's Favourite" data-gu="🌟 વડોદરાની પ્રિય">🌟 Vadodara's Favourite</span>
+      <div class="col-12 col-lg-7 hero-text-col" data-aos="fade-right" data-aos-duration="900">
+        <span class="hero-badge"
+        data-en="🕉️ Pure Taste • Pure Tradition"
+        data-gu="🕉️ શુદ્ધ સ્વાદ • શુદ્ધ પરંપરા">
+        🕉️ Pure Taste • Pure Tradition
+        </span>
+
         <h1 class="hero-title">
-          <span data-en="Authentic Gujarati" data-gu="અસલી ગુજરાતી સ્વાદ">Authentic Gujarati</span><br>
-          <span class="text-highlight" data-en="Taste Since Years" data-gu="સ્વાદ સૈ વર્ષ">Taste Since Years</span>
+          <span data-en="Satvik Gujarati" data-gu="સાત્વિક ગુજરાતી">Satvik Gujarati</span><br>
+          <span class="text-highlight" data-en="Farsan with Devotion" data-gu="ભક્તિ સાથેનું ફરસાણ">
+            Farsan with Devotion
+          </span>
         </h1>
-        <p class="hero-subtitle" data-en="From our kitchen to your heart — freshly made Khandavi, Samosa, Khaman, Dhokla &amp; more. Pure taste, pure love." data-gu="અમારી રસોઈથી તમારા હૃદય સુધી — તાજી ખાંડવી, સામોસા, ખમણ, ઢોકળા અને વધુ. શુદ્ધ સ્વાદ, શુદ્ધ પ્રેમ.">
-          From our kitchen to your heart — freshly made Khandavi, Samosa, Khaman, Dhokla &amp; more. Pure taste, pure love.
+
+        <p class="hero-subtitle"
+          data-en="Prepared with devotion and blessed before serving. Fresh Khandavi, Samosa, Khaman, Dhokla & more — pure ingredients, authentic taste, and traditional recipes."
+          data-gu="ભક્તિથી તૈયાર અને પ્રસાદરૂપે અર્પણ કરાયેલ. તાજી ખાંડવી, સામોસા, ખમણ, ઢોકળા અને વધુ — શુદ્ધ સામગ્રી, અસલી સ્વાદ અને પરંપરાગત રેસિપી.">
+          Prepared with devotion and blessed before serving. Fresh Khandavi, Samosa, Khaman, Dhokla & more — pure ingredients, authentic taste, and traditional recipes.
         </p>
         <div class="hero-cta d-flex flex-wrap gap-3">
           <a href="https://wa.me/919574659456?text=Hello%2C%20I%20want%20to%20place%20an%20order" class="btn btn-primary-custom btn-lg" target="_blank" rel="noopener noreferrer" data-en="Order on WhatsApp" data-gu="WhatsApp પર ઓર્ડર કરો">
@@ -171,30 +181,30 @@
           </div>
           <div class="stat-divider" aria-hidden="true"></div>
           <div class="stat-item">
-            <span class="stat-number">10+</span>
+            <span class="stat-number">5+</span>
             <span class="stat-label" data-en="Years of Taste" data-gu="સ્વાદના વર્ષ">Years of Taste</span>
           </div>
           <div class="stat-divider" aria-hidden="true"></div>
           <div class="stat-item">
-            <span class="stat-number">15+</span>
+            <span class="stat-number">7+</span>
             <span class="stat-label" data-en="Farsan Items" data-gu="ફરસાણ આઇટમ">Farsan Items</span>
           </div>
         </div>
       </div>
-      <div class="col-lg-6 d-none d-lg-flex justify-content-end" data-aos="fade-left" data-aos-duration="900" data-aos-delay="200">
+      <div class="col-lg-5 d-none d-lg-flex justify-content-end" data-aos="fade-left" data-aos-duration="900" data-aos-delay="200">
         <div class="hero-image-wrap">
           <div class="hero-dish hero-dish-1">
-            <img src="{{ asset('images/farsan/khandavi.jpg') }}" alt="Fresh Khandavi" loading="eager" width="200" height="200"
+            <img src="{{ asset('images/farsan/khandvi.png') }}" alt="Fresh Khandavi" loading="eager" width="200" height="200"
               onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22><rect fill=%22%23FF993322%22 width=%22200%22 height=%22200%22 rx=%22100%22/><text x=%2250%25%22 y=%2255%25%22 text-anchor=%22middle%22 font-size=%2240%22>🥗</text></svg>'" />
             <span class="dish-label" data-en="Khandavi" data-gu="ખાંડવી">Khandavi</span>
           </div>
           <div class="hero-dish hero-dish-2">
-            <img src="{{ asset('images/farsan/samosa.jpg') }}" alt="Crispy Samosa" loading="eager" width="160" height="160"
+            <img src="{{ asset('images/farsan/samosa.png') }}" alt="Crispy Samosa" loading="eager" width="160" height="160"
               onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22160%22 height=%22160%22><rect fill=%22%23FFC10722%22 width=%22160%22 height=%22160%22 rx=%2280%22/><text x=%2250%25%22 y=%2255%25%22 text-anchor=%22middle%22 font-size=%2240%22>🥟</text></svg>'" />
             <span class="dish-label" data-en="Samosa" data-gu="સામોસા">Samosa</span>
           </div>
           <div class="hero-dish hero-dish-3">
-            <img src="{{ asset('images/farsan/khaman.jpg') }}" alt="Soft Khaman" loading="eager" width="140" height="140"
+            <img src="{{ asset('images/farsan/khaman.png') }}" alt="Soft Khaman" loading="eager" width="140" height="140"
               onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22140%22 height=%22140%22><rect fill=%22%23FF993322%22 width=%22140%22 height=%22140%22 rx=%2270%22/><text x=%2250%25%22 y=%2255%25%22 text-anchor=%22middle%22 font-size=%2236%22>🍰</text></svg>'" />
             <span class="dish-label" data-en="Khaman" data-gu="ખમણ">Khaman</span>
           </div>
@@ -226,39 +236,59 @@
       <div class="col-lg-7" data-aos="fade-left" data-aos-delay="150">
         <div class="section-label" data-en="Our Story" data-gu="અમારી વાર્તા">Our Story</div>
         <h2 class="section-title" id="about-heading">
-          <span data-en="A Legacy of" data-gu="નો વારસો">A Legacy of</span>
-          <span class="text-saffron" data-en=" Authentic Taste" data-gu=" અસ્સલ સ્વાદ"> Authentic Taste</span>
+          <span data-en="A Journey of" data-gu="એક યાત્રા">A Journey of</span>
+          <span class="text-saffron" data-en=" Devotion & Prasad" data-gu=" ભક્તિ અને પ્રસાદ"> Devotion & Prasad</span>
         </h2>
-        <p class="section-text" data-en="Bhramani Khandavi House has been serving the people of Vadodara with the most authentic and flavorful Gujarati Farsan for years. Nestled in the heart of Shubhanpura, our shop is a beloved destination for food lovers who crave the real taste of Gujarat." data-gu="બ્રાહ્માણી ખાંડવી હાઉસ વર્ષોથી વડોદરાના લોકોને સૌથી અસ્સલ અને સ્વાદિષ્ટ ગુજરાતી ફરસાણ પ્રદાન કરતી આવ્યું છે. શુભાનપુરાના હ્રદયમાં વસેલ, અમારી દુકાન ગુજરાતના સાચા સ્વાદ માટે ભૂખ્યા ખોરાક-પ્રેમીઓ માટે એક પ્રિય સ્થળ છે.">
-          Bhramani Khandavi House has been serving the people of Vadodara with the most authentic and flavorful Gujarati Farsan for years. Nestled in the heart of Shubhanpura, our shop is a beloved destination for food lovers who crave the real taste of Gujarat.
+        <p class="section-text" data-en="Bhramani Khandavi House is not just about food, it is about devotion and blessings. Every item we prepare carries spiritual value, as it is made with a focused mind and offered to God before reaching you. Located in Shubhanpura, Vadodara, we serve not just taste, but positivity, tradition, and divine energy in every bite."  data-gu="બ્રાહ્માણી ખાંડવી હાઉસ માત્ર ખોરાક વિશે નથી, પરંતુ ભક્તિ અને આશીર્વાદ વિશે છે. અમે બનાવેલી દરેક વસ્તુમાં આધ્યાત્મિક મૂલ્ય છે, કારણ કે તે એકાગ્ર મનથી બનાવવામાં આવે છે અને પહેલા ભગવાનને અર્પણ થાય છે. શુભાનપુરા, વડોદરામાં આવેલ, અમે માત્ર સ્વાદ નહીં પરંતુ દરેક ગ્રાસમાં સકારાત્મકતા, પરંપરા અને દૈવી ઊર્જા પીરસીએ છીએ.">
+          Bhramani Khandavi House is not just about food, it is about devotion and blessings. Every item we prepare carries spiritual value, as it is made with a focused mind and offered to God before reaching you. Located in Shubhanpura, Vadodara, we serve not just taste, but positivity, tradition, and divine energy in every bite.
         </p>
         <div class="row g-3 mt-2">
+
+          <!-- Fresh Ingredients -->
           <div class="col-sm-6" data-aos="zoom-in" data-aos-delay="100">
             <div class="about-feature-card">
-              <div class="feature-icon"><i class="bi bi-flower1"></i></div>
-              <h4 data-en="Fresh Ingredients" data-gu="તાજા સામગ્રી">Fresh Ingredients</h4>
-              <p data-en="Sourced fresh daily for maximum flavour and nutrition." data-gu="મહત્તમ સ્વાદ અને પોષણ માટે દરરોજ તાજી સામગ્રી.">Sourced fresh daily for maximum flavour and nutrition.</p>
+              <div class="feature-icon"><i class="bi bi-flower3"></i></div>
+              <h4 data-en="Sattvic Ingredients" data-gu="સાત્વિક સામગ્રી">Sattvic Ingredients</h4>
+              <p data-en="We carefully select fresh and sattvic ingredients every day, ensuring purity, natural taste, and positive energy in every preparation." 
+                data-gu="અમે દરરોજ તાજી અને સાત્વિક સામગ્રી પસંદ કરીએ છીએ, જેથી દરેક બનાવટમાં શુદ્ધતા, કુદરતી સ્વાદ અને સકારાત્મક ઊર્જા રહે.">
+                We carefully select fresh and sattvic ingredients every day, ensuring purity, natural taste, and positive energy in every preparation.
+              </p>
             </div>
           </div>
+
+          <!-- Sacred Prasad -->
           <div class="col-sm-6" data-aos="zoom-in" data-aos-delay="200">
             <div class="about-feature-card">
-              <div class="feature-icon"><i class="bi bi-heart-fill"></i></div>
-              <h4 data-en="Traditional Recipe" data-gu="પરંપરાગત રેસિપી">Traditional Recipe</h4>
-              <p data-en="Generations-old recipes passed down with love." data-gu="પ્રેમ સાથે વારસામાં મળેલ પેઢી-જૂની રેસિપી.">Generations-old recipes passed down with love.</p>
+              <div class="feature-icon">🖐️</div>
+              <h4 data-en="Sacred Prasad Offering" data-gu="પવિત્ર પ્રસાદ અર્પણ">Sacred Prasad Offering</h4>
+              <p data-en="Each item is prepared with a peaceful mind and positive intention, offered to God as Prasad, and then served to you with blessings and devotion." 
+                data-gu="દરેક વસ્તુ શાંતિપૂર્ણ મન અને સકારાત્મક ભાવના સાથે બનાવવામાં આવે છે, પહેલા ભગવાનને પ્રસાદરૂપે અર્પણ થાય છે અને પછી આશીર્વાદ અને ભક્તિ સાથે તમને પીરસવામાં આવે છે.">
+                Each item is prepared with a peaceful mind and positive intention, offered to God as Prasad, and then served to you with blessings and devotion.
+              </p>
             </div>
           </div>
+
+          <!-- Hygiene -->
           <div class="col-sm-6" data-aos="zoom-in" data-aos-delay="300">
             <div class="about-feature-card">
               <div class="feature-icon"><i class="bi bi-shield-check"></i></div>
-              <h4 data-en="Hygiene First" data-gu="સ્વચ્છતા પ્રથમ">Hygiene First</h4>
-              <p data-en="Prepared in a clean, hygienic kitchen with care." data-gu="સ્વચ્છ, સ્વચ્છ રસોઈઘરમાં કાળજી સાથે તૈયાર.">Prepared in a clean, hygienic kitchen with care.</p>
+              <h4 data-en="Clean & Sacred Environment" data-gu="સ્વચ્છ અને પવિત્ર વાતાવરણ">Clean & Sacred Environment</h4>
+              <p data-en="Our kitchen maintains the highest level of cleanliness and discipline, creating a sacred space where food is prepared with care, respect, and devotion." 
+                data-gu="અમારું રસોડું ઉચ્ચ સ્તરની સ્વચ્છતા અને નિયમિતતા જાળવે છે, જ્યાં ખોરાક કાળજી, સન્માન અને ભક્તિ સાથે બનાવવામાં આવે છે.">
+                Our kitchen maintains the highest level of cleanliness and discipline, creating a sacred space where food is prepared with care, respect, and devotion.
+              </p>
             </div>
           </div>
+
+          <!-- Bulk Orders -->
           <div class="col-sm-6" data-aos="zoom-in" data-aos-delay="400">
             <div class="about-feature-card">
-              <div class="feature-icon"><i class="bi bi-box-seam"></i></div>
-              <h4 data-en="Bulk Orders Welcome" data-gu="જથ્થાબંધ ઓર્ડર સ્વીકાર્ય">Bulk Orders Welcome</h4>
-              <p data-en="Catering for weddings, events &amp; functions." data-gu="લગ્ન, ઇવેન્ટ અને કાર્યક્રમો માટે કેટરિંગ.">Catering for weddings, events &amp; functions.</p>
+              <div class="feature-icon"><i class="bi bi-gift"></i></div>
+              <h4 data-en="Prasad for Every Occasion" data-gu="દરેક પ્રસંગ માટે પ્રસાદ">Prasad for Every Occasion</h4>
+              <p data-en="We prepare Prasad for weddings, religious events, and special occasions, spreading blessings, joy, and positive energy to every gathering." 
+                data-gu="અમે લગ્ન, ધાર્મિક કાર્યક્રમો અને ખાસ પ્રસંગો માટે પ્રસાદ તૈયાર કરીએ છીએ, દરેક પ્રસંગમાં આશીર્વાદ, આનંદ અને સકારાત્મક ઊર્જા ફેલાવીએ છીએ.">
+                We prepare Prasad for weddings, religious events, and special occasions, spreading blessings, joy, and positive energy to every gathering.
+              </p>
             </div>
           </div>
         </div>
@@ -287,7 +317,7 @@
         <div class="product-card featured-product">
           <div class="product-badge" data-en="⭐ Special" data-gu="⭐ વિશેષ">⭐ Special</div>
           <div class="product-img-wrap">
-            <img src="{{ asset('images/farsan/khandavi.jpg') }}" alt="Khandavi" loading="lazy" width="380" height="240"
+            <img src="{{ asset('images/farsan/khandvi.png') }}" alt="Khandavi" loading="lazy" width="380" height="240"
               onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22380%22 height=%22240%22><rect fill=%22%23FF993322%22 width=%22380%22 height=%22240%22/><text x=%2250%25%22 y=%2255%25%22 text-anchor=%22middle%22 font-size=%2270%22>🥗</text></svg>'" />
           </div>
           <div class="product-body">
@@ -309,7 +339,7 @@
         <div class="product-card featured-product">
           <div class="product-badge" data-en="🔥 Popular" data-gu="🔥 લોકપ્રિય">🔥 Popular</div>
           <div class="product-img-wrap">
-            <img src="{{ asset('images/farsan/samosa.jpg') }}" alt="Crispy Samosa" loading="lazy" width="380" height="240"
+            <img src="{{ asset('images/farsan/samosa.png') }}" alt="Crispy Samosa" loading="lazy" width="380" height="240"
               onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22380%22 height=%22240%22><rect fill=%22%23FFC10722%22 width=%22380%22 height=%22240%22/><text x=%2250%25%22 y=%2255%25%22 text-anchor=%22middle%22 font-size=%2270%22>🥟</text></svg>'" />
           </div>
           <div class="product-body">
@@ -330,7 +360,7 @@
       <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
         <div class="product-card">
           <div class="product-img-wrap">
-            <img src="{{ asset('images/farsan/khaman.jpg') }}" alt="Soft Khaman" loading="lazy" width="380" height="240"
+            <img src="{{ asset('images/farsan/khaman.png') }}" alt="Soft Khaman" loading="lazy" width="380" height="240"
               onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22380%22 height=%22240%22><rect fill=%22%23FF993311%22 width=%22380%22 height=%22240%22/><text x=%2250%25%22 y=%2255%25%22 text-anchor=%22middle%22 font-size=%2270%22>🍰</text></svg>'" />
           </div>
           <div class="product-body">
@@ -351,7 +381,7 @@
       <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="0">
         <div class="product-card">
           <div class="product-img-wrap">
-            <img src="{{ asset('images/farsan/patra.jpg') }}" alt="Patra" loading="lazy" width="380" height="240"
+            <img src="{{ asset('images/farsan/patra.png') }}" alt="Patra" loading="lazy" width="380" height="240"
               onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22380%22 height=%22240%22><rect fill=%22%235C3A2222%22 width=%22380%22 height=%22240%22/><text x=%2250%25%22 y=%2255%25%22 text-anchor=%22middle%22 font-size=%2270%22>🌿</text></svg>'" />
           </div>
           <div class="product-body">
@@ -393,7 +423,7 @@
       <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
         <div class="product-card">
           <div class="product-img-wrap">
-            <img src="{{ asset('images/farsan/mix-farsan.jpg') }}" alt="Mix Farsan" loading="lazy" width="380" height="240"
+            <img src="{{ asset('images/farsan/mix-farsan.png') }}" alt="Mix Farsan" loading="lazy" width="380" height="240"
               onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22380%22 height=%22240%22><rect fill=%22%23FF993311%22 width=%22380%22 height=%22240%22/><text x=%2250%25%22 y=%2255%25%22 text-anchor=%22middle%22 font-size=%2270%22>🍽️</text></svg>'" />
           </div>
           <div class="product-body">
@@ -461,11 +491,11 @@
     <div class="gallery-grid" role="list" aria-label="Food gallery">
       @php
         $galleryItems = [
-          ['file' => 'khandavi.jpg',  'emoji' => '🥗',  'en' => 'Khandavi',  'gu' => 'ખાંડવી',  'large' => true],
-          ['file' => 'samosa.jpg',    'emoji' => '🥟',  'en' => 'Samosa',    'gu' => 'સામોસા',   'large' => false],
-          ['file' => 'khaman.jpg',    'emoji' => '🍰',  'en' => 'Khaman',    'gu' => 'ખમણ',     'large' => false],
+          ['file' => 'khandvi.png',  'emoji' => '🥗',  'en' => 'Khandavi',  'gu' => 'ખાંડવી',  'large' => true],
+          ['file' => 'samosa.png',    'emoji' => '🥟',  'en' => 'Samosa',    'gu' => 'સામોસા',   'large' => false],
+          ['file' => 'khaman.png',    'emoji' => '🍰',  'en' => 'Khaman',    'gu' => 'ખમણ',     'large' => false],
           ['file' => 'dhokla.jpg',    'emoji' => '🟡',  'en' => 'Dhokla',    'gu' => 'ઢોકળા',   'large' => false],
-          ['file' => 'patra.jpg',     'emoji' => '🌿',  'en' => 'Patra',     'gu' => 'પાત્રા',   'large' => false],
+          ['file' => 'patra.png',     'emoji' => '🌿',  'en' => 'Patra',     'gu' => 'પાત્રા',   'large' => false],
           ['file' => 'shop-front.webp','emoji' => '🏪',  'en' => 'Our Shop',  'gu' => 'અમારી દુકાન','large' => true],
         ];
       @endphp
@@ -495,23 +525,59 @@
     <div class="row g-4">
 
       @php
-        $testimonials = [
-          ['initial'=>'P','name_en'=>'Priya Shah','name_gu'=>'પ્રિયા શાહ','loc_en'=>'Regular Customer, Shubhanpura','loc_gu'=>'નિયમિત ગ્રાહક, શુભાનપુરા','stars'=>5,
-           'text_en'=>'"The Khandavi from Bhramani is simply the best in Vadodara! The texture is perfect and the taste is just like home-made. We order every week!"',
-           'text_gu'=>'"બ્રાહ્માણીની ખાંડવી વડોદરામાં સૌ કરતા ઉત્તમ! ટેક્સ્ચર પરફેક્ટ અને સ્વાદ ઘરની જેવો. અઠવાડિયે ઓર્ડર!"'],
-          ['initial'=>'R','name_en'=>'Rameshbhai Patel','name_gu'=>'રમેશભાઈ પટેલ','loc_en'=>'Wedding Client, Vadodara','loc_gu'=>'લગ્ન ક્લાઇન્ટ, વડોદરા','stars'=>5,
-           'text_en'=>'"We ordered 50 kg Farsan for our daughter\'s wedding. Everything was fresh, delivered on time and the guests couldn\'t stop praising!"',
-           'text_gu'=>'"50 કિલો ફરસાણ ઓર્ડર. તાજું, સમયસર ડિલિવરી. ભારે ભલામણ!"'],
-          ['initial'=>'M','name_en'=>'Meena Desai','name_gu'=>'મીના દેસાઈ','loc_en'=>'Daily Customer, Vadodara','loc_gu'=>'દૈનિક ગ્રાહક, વડોદરા','stars'=>5,
-           'text_en'=>'"The Samosa here is unmatched! Crispy outside, perfectly spiced inside. Pure Gujarati joy!"',
-           'text_gu'=>'"સામોસા અજોડ! ક્રિસ્પી બહાર, અંદર પરફેક્ટ. ગુજરાતી આનંદ!"'],
-          ['initial'=>'K','name_en'=>'Kavita Joshi','name_gu'=>'કવિતા જોષી','loc_en'=>'Regular Customer, Vadodara','loc_gu'=>'નિયમિત ગ્રાહક, વડોદરા','stars'=>5,
-           'text_en'=>'"Patra and Dhokla are always fresh and hygienically prepared. A true gem in Shubhanpura!"',
-           'text_gu'=>'"પાત્રા અને ઢોકળા હંમેશા તાજા. શુભાનપુરામાં ઝવેરાત!"'],
-          ['initial'=>'A','name_en'=>'Amit Mehta','name_gu'=>'અમિત મહેતા','loc_en'=>'Customer, Vadodara','loc_gu'=>'ગ્રાહક, વડોદરા','stars'=>4,
-           'text_en'=>'"Great quality farsan at reasonable prices. Mix Farsan pack is perfect for gifting!"',
-           'text_gu'=>'"ઉત્કૃષ્ટ ફરસાણ. મિક્સ ફરસાણ ભેટ માટે ઉત્તમ!"'],
-        ];
+       $testimonials = [
+        [
+          'initial'=>'P',
+          'name_en'=>'Priya Shah',
+          'name_gu'=>'પ્રિયા શાહ',
+          'loc_en'=>'Regular Customer, Shubhanpura',
+          'loc_gu'=>'નિયમિત ગ્રાહક, શુભાનપુરા',
+          'stars'=>5,
+          'text_en'=>'"Bhramani’s Khandavi is truly one of the best in Vadodara. It is soft, fresh, and perfectly balanced in taste — just like homemade food. We trust them for our weekly orders because quality is always consistent."',
+          'text_gu'=>'"બ્રાહ્માણીની ખાંડવી વડોદરામાં શ્રેષ્ઠમાંથી એક છે. નરમ, તાજી અને ઘર જેવી સ્વાદિષ્ટ. અમે દર અઠવાડિયે ઓર્ડર કરીએ છીએ કારણ કે ગુણવત્તા હંમેશા ઉત્તમ રહે છે."'
+        ],
+        [
+          'initial'=>'R',
+          'name_en'=>'Rameshbhai Patel',
+          'name_gu'=>'રમેશભાઈ પટેલ',
+          'loc_en'=>'Wedding Client, Vadodara',
+          'loc_gu'=>'લગ્ન ક્લાઇન્ટ, વડોદરા',
+          'stars'=>5,
+          'text_en'=>'"We ordered 50 kg of farsan for our daughter’s wedding. Everything was freshly prepared, hygienically packed, and delivered on time. Our guests highly appreciated the taste and quality. Excellent service for large events."',
+          'text_gu'=>'"અમે અમારી દીકરીના લગ્ન માટે 50 કિલો ફરસાણ ઓર્ડર કર્યું. બધું તાજું, સ્વચ્છ પેકિંગ અને સમયસર ડિલિવરી. મહેમાનોએ ખૂબ વખાણ કર્યા. મોટા કાર્યક્રમ માટે ઉત્તમ સેવા."'
+        ],
+        [
+          'initial'=>'M',
+          'name_en'=>'Meena Desai',
+          'name_gu'=>'મીના દેસાઈ',
+          'loc_en'=>'Daily Customer, Vadodara',
+          'loc_gu'=>'દૈનિક ગ્રાહક, વડોદરા',
+          'stars'=>5,
+          'text_en'=>'"The samosas are always crispy and freshly made. The filling is perfectly spiced and full of flavor. It’s my go-to place for authentic Gujarati snacks."',
+          'text_gu'=>'"સામોસા હંમેશા ક્રિસ્પી અને તાજા. અંદરની ભરણી સ્વાદિષ્ટ અને યોગ્ય મસાલાવાળી. સાચા ગુજરાતી નાસ્તા માટે મારી પ્રથમ પસંદગી."'
+        ],
+        [
+          'initial'=>'K',
+          'name_en'=>'Kavita Joshi',
+          'name_gu'=>'કવિતા જોષી',
+          'loc_en'=>'Regular Customer, Vadodara',
+          'loc_gu'=>'નિયમિત ગ્રાહક, વડોદરા',
+          'stars'=>5,
+          'text_en'=>'"Patra and Dhokla are always fresh, soft, and prepared with high hygiene standards. The taste is consistent every time. A trusted shop in Shubhanpura for quality farsan."',
+          'text_gu'=>'"પાત્રા અને ઢોકળા હંમેશા તાજા અને સ્વચ્છ રીતે બનાવેલ. સ્વાદ હંમેશા એકસરખો રહે છે. શુભાનપુરામાં વિશ્વસનીય ફરસાણ દુકાન."'
+        ],
+        [
+          'initial'=>'A',
+          'name_en'=>'Amit Mehta',
+          'name_gu'=>'અમિત મહેતા',
+          'loc_en'=>'Customer, Vadodara',
+          'loc_gu'=>'ગ્રાહક, વડોદરા',
+          'stars'=>4,
+          'text_en'=>'"Excellent quality farsan at reasonable prices. The Mix Farsan Pack is perfect for family gatherings and gifting. Good taste, good value, and reliable service."',
+          'text_gu'=>'"ઉચ્ચ ગુણવત્તાવાળું ફરસાણ યોગ્ય કિંમતે. મિક્સ ફરસાણ પેક પરિવારિક મેળાવડા અને ભેટ માટે ઉત્તમ. સારો સ્વાદ અને વિશ્વસનીય સેવા."'
+        ],
+
+      ];
       @endphp
 
       @foreach($testimonials as $i => $t)
@@ -575,7 +641,7 @@
             <div class="contact-icon"><i class="bi bi-telephone-fill"></i></div>
             <div>
               <strong data-en="Phone" data-gu="ફોન">Phone</strong>
-              <p><a href="tel:+919574659456" class="contact-link">+91 XXXXX XXXXX</a></p>
+              <p><a href="tel:+919574659456" class="contact-link">+91 95746 59456</a></p>
             </div>
           </div>
           <div class="contact-info-item">
@@ -680,12 +746,23 @@
               <text x="21" y="27" text-anchor="middle" font-size="20" font-family="serif" fill="white">ભ</text>
             </svg>
             <div>
-              <span class="footer-brand-name" data-en="Bhramani Khandavi House" data-gu="બ્રાહ્માણી ખાંડવી હાઉસ">Bhramani Khandavi House</span>
-              <small class="d-block" data-en="Authentic Gujarati Farsan" data-gu="અસલી ગુજરાતી ફરસાણ">Authentic Gujarati Farsan</small>
+              <span class="footer-brand-name"
+                    data-en="Bhramani Khandavi House"
+                    data-gu="બ્રાહ્માણી ખાંડવી હાઉસ">
+                    Bhramani Khandavi House
+              </span>
+
+              <small class="d-block"
+                    data-en="Prepared with Bhakti, Served with Blessings"
+                    data-gu="ભક્તિપૂર્વક તૈયાર કરેલું અને આશીર્વાદ સાથે અર્પિત">
+                    Prepared with Bhakti, Served with Blessings
+              </small>
             </div>
           </div>
-          <p class="footer-text" data-en="Serving the most authentic and fresh Gujarati Farsan in Shubhanpura, Vadodara. Your happiness is our greatest recipe." data-gu="શુભાનપુરા, વડોદરામાં સૌથી અસલી ગુજરાતી ફરસાણ. તમારી ખુશી અમારી ઉત્તમ રેસિપી.">
-            Serving the most authentic and fresh Gujarati Farsan in Shubhanpura, Vadodara.
+          <p class="footer-text"
+            data-en="Serving authentic satvik Gujarati Farsan in Shubhanpura, Vadodara with devotion and tradition. Purity, taste, and blessings — our identity."
+            data-gu="શુભાનપુરા, વડોદરામાં ભક્તિ અને પ્રસાદની પરંપરા સાથે અસલી સાત્વિક ગુજરાતી ફરસાણ. શુદ્ધતા, સ્વાદ અને આશીર્વાદ — અમારી ઓળખ.">
+            શુભાનપુરા, વડોદરામાં ભક્તિ અને પ્રસાદની પરંપરા સાથે અસલી સાત્વિક ગુજરાતી ફરસાણ. શુદ્ધતા, સ્વાદ અને આશીર્વાદ — અમારી ઓળખ.
           </p>
           <div class="social-links mt-3" aria-label="Social media links">
             <a href="https://wa.me/919574659456" class="social-btn" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><i class="bi bi-whatsapp"></i></a>
