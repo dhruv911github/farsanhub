@@ -7,7 +7,7 @@
   'use strict';
 
   const STORAGE_KEY = 'bkh_lang';
-  const DEFAULT_LANG = 'en';
+  const DEFAULT_LANG = 'gu';
 
   /** Apply language to every translatable element */
   function applyLang(lang) {

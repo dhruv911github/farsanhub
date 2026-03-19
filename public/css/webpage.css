@@ -48,6 +48,7 @@ body {
   line-height: 1.7;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
+  padding-top: var(--navbar-h);
 }
 
 body.lang-gu {
@@ -302,6 +303,11 @@ a:hover { color: var(--saffron-dark); }
 
 /* ── NAVBAR ───────────────────────────────────────────────── */
 #mainNav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
   background: rgba(255,253,248,.97);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
