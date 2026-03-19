@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Admin\DeviceController;
+use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\WebController;
 use Illuminate\Support\Facades\Route;
 
@@ -83,4 +85,10 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->name('admin.')->group(fun
     // change password
     Route::get('changePassword', [App\Http\Controllers\Admin\AdminController::class, 'changePassword'])->name('changePassword');
     Route::post('changePassword', [App\Http\Controllers\Admin\AdminController::class, 'changePasswordPost'])->name('changePassword.save');
+
+    // ── Mobile: FCM device token registration ────────────────────────────────
+    Route::post('device/register-token', [DeviceController::class, 'registerToken'])->name('device.register-token');
+
+    // ── Mobile: WhatsApp PDF share ───────────────────────────────────────────
+    Route::get('order-report/share-whatsapp', [ReportController::class, 'shareWhatsApp'])->name('order-report.share-whatsapp');
 });

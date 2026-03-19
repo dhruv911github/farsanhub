@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Expense;
+use App\Services\FcmNotificationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
@@ -74,13 +75,20 @@ class ExpenseController extends Controller
             }
 
             // Save the expense data
-            Expense::create([
+            $expense = Expense::create([
                 'user_id' => auth()->id(),
                 'amount' => $request->amount ?? 0,
                 'purpose' => $request->purpose ?? '',
                 'comment' => $request->comment ?? '',
                 'date' => $request->date ?? '',
             ]);
+
+            // Push notification to all registered devices
+            app(FcmNotificationService::class)->sendToAll(
+                title: '💸 New Expense Recorded',
+                body:  $expense->purpose . ' — ₹' . number_format($expense->amount, 2),
+                data:  ['type' => 'new_expense', 'expense_id' => (string) $expense->id]
+            );
 
             // Redirect to the expense index page with a success message
             return redirect()->route('admin.expense.index')

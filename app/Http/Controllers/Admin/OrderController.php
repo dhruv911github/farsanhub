@@ -7,6 +7,7 @@ use App\Models\Customer;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\ProductPrice;
+use App\Services\FcmNotificationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -121,7 +122,7 @@ class OrderController extends Controller
                 ->where('user_id', auth()->id())
                 ->firstOrFail();
 
-            Order::create([
+            $order = Order::create([
                 'user_id'        => auth()->id(),
                 'customer_id'    => $customer->id,
                 'product_id'     => $product->id,
@@ -130,6 +131,14 @@ class OrderController extends Controller
                 'order_date'     => $request->order_date,
                 'type'           => $request->type ?? 'sell',
             ]);
+
+            // Push notification to all registered devices
+            app(FcmNotificationService::class)->sendToAll(
+                title: '🛒 New Order Created',
+                body:  $customer->customer_name . ' — ' . $product->product_name
+                     . ' (' . $request->order_quantity . ' ' . $product->unit . ')',
+                data:  ['type' => 'new_order', 'order_id' => (string) $order->id]
+            );
 
             return redirect()->route('admin.order.index')->with('success', __('portal.order_created'));
         } catch (\Exception $e) {

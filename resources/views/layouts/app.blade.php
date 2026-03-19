@@ -2,13 +2,13 @@
 <html lang="{{ app()->getLocale() }}">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="theme-color" content="#e63946">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
 
     <title>{{ config('app.name', 'FarsanHub') }}</title>
-
-    <!-- CSRF Token -->
-    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="icon" type="image/x-icon" href="{{ asset('images/favicon.ico') }}">
 
     <!-- Scripts -->
@@ -105,6 +105,25 @@
         });
     </script>
 
+    <style>
+        /* ── NativePHP Mobile Tweaks ──────────────────────────────── */
+        body {
+            /* Prevent pull-to-refresh interfering with the WebView */
+            overscroll-behavior-y: none;
+            /* Respect device safe areas (notch / home indicator) */
+            padding-top: env(safe-area-inset-top);
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+        /* Prevent accidental text selection on long-press */
+        * { -webkit-user-select: none; user-select: none; }
+        /* Re-enable text selection for inputs and text areas */
+        input, textarea, [contenteditable] { -webkit-user-select: text; user-select: text; }
+        /* Larger tap targets — WCAG minimum 44 × 44 px */
+        .btn, .nav-link, .side-menu__item { min-height: 44px; }
+        /* Prevent 300 ms click delay on touch devices */
+        * { touch-action: manipulation; }
+    </style>
+
     <script>
         let map;
         let marker;
@@ -147,6 +166,86 @@
             // Redirect to the same page with the new language code in the URL
             window.location.href = 'lang/' + selectedLang;
         }
+    </script>
+
+    {{-- ── NativePHP Mobile: FCM device-token registration ─────────────── --}}
+    <script>
+    /**
+     * NativePHP exposes window.NativePHP inside the Android WebView.
+     * When available, we request the FCM token and POST it to our backend
+     * so the server can send push notifications to this device.
+     */
+    (function registerFcmToken() {
+        if (typeof window.NativePHP === 'undefined') return; // Not running in NativePHP
+
+        window.NativePHP.requestPushToken(function (token) {
+            if (!token) return;
+
+            fetch('{{ route("admin.device.register-token") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type':  'application/json',
+                    'Accept':        'application/json',
+                    'X-CSRF-TOKEN':  document.querySelector('meta[name="csrf-token"]').content,
+                    'X-Requested-With': 'XMLHttpRequest',
+                },
+                body: JSON.stringify({ token: token, platform: 'android' }),
+            }).catch(function () { /* silent — non-critical */ });
+        });
+    })();
+
+    /**
+     * Opens the WhatsApp share sheet for an order report.
+     * Called from the report index page with the selected filters.
+     *
+     * @param {string} monthYear  e.g. "2025-03"
+     * @param {string|null} customerId
+     */
+    function shareReportOnWhatsApp(monthYear, customerId) {
+        if (!monthYear) {
+            alert('Please select a month first.');
+            return;
+        }
+
+        const btn = document.getElementById('whatsapp-share-btn');
+        if (btn) {
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Generating PDF...';
+        }
+
+        const params = new URLSearchParams({ month_year: monthYear });
+        if (customerId) params.append('customer_id', customerId);
+
+        fetch('{{ route("admin.order-report.share-whatsapp") }}?' + params.toString(), {
+            headers: {
+                'Accept': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+            },
+        })
+        .then(function (r) { return r.json(); })
+        .then(function (data) {
+            if (!data.success) {
+                alert(data.message || 'Could not generate PDF. Please try again.');
+                return;
+            }
+
+            // Try native WhatsApp app first; fall back to WhatsApp Web after 1.5 s
+            window.location.href = data.whatsapp_url;
+            setTimeout(function () {
+                if (document.visibilityState !== 'hidden') {
+                    window.open(data.whatsapp_web_url, '_blank');
+                }
+            }, 1500);
+        })
+        .catch(function () { alert('Network error. Please try again.'); })
+        .finally(function () {
+            if (btn) {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fa fa-whatsapp"></i> Share on WhatsApp';
+            }
+        });
+    }
     </script>
 
 </body>

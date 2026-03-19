@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Services\FcmNotificationService;
+use App\Services\MobileStorageService;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
@@ -14,7 +16,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->singleton(FcmNotificationService::class);
+        $this->app->singleton(MobileStorageService::class);
     }
 
     /**

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Customer;
+use App\Services\FcmNotificationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
@@ -98,7 +99,7 @@ class CustomerController extends Controller
                 );
             }
 
-            Customer::create([
+            $customer = Customer::create([
                 'user_id'         => auth()->id(),
                 'customer_name'   => $request->customer_name,
                 'shop_name'       => $request->shop_name,
@@ -112,6 +113,13 @@ class CustomerController extends Controller
                 'latitude'        => $request->latitude,
                 'longitude'       => $request->longitude,
             ]);
+
+            // Push notification to all registered devices
+            app(FcmNotificationService::class)->sendToAll(
+                title: '👤 New Customer Added',
+                body:  $customer->customer_name . ' — ' . $customer->shop_name . ', ' . $customer->city,
+                data:  ['type' => 'new_customer', 'customer_id' => (string) $customer->id]
+            );
 
             return redirect()->route('admin.customer.index')
                 ->with('success', __('portal.customer_created'));

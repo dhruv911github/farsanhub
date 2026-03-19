@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Customer;
 use App\Models\Product;
 use App\Models\ProductPrice;
+use App\Services\FcmNotificationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
@@ -106,6 +107,13 @@ class ProductController extends Controller
                 'status'             => $request->status,
                 'product_image'      => $productimagePath,
             ]);
+
+            // Push notification to all registered devices
+            app(FcmNotificationService::class)->sendToAll(
+                title: '📦 New Product Added',
+                body:  $product->product_name . ' — ₹' . number_format($product->product_base_price, 2) . ' / ' . $product->unit,
+                data:  ['type' => 'new_product', 'product_id' => (string) $product->id]
+            );
 
             // Save customer specific prices if any
             if ($request->has('customer_prices')) {

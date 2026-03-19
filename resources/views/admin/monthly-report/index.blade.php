@@ -190,6 +190,15 @@
                         <button type="button" id="pdfExportBtn" class="rpt-btn rpt-btn-pdf">
                             <i class="fa fa-file-pdf-o"></i> PDF
                         </button>
+                        <button type="button" id="whatsapp-share-btn"
+                            class="rpt-btn"
+                            style="background:#25D366;color:#fff;border:none;"
+                            onclick="shareReportOnWhatsApp(
+                                this.closest('form').querySelector('select[name=month_year]').value,
+                                this.closest('form').querySelector('select[name=customer_id]').value
+                            )">
+                            <i class="fa fa-whatsapp"></i> WhatsApp
+                        </button>
                     </div>
                 </form>
             </div>
