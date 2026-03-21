@@ -10,6 +10,7 @@
     .gallery-grid {
         grid-template-columns: repeat(2, 1fr);
     }
+
     .gallery-item-large {
         grid-column: span 2;
     }
@@ -19,6 +20,7 @@
     .gallery-grid {
         grid-template-columns: 1fr;
     }
+
     .gallery-item-large {
         grid-column: span 1;
         aspect-ratio: 4/3;
@@ -29,80 +31,195 @@
    WEBPAGE: Mobile Navbar (hamburger dropdown / sidebar)
    ───────────────────────────────────────────────────────────── */
 @media (max-width: 991.98px) {
-    /* Collapsed nav gets brown brand theme */
-    #navMenu {
+
+    /* Full-screen height mobile menu */
+    #navMenu.collapse.show,
+    #navMenu.collapsing {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100% !important;
+        height: 100vh !important;
+        height: 100dvh !important;
+        /* overrides Bootstrap inline height during animation */
         background: var(--brown);
-        border-radius: var(--radius-md);
-        margin-top: .6rem;
-        padding: .75rem .5rem;
-        box-shadow: var(--shadow-lg);
-        border: 1px solid rgba(255, 255, 255, .1);
+        z-index: 1060;
+        display: flex !important;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 3rem 2rem;
+        margin-top: 0 !important;
+        border-radius: 0 !important;
+        border: none !important;
+        box-shadow: none !important;
+        overflow-y: auto;
+        animation: menuFadeIn .4s ease forwards;
     }
 
-    /* Nav links: light text on dark brown */
+    @keyframes menuFadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Close button behavior - we can repurpose the toggler or add a close button */
+    /* For now, let's keep the toggler visible by raising its z-index in the header */
+    .navbar-toggler {
+        position: relative;
+        z-index: 1070;
+        background: rgba(255, 153, 51, .1);
+        border: 1.5px solid var(--saffron) !important;
+        border-radius: 12px;
+        padding: .5rem .6rem;
+    }
+
+    /* When menu is open, show X icon — only after Bootstrap adds .show (not on page load) */
+    #mainNav:has(#navMenu.show) .navbar-toggler-icon,
+    #mainNav:has(#navMenu.collapsing) .navbar-toggler-icon {
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='%23FF9933' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2.5' d='M6 6l18 18M6 24L24 6'/%3e%3c/svg%3e");
+    }
+
+    /* Staggered animation for links */
+    #navMenu .nav-item {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    #navMenu.show .nav-item {
+        animation: linkSlideUp .5s ease forwards;
+    }
+
+    #navMenu.show .nav-item:nth-child(1) {
+        animation-delay: .1s;
+    }
+
+    #navMenu.show .nav-item:nth-child(2) {
+        animation-delay: .15s;
+    }
+
+    #navMenu.show .nav-item:nth-child(3) {
+        animation-delay: .2s;
+    }
+
+    #navMenu.show .nav-item:nth-child(4) {
+        animation-delay: .25s;
+    }
+
+    #navMenu.show .nav-item:nth-child(5) {
+        animation-delay: .3s;
+    }
+
+    #navMenu.show .nav-item:nth-child(6) {
+        animation-delay: .35s;
+    }
+
+    #navMenu.show .nav-item:nth-child(7) {
+        animation-delay: .4s;
+    }
+
+    #navMenu.show .nav-item:nth-child(8) {
+        animation-delay: .45s;
+    }
+
+    @keyframes linkSlideUp {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Nav links: Large, centered, and beautiful */
+    #navMenu .navbar-nav {
+        width: 100%;
+        text-align: center;
+        gap: 1.5rem !important;
+    }
+
     #navMenu .nav-link {
-        color: rgba(255, 255, 255, .85) !important;
-        padding: .65rem 1rem !important;
-        border-radius: var(--radius-sm);
-        margin-bottom: .2rem;
+        color: #fff !important;
+        font-size: 1.5rem !important;
+        font-weight: 700 !important;
+        padding: .5rem 1rem !important;
+        border-radius: 50px;
+        transition: all .3s ease;
+        display: inline-block;
+        width: auto;
     }
 
-    /* Remove underline animation inside mobile menu */
+    /* Hide the underline in mobile */
     #navMenu .nav-link::after {
-        display: none;
+        display: none !important;
     }
 
     #navMenu .nav-link:hover,
     #navMenu .nav-link.active {
         color: var(--yellow) !important;
-        background: rgba(255, 255, 255, .1);
+        background: rgba(255, 255, 255, .05);
+        transform: scale(1.1);
     }
 
-    /* Language toggle button */
-    #navMenu .btn-lang {
-        background: rgba(255, 153, 51, .2);
-        border-color: var(--saffron);
-        color: var(--saffron);
+    /* Buttons inside the menu in one row */
+    #navMenu .nav-item.d-flex {
+        flex-direction: row !important;
         width: 100%;
+        margin-top: 1.5rem;
+        gap: 0.8rem !important;
         justify-content: center;
     }
 
-    #navMenu .btn-lang:hover {
-        background: var(--saffron);
+    #navMenu .btn-lang,
+    #navMenu .btn-admin {
+        flex: 1;
+        width: 50%;
+    }
+
+    #navMenu .btn-lang,
+    #navMenu .btn-admin {
+        height: 52px;
+        font-size: 1rem !important;
+        border-radius: 50px !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    #navMenu .btn-lang {
+        background: rgba(255, 255, 255, 0.1);
+        border: 1.5px solid rgba(255, 255, 255, 0.2);
         color: #fff;
     }
 
-    /* Admin login button */
     #navMenu .btn-admin {
         background: var(--saffron);
         color: #fff;
-        width: 100%;
-        justify-content: center;
+        border: none;
     }
 
-    #navMenu .btn-admin:hover {
-        background: var(--saffron-dark);
-        color: #fff;
-    }
-
-    /* Remove Bootstrap lg-specific margins inside mobile menu */
-    #navMenu .ms-lg-2,
-    #navMenu .ms-lg-1 {
-        margin-left: 0 !important;
-        margin-top: .4rem;
-    }
-
-    /* Toggler: brown icon on off-white navbar */
+    /* Brand and Toggler in menu - ensure they stay on top */
+    .navbar-brand,
     .navbar-toggler {
-        padding: .35rem .5rem;
+        position: relative;
+        z-index: 1070;
     }
 
-    .navbar-toggler:focus {
-        box-shadow: 0 0 0 3px rgba(255, 153, 51, .3);
+    /* Change brand text color to white when menu is open for contrast */
+    #mainNav:has(#navMenu.show) .brand-name,
+    #mainNav:has(#navMenu.collapsing) .brand-name {
+        color: #fff !important;
     }
 
-    .navbar-toggler-icon {
-        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='%235C3A21' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2.5' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+    .navbar-toggler {
+        background: rgba(255, 153, 51, .1);
+        border: 1.5px solid var(--saffron) !important;
+        border-radius: 12px;
+        padding: .5rem .6rem;
     }
 }
 
@@ -112,135 +229,269 @@
 
 /* Tablet: 768px – 991.98px */
 @media (max-width: 991.98px) {
-    .section-pad        { padding-top: 70px; padding-bottom: 70px; }
-    .hero-content       { padding-top: 100px; padding-bottom: 60px; }
-    .hero-title         { font-size: clamp(2rem, 6vw, 3rem); }
-    .about-img-badge    { right: -.5rem; bottom: -.5rem; }
+    .section-pad {
+        padding-top: 70px;
+        padding-bottom: 70px;
+    }
+
+    .hero-content {
+        padding-top: 100px;
+        padding-bottom: 60px;
+    }
+
+    .hero-title {
+        font-size: clamp(2rem, 6vw, 3rem);
+    }
+
+    .about-img-badge {
+        right: -.5rem;
+        bottom: -.5rem;
+    }
 
     /* Hero: center text when image column is hidden */
-    .hero-text-col                       { text-align: center; }
-    .hero-text-col .hero-subtitle        { margin-left: auto; margin-right: auto; }
-    .hero-text-col .hero-cta             { justify-content: center; }
-    .hero-text-col .hero-stats           { justify-content: center; }
-    .hero-text-col .hero-badge           { display: inline-block; }
+    .hero-text-col {
+        text-align: center;
+    }
+
+    .hero-text-col .hero-subtitle {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .hero-text-col .hero-cta {
+        justify-content: center;
+    }
+
+    .hero-text-col .hero-stats {
+        justify-content: center;
+    }
+
+    .hero-text-col .hero-badge {
+        display: inline-block;
+    }
 
     /* About: spacing below stacked image */
-    .about-image-grid   { margin-bottom: 2rem; }
+    .about-image-grid {
+        margin-bottom: 2rem;
+    }
+
     /* Contain the badge from overflowing right edge */
-    .col-lg-5 .about-image-grid { overflow: hidden; padding-bottom: 1.5rem; }
+    .col-lg-5 .about-image-grid {
+        overflow: hidden;
+        padding-bottom: 1.5rem;
+    }
 }
 
 /* Mobile: < 768px */
 @media (max-width: 767.98px) {
-    :root { --navbar-h: 64px; }
+    :root {
+        --navbar-h: 64px;
+    }
 
-    .section-pad            { padding-top: 55px; padding-bottom: 55px; }
-    .hero-title             { font-size: 2rem; }
-    .hero-subtitle          { font-size: .95rem; }
-    .hero-stats             { gap: 1.5rem; flex-wrap: wrap; }
-    .stat-divider           { display: none; }
-    .hero-cta               { gap: .75rem !important; }
-    .hero-cta .btn          { width: 100%; text-align: center; justify-content: center; }
-    .contact-form-card      { padding: 1.25rem; }
-    .about-img-badge        { display: none; }
-    .footer-hours li        { flex-direction: column; gap: .2rem; }
+    .section-pad {
+        padding-top: 55px;
+        padding-bottom: 55px;
+    }
+
+    .hero-title {
+        font-size: 2rem;
+    }
+
+    .hero-subtitle {
+        font-size: .95rem;
+    }
+
+    .hero-stats {
+        gap: 1.5rem;
+        flex-wrap: wrap;
+    }
+
+    .stat-divider {
+        display: none;
+    }
+
+    .hero-cta {
+        gap: .75rem !important;
+    }
+
+    .hero-cta .btn {
+        width: 100%;
+        text-align: center;
+        justify-content: center;
+    }
+
+    .contact-form-card {
+        padding: 1.25rem;
+    }
+
+    .about-img-badge {
+        display: none;
+    }
+
+    .footer-hours li {
+        flex-direction: column;
+        gap: .2rem;
+    }
 
     /* Product cards: 1 per row on small devices */
-    .product-card           { max-width: 100%; }
+    .product-card {
+        max-width: 100%;
+    }
 
     /* Section titles */
-    .section-subtitle       { font-size: .95rem; }
+    .section-subtitle {
+        font-size: .95rem;
+    }
 
     /* Gallery: 2 columns */
-    .gallery-grid           { gap: .6rem; }
+    .gallery-grid {
+        gap: .6rem;
+    }
 
     /* Hero: remove full-screen forced height on mobile */
-    .hero-section           { min-height: auto; }
-    .min-vh-hero            { min-height: auto; }
+    .hero-section {
+        min-height: auto;
+    }
+
+    .min-vh-hero {
+        min-height: auto;
+    }
 }
 
 /* Small mobile: < 576px */
 @media (max-width: 575.98px) {
-    .section-title          { font-size: 1.7rem; }
-    .float-whatsapp         { right: 1rem; bottom: 5rem; }
-    .back-to-top            { right: 1rem; bottom: 1rem; }
-    .stat-number            { font-size: 1.3rem; }
-    .stat-label             { font-size: .7rem; }
-    .hero-stats             { justify-content: space-around; }
-    .wholesale-features     { gap: .5rem; }
-    .ws-feature             { font-size: .8rem; padding: .4rem .9rem; }
-    .testimonial-card       { padding: 1.25rem; }
+    .section-title {
+        font-size: 1.7rem;
+    }
+
+    .float-whatsapp {
+        right: 1rem;
+        bottom: 5rem;
+    }
+
+    .back-to-top {
+        right: 1rem;
+        bottom: 1rem;
+    }
+
+    .stat-number {
+        font-size: 1.3rem;
+    }
+
+    .stat-label {
+        font-size: .7rem;
+    }
+
+    .hero-stats {
+        justify-content: space-around;
+    }
+
+    .wholesale-features {
+        gap: .5rem;
+    }
+
+    .ws-feature {
+        font-size: .8rem;
+        padding: .4rem .9rem;
+    }
+
+    .testimonial-card {
+        padding: 1.25rem;
+    }
 
     /* Hero: tighter padding and font */
-    .hero-content           { padding-top: 85px; padding-bottom: 40px; }
-    .hero-title             { font-size: 1.75rem; line-height: 1.2; }
-    .hero-badge             { font-size: .75rem; }
-    .hero-section           { min-height: auto; }
-    .min-vh-hero            { min-height: auto; }
+    .hero-content {
+        padding-top: 85px;
+        padding-bottom: 40px;
+    }
+
+    .hero-title {
+        font-size: 1.75rem;
+        line-height: 1.2;
+    }
+
+    .hero-badge {
+        font-size: .75rem;
+    }
+
+    .hero-section {
+        min-height: auto;
+    }
+
+    .min-vh-hero {
+        min-height: auto;
+    }
 
     /* About section */
-    .about-feature-card     { padding: 1rem; }
+    .about-feature-card {
+        padding: 1rem;
+    }
 
     /* Footer bottom: stack on very small screens */
-    .footer-bottom .container { flex-direction: column; text-align: center; gap: .5rem; }
+    .footer-bottom .container {
+        flex-direction: column;
+        text-align: center;
+        gap: .5rem;
+    }
 
     /* Navbar brand: shorten text */
-    .brand-sub              { font-size: .65rem; }
+    .brand-sub {
+        font-size: .65rem;
+    }
 }
 
 /* ─────────────────────────────────────────────────────────────
    ADMIN: Desktop sidebar — always visible
    ───────────────────────────────────────────────────────────── */
 @media (min-width: 992px) {
-    .app-sidebar .main-menu { display: block; }
+    .app-sidebar .main-menu {
+        display: block;
+    }
 }
 
 /* ─────────────────────────────────────────────────────────────
-   ADMIN: Mobile / Tablet sidebar
-   - Hide desktop .main-menu, use offcanvas instead
-   - Toggle button in header row
-   - Inactive items: black text + black icon
-   - Active items  : white text + white icon (saffron bg)
+   ADMIN: Mobile / Tablet — hide desktop sidebar
    ───────────────────────────────────────────────────────────── */
 @media (max-width: 991.98px) {
-    /* Hide desktop sidebar */
-    .app-sidebar .main-menu { display: none; }
+    .app-sidebar .main-menu {
+        display: none;
+    }
 
-    /* ── Header: language + admin half-half layout ── */
+    /* ── Header layout ── */
     .header-actions {
+        flex-shrink: 0;
+        min-width: 0;
+        gap: 0.4rem !important;
+    }
+
+    /* Keep buttons in one row but manage widths */
+    .header-actions {
+        flex-direction: row !important;
+        align-items: center !important;
+        width: auto;
+    }
+
+    .lang-wrapper,
+    .profile-1 {
         flex: 1;
         min-width: 0;
+        max-width: 140px;
+        /* prevent excessive width */
     }
 
     .lang-wrapper {
-        flex: 1;
         min-width: 0;
-        max-width: 50%;
-    }
-
-    .lang-wrapper .custom-dropdown {
-        width: 100%;
-        font-size: .82rem;
-        padding: .3rem .5rem;
-        border-radius: 8px;
-        border: 1.5px solid #ddd;
-        cursor: pointer;
     }
 
     .header-actions .profile-1 {
-        flex: 1;
         min-width: 0;
-        max-width: 50%;
     }
 
-    /* ── Header: profile dropdown on mobile ── */
-    /* Tighter padding so it fits small screens */
     .profile-1 .nav-link {
-        padding: 0.3rem 0.4rem !important;
+        padding: 0.3rem 0.6rem !important;
         gap: 0.35rem !important;
     }
 
-    /* Hide username text on very small screens, keep only avatar */
     .profile-1 .nav-link h6 {
         font-size: 0.8rem !important;
         max-width: 80px;
@@ -249,97 +500,224 @@
         text-overflow: ellipsis;
     }
 
-    /* Dropdown anchors full-width on mobile */
     .profile-1 .dropdown-menu {
         min-width: 160px !important;
     }
+}
 
-    /* ── Offcanvas panel ── */
-    #mobile-sidebar {
-        background: #FFF7EE;
-        border-right: 3px solid #FF9933;
-        max-width: 280px;
-    }
+/* ─────────────────────────────────────────────────────────────
+   ADMIN: Custom Mobile Sidebar — full height, theme styled
+   (No Bootstrap offcanvas — avoids version conflicts entirely)
+   ───────────────────────────────────────────────────────────── */
 
-    /* Header: brown branded strip */
-    #mobile-sidebar .offcanvas-header {
-        /* background: linear-gradient(135deg, #5C3A21, #3d2010); */
-        border-bottom: 2px solid #FF9933;
-        padding: 1rem 0rem 1rem 0.5rem;
-    }
+/* Dark semi-transparent backdrop */
+.mob-sidebar-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    z-index: 9998;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
 
-    /* Make close button white on dark header */
-    #mobile-sidebar .offcanvas-header .btn-close {
-        filter: invert(1) brightness(2);
-        opacity: .85;
-    }
-    #mobile-sidebar .offcanvas-header .btn-close:hover {
-        opacity: 1;
-    }
+.mob-sidebar-backdrop.show {
+    display: block;
+    opacity: 1;
+}
 
-    /* Body: warm cream — clearly different from white content */
-    #mobile-sidebar .offcanvas-body {
-        background: #FFF7EE;
-        padding: 0.75rem 0.5rem;
-    }
+/* Sidebar panel */
+.mob-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    /* fills full height without 100vh/100dvh flicker */
+    width: 300px;
+    max-width: 88vw;
+    background: #FFF7EE;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    transform: translateX(-100%);
+    visibility: hidden;
+    /* prevents close-btn from flashing on page load */
+    transition: transform 0.32s cubic-bezier(0.4, 0, 0.2, 1),
+        visibility 0s linear 0.32s;
+    overflow: hidden;
+    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.18);
+}
 
-    /* ── Menu items ── */
-    /* Inactive: use same color-inheritance approach as desktop */
-    .side-menu__item {
-        color: #3a2a1a !important;
-    }
+.mob-sidebar.open {
+    transform: translateX(0);
+    visibility: visible;
+    transition: transform 0.32s cubic-bezier(0.4, 0, 0.2, 1),
+        visibility 0s linear 0s;
+}
 
-    .side-menu__item .side-menu__label {
-        color: inherit !important;
-    }
+/* ── Header strip ── */
+.mob-sidebar-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.1rem 1rem 1rem 1.1rem;
+    background: linear-gradient(135deg, #e85d04 0%, #c94b00 100%);
+    flex-shrink: 0;
+    border-bottom: 3px solid rgba(255, 255, 255, 0.15);
+}
 
-    /* Stroke-based icons: stroke follows color */
-    .side-menu__item svg[stroke="currentColor"] {
-        fill: none !important;
-        stroke: currentColor !important;
-    }
+.mob-sidebar-brand {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
 
-    /* Fill-based icon (dashboard): fill follows color */
-    .side-menu__item svg:not([stroke]) path[fill="currentColor"] {
-        fill: currentColor !important;
-    }
+.mob-brand-logo {
+    font-size: 1.35rem;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    line-height: 1;
+}
 
-    /* Hover / focus: saffron tint background + saffron color */
-    .side-menu__item:hover,
-    .side-menu__item:focus {
-        background-color: rgba(255, 153, 51, 0.12) !important;
-        color: var(--primary-bg-hover) !important;
-    }
+.mob-brand-user {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.78);
+    font-weight: 500;
+}
 
-    .side-menu__item:hover .side-menu__label,
-    .side-menu__item:focus .side-menu__label {
-        color: var(--primary-bg-hover) !important;
-    }
+.mob-sidebar-close {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.18);
+    border: 1.5px solid rgba(255, 255, 255, 0.4);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+    flex-shrink: 0;
+    padding: 0;
+}
 
-    /* Active: saffron background, white text + icon */
-    .side-menu__item.active {
-        background-color: var(--primary-bg-color) !important;
-        color: #fff !important;
-        box-shadow: 0 3px 10px rgba(255, 153, 51, 0.35) !important;
-    }
+.mob-sidebar-close:hover,
+.mob-sidebar-close:active {
+    background: rgba(255, 255, 255, 0.32);
+    transform: scale(1.08);
+}
 
-    .side-menu__item.active .side-menu__label {
-        color: #fff !important;
-        font-weight: 600 !important;
-    }
+/* ── Nav menu ── */
+.mob-sidebar-nav {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1rem 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
 
-    /* Active on hover: slightly darker saffron, keep white text */
-    .side-menu__item.active:hover,
-    .side-menu__item.active:focus {
-        background-color: var(--primary-bg-hover) !important;
-        color: #fff !important;
-    }
+/* Each menu item */
+.mob-nav-item {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 0.78rem 1rem;
+    border-radius: 12px;
+    text-decoration: none;
+    color: #3a2a1a;
+    font-size: 0.97rem;
+    font-weight: 500;
+    transition: background 0.18s ease, color 0.18s ease, box-shadow 0.18s ease, transform 0.15s ease;
+    position: relative;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Icon wrapper */
+.mob-nav-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: rgba(232, 93, 4, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: background 0.18s ease;
+    color: #e85d04;
+}
+
+.mob-nav-icon svg {
+    width: 20px;
+    height: 20px;
+}
+
+.mob-nav-label {
+    flex: 1;
+    letter-spacing: 0.1px;
+}
+
+/* Hover state */
+.mob-nav-item:hover {
+    background: rgba(232, 93, 4, 0.08);
+    color: #e85d04;
+    transform: translateX(3px);
+    text-decoration: none;
+}
+
+.mob-nav-item:hover .mob-nav-icon {
+    background: rgba(232, 93, 4, 0.18);
+}
+
+/* Active press feedback */
+.mob-nav-item:active {
+    transform: scale(0.97);
+    background: rgba(232, 93, 4, 0.14);
+}
+
+/* Active / current page */
+.mob-nav-item.active {
+    background: linear-gradient(135deg, #e85d04 0%, #c94b00 100%);
+    color: #fff;
+    box-shadow: 0 4px 14px rgba(232, 93, 4, 0.38);
+    font-weight: 600;
+}
+
+.mob-nav-item.active .mob-nav-icon {
+    background: rgba(255, 255, 255, 0.22);
+    color: #fff;
+}
+
+.mob-nav-item.active:hover {
+    background: linear-gradient(135deg, #c94b00 0%, #a63d00 100%);
+    color: #fff;
+    transform: translateX(3px);
+}
+
+.mob-nav-item.active .mob-nav-icon svg,
+.mob-nav-item.active .mob-nav-label {
+    color: #fff;
+}
+
+/* Scrollbar styling for nav */
+.mob-sidebar-nav::-webkit-scrollbar {
+    width: 4px;
+}
+
+.mob-sidebar-nav::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.mob-sidebar-nav::-webkit-scrollbar-thumb {
+    background: rgba(232, 93, 4, 0.3);
+    border-radius: 4px;
 }
 
 /* ─────────────────────────────────────────────────────────────
    ADMIN: Header — extra small screens (< 400px)
    ───────────────────────────────────────────────────────────── */
 @media (max-width: 399.98px) {
+
     /* Hide username on very small screens — avatar only */
     .profile-1 .nav-link .p-1 {
         display: none !important;
@@ -357,16 +735,26 @@
 
 /* On very small screens, form action buttons stack full-width */
 @media (max-width: 575.98px) {
-    /* Form submit / cancel buttons stack full-width */
-    .card-body .mb-3 .btn,
-    .modal-footer .btn {
-        width: 100% !important;
+
+    /* Form submit / cancel buttons in one row with 50% each */
+    .card-body .mb-3.d-flex,
+    .modal-footer {
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;
+        gap: 0.5rem !important;
         justify-content: center !important;
+        /* width: 100%; */
     }
 
-    .modal-footer {
-        flex-direction: column !important;
-        gap: 0.5rem !important;
+    .card-body .mb-3.d-flex .btn,
+    .modal-footer .btn {
+        flex: 1;
+        width: 50% !important;
+        justify-content: center !important;
+        white-space: nowrap;
+        padding-left: 0.5rem !important;
+        padding-right: 0.5rem !important;
+        font-size: 0.78rem !important;
     }
 
     /* Table icon buttons: slightly bigger touch targets */
@@ -390,6 +778,7 @@
    GUEST / LOGIN: Layout Breakpoints
    ───────────────────────────────────────────────────────────── */
 @media (max-width: 1199.98px) {
+
     .content .contents,
     .content .bg {
         width: 100%;
@@ -406,12 +795,17 @@
    Reduced Motion (accessibility)
    ───────────────────────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after {
+
+    *,
+    *::before,
+    *::after {
         animation-duration: .01ms !important;
         transition-duration: .01ms !important;
     }
 
-    html { scroll-behavior: auto; }
+    html {
+        scroll-behavior: auto;
+    }
 
     [data-aos] {
         opacity: 1 !important;
@@ -423,9 +817,19 @@
    Print
    ───────────────────────────────────────────────────────────── */
 @media print {
+
     .float-whatsapp,
     .back-to-top,
-    #mainNav     { display: none !important; }
-    .section-pad { padding: 2rem 0; }
-    body         { color: #000; background: #fff; }
+    #mainNav {
+        display: none !important;
+    }
+
+    .section-pad {
+        padding: 2rem 0;
+    }
+
+    body {
+        color: #000;
+        background: #fff;
+    }
 }

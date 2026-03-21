@@ -2,8 +2,7 @@
 
     {{-- Mobile/Tablet: hamburger toggle (hidden on desktop) --}}
     <button class="sidebar-toggle-btn d-flex d-lg-none align-items-center justify-content-center flex-shrink-0"
-        type="button" data-bs-toggle="offcanvas" data-bs-target="#mobile-sidebar"
-        aria-controls="mobile-sidebar" aria-label="Open navigation">
+        type="button" onclick="openMobSidebar()" aria-label="Open navigation">
         <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
             fill="none" stroke="currentColor" stroke-width="2.5"
             stroke-linecap="round" stroke-linejoin="round">
@@ -19,8 +18,8 @@
     {{-- Right side: language selector + profile (half-half on mobile) --}}
     <div class="d-flex align-items-center justify-content-end header-actions gap-2">
 
-        {{-- @if(request()->routeIs('admin.dashboard'))
-        <div class="lang-wrapper flex-grow-1">
+        @if(request()->routeIs('admin.dashboard'))
+        <div class="lang-wrapper">
             <select class="btn btn-lang d-flex align-items-center" onchange="handleLanguageChange(this)" id="languageSelect">
                 <option value="en" {{ app()->getLocale() == 'en' ? 'selected' : '' }}>
                    <i class="bi bi-translate me-1"></i> <span>English</span>
@@ -30,13 +29,11 @@
                 </option>
             </select>
         </div>
-        @endif --}}
+        @endif
 
-        <div class="dropdown d-flex profile-1 flex-grow-1 justify-content-end">
+        <div class="dropdown d-flex profile-1 justify-content-end">
             <a href="{{ route('admin.dashboard') }}" data-bs-toggle="dropdown"
                 class="leading-none nav-link pe-0 d-flex align-items-center justify-content-end animate w-100">
-                <img src="{{ asset('images/logo.png') }}" alt="profile-user"
-                    class="avatar profile-user brround cover-image flex-shrink-0">
                 <div class="p-1 text-center d-flex d-lg-none-max overflow-hidden">
                     <h6 class="mb-0 ms-1 text-truncate" id="profile-heading">
                         {{ auth()->user()->name }}

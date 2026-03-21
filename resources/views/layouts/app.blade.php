@@ -59,6 +59,9 @@
     </div>
     <a href="#top" id="back-to-top" style="display: none;"><i class="fa fa-long-arrow-up"></i></a>
 
+    {{-- Mobile sidebar offcanvas rendered here, directly under <body>, so position:fixed works on all mobile browsers --}}
+    @stack('mobile-sidebar')
+
     <script type="text/Javascript" src="https://code.jquery.com/jquery-3.7.0.js"></script> <!-- jquery -->
 
     <script src="{{ asset('js/jquery.min.js') }}"></script>

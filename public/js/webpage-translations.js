@@ -69,8 +69,9 @@
       const stored = localStorage.getItem(STORAGE_KEY);
       if (stored === 'en' || stored === 'gu') return stored;
     } catch (_) {}
-    // Browser preference: prefer Gujarati if navigator language starts with 'gu'
-    if (navigator.language && navigator.language.toLowerCase().startsWith('gu')) return 'gu';
+    const htmlLang = document.documentElement.lang;
+    if (htmlLang === 'en' || htmlLang === 'gu') return htmlLang;
+
     return DEFAULT_LANG;
   }
 
